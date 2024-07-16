@@ -4,30 +4,26 @@ import { FormGroup, FormBuilder, Validators, FormArray} from '@angular/forms';
 import { Subject } from 'rxjs';
 import { read, utils, writeFile } from 'xlsx';
 import { ExamResultService } from 'src/app/services/exam-result.service';
-import { MatRadioChange } from '@angular/material/radio';
 import { PrintPdfService } from 'src/app/services/print-pdf/print-pdf.service';
 import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
 import { ExamResultStructureService } from 'src/app/services/exam-result-structure.service';
 import { SchoolService } from 'src/app/services/school.service';
 import { ClassService } from 'src/app/services/class.service';
+
 @Component({
-  selector: 'app-admin-student-marksheet',
-  templateUrl: './admin-student-marksheet.component.html',
-  styleUrls: ['./admin-student-marksheet.component.css']
+  selector: 'app-admin-student-marksheet-result-add',
+  templateUrl: './admin-student-marksheet-result-add.component.html',
+  styleUrls: ['./admin-student-marksheet-result-add.component.css']
 })
-export class AdminStudentMarksheetComponent implements OnInit {
+export class AdminStudentMarksheetResultAddComponent implements OnInit {
   examResultForm: FormGroup;
   showModal: boolean = false;
-
-  showBulkResultPrintModal: boolean = false;
-  showBulkImportModal: boolean = false;
   updateMode: boolean = false;
   deleteMode: boolean = false;
   deleteById: String = '';
   successMsg: String = '';
   errorMsg: String = '';
   errorCheck: Boolean = false;
-  schoolInfo: any;
   marksheetTemplateStructureInfo: any;
   resultStructureInfo: any;
   allExamResults: any[] = [];
@@ -40,7 +36,6 @@ export class AdminStudentMarksheetComponent implements OnInit {
   paginationValues: Subject<any> = new Subject();
   page: Number = 0;
   cls: any;
-  classInfo: any[] = [];
   classSubjectList: any;
   selectedValue: number = 0;
   theorySubjects: any[] = [];
@@ -54,7 +49,7 @@ export class AdminStudentMarksheetComponent implements OnInit {
   existRollnumber: number[] = [];
   bulkResult: any[] = [];
   selectedExam: any = '';
-  stream: string = '';
+  stream: any;
   notApplicable: String = "stream";
   examType: any[] = [];
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
@@ -66,6 +61,7 @@ export class AdminStudentMarksheetComponent implements OnInit {
       rollNumber: ['', Validators.required],
       examType: [''],
       stream: [''],
+      class:[''],
       createdBy: [''],
       resultDetail: [''],
       type: this.fb.group({
@@ -85,71 +81,25 @@ export class AdminStudentMarksheetComponent implements OnInit {
   ngOnInit(): void {
     let getAdmin = this.adminAuthService.getLoggedInAdminInfo();
     this.adminId = getAdmin?.id;
-    // this.cls = this.activatedRoute.snapshot.paramMap.get('id');
-    // this.getStudentExamResultByClass(this.cls);
-    this.getSchool();
-    this.getClass();
-  }
-
-  getClass() {
-    this.classService.getClassList().subscribe((res: any) => {
-      if (res) {
-        this.classInfo = res;
-      }
-    })
-  }
-
-
-  chooseClass(cls: any) {
-    this.cls = cls;
-    if (cls < 11 && cls !== 0 || cls == 200 || cls == 201 || cls == 202) {
-      // this.studentForm.get('stream')?.setValue("N/A");
-      // this.getStudentExamResultByClass(this.cls);
-    }
-  }
-  filterStream(stream: any) {
-    this.stream = stream;
-    if (this.theorySubjects || this.practicalSubjects || this.periodicTestSubjects || this.noteBookSubjects || this.subjectEnrichmentSubjects) {
-      this.falseAllValue();
-    }
-    if (stream && this.cls) {
+    this.cls = this.activatedRoute.snapshot.paramMap.get('class');
+    this.stream = this.activatedRoute.snapshot.paramMap.get('stream');
+    if (this.stream && this.cls) {
       let params = {
         adminId:this.adminId,
         cls: this.cls,
-        stream: stream,
+        stream: this.stream,
       }
       this.getStudentExamResultByClass(params);
       this.getSingleClassResultStrucByStream(params);
     }
   }
 
-
-  // onChange(event: MatRadioChange) {
-  //   this.selectedValue = event.value;
-  // }
-  getSchool() {
-    this.schoolService.getSchool(this.adminId).subscribe((res: any) => {
-      if (res) {
-        this.schoolInfo = res;
-      }
-    })
-  }
   addExamResultModel() {
     this.showModal = true;
     this.deleteMode = false;
     this.updateMode = false;
     this.examResultForm.reset();
 
-  }
-  addBulkExamResultModel() {
-    this.showBulkImportModal = true;
-    this.errorCheck = false;
-  }
-  updateExamResultModel(examResult: any) {
-    this.showModal = true;
-    this.deleteMode = false;
-    this.updateMode = true;
-    this.examResultForm.patchValue(examResult);
   }
   deleteExamResultModel(id: String) {
     this.showModal = true;
@@ -188,11 +138,8 @@ export class AdminStudentMarksheetComponent implements OnInit {
     this.deleteMode = false;
     this.errorMsg = '';
     this.selectedExam = '';
-    // this.stream = '';
     this.examResultForm.reset();
     this.showModal = false;
-    this.showBulkResultPrintModal = false;
-    this.showBulkImportModal = false;
   }
 
   successDone() {
@@ -203,9 +150,6 @@ export class AdminStudentMarksheetComponent implements OnInit {
     }, 1000)
   }
 
-  bulkPrint() {
-    this.showBulkResultPrintModal = true;
-  }
 
   getStudentExamResultByClass(params: any) {
     let param = {
@@ -326,93 +270,6 @@ export class AdminStudentMarksheetComponent implements OnInit {
       averagePercentileGrade
     };
   }
-
-
-  printStudentData() {
-    const printContent = this.getPrintOneAdmitCardContent();
-    this.printPdfService.printContent(printContent);
-    this.closeModal();
-  }
-
-
-
-  private getPrintOneAdmitCardContent(): string {
-    let schoolName = this.schoolInfo.schoolName;
-    let city = this.schoolInfo.city;
-    let printHtml = '<html>';
-    printHtml += '<head>';
-    printHtml += '<style>';
-    printHtml += 'body {width: 100%; height: 100%; margin: 0; padding: 0; }';
-    printHtml += 'div {margin: 0; padding: 0;}';
-    printHtml += '.custom-container {font-family: Arial, sans-serif;overflow: auto; width: 100%; height: 100%; box-sizing: border-box;}';
-    printHtml += '.table-container {width: 100%;height: 100%; background-color: #fff;border: 2px solid #9e9e9e; box-sizing: border-box;}';
-    printHtml += '.logo { height: 75px;margin-top:5px;margin-left:5px;}';
-    printHtml += '.school-name {display: flex; align-items: center; justify-content: center; text-align: center; }';
-    printHtml += '.school-name h3 { color: #252525 !important; font-size: 18px !important;font-weight: bolder;margin-top:-115px !important; margin-bottom: 0 !important; }';
-
-    printHtml += '.address{margin-top: -42px;}';
-    printHtml += '.address p{font-size:10px;margin-top: -8px !important;}';
-    printHtml += '.title-lable {text-align: center;margin-bottom: 15px;}';
-    printHtml += '.title-lable p {color: #252525 !important;font-size: 15px;font-weight: bolder;letter-spacing: .5px;}';
-
-    printHtml += '.info-table {width:100%;color: #252525 !important;border: none;font-size: 11px;margin-top: 1.5vh;margin-bottom: 2vh;display: inline-table;}';
-    printHtml += '.table-container .info-table th, .table-container .info-table td{color: #252525 !important;text-align:left;padding-left:15px;padding-top:5px;}';
-    printHtml += '.custom-table {width: 100%;color: #252525 !important;border-collapse:collapse;margin-bottom: 20px;display: inline-table;border-radius:5px}';
-    printHtml += '.custom-table th{height: 31px;text-align: center;border:1px solid #9e9e9e;line-height:15px;font-size: 10px;}';
-    printHtml += '.custom-table tr{height: 30px;}';
-    printHtml += '.custom-table td {text-align: center;border:1px solid #9e9e9e;font-size: 10px;}';
-    printHtml += '.text-bold { font-weight: bold;}';
-    printHtml += '.text-left { text-align: left;}';
-    printHtml += 'p {color: #252525 !important;font-size:12px;}'
-    printHtml += 'h4 {color: #252525 !important;}'
-    printHtml += '@media print {';
-    printHtml += '  body::before {';
-    printHtml += `    content: "${schoolName}, ${city}";`;
-    printHtml += '    position: fixed;';
-    printHtml += '    top: 40%;';
-    printHtml += '    left:10%;';
-    printHtml += '    font-size: 20px;';
-    printHtml += '    text-transform: uppercase;';
-    printHtml += '    font-weight: bold;';
-    printHtml += '    font-family: Arial, sans-serif;';
-    printHtml += '    color: rgba(0, 0, 0, 0.08);';
-    printHtml += '    pointer-events: none;';
-    printHtml += '  }';
-    printHtml += '}';
-    printHtml += '</style>';
-    printHtml += '</head>';
-    printHtml += '<body>';
-
-    this.mappedResults.forEach((student, index) => {
-      const studentElement = document.getElementById(`student-${student.studentId}`);
-      if (studentElement) {
-        printHtml += studentElement.outerHTML;
-
-        // Add a page break after each student except the last one
-        if (index < this.mappedResults.length - 1) {
-          printHtml += '<div style="page-break-after: always;"></div>';
-        }
-      }
-    });
-    printHtml += '</body></html>';
-    return printHtml;
-  }
-
-  // chooseStream(stream: any) {
-  //   if (this.theorySubjects || this.practicalSubjects || this.periodicTestSubjects || this.noteBookSubjects || this.subjectEnrichmentSubjects) {
-  //     this.falseAllValue();
-  //   }
-  //   this.stream = stream;
-  //   if (stream && this.cls) {
-  //     let params = {
-  //       adminId: this.adminId,
-  //       cls: this.cls,
-  //       stream: stream,
-  //     }
-  //     this.getSingleClassResultStrucByStream(params);
-  //   }
-  // }
-
   selectExam(selectedExam: string) {
     if (this.theorySubjects || this.practicalSubjects || this.periodicTestSubjects || this.noteBookSubjects || this.subjectEnrichmentSubjects) {
       this.falseAllValue();
@@ -753,27 +610,6 @@ export class AdminStudentMarksheetComponent implements OnInit {
     })
   }
 
-
-  handleImport($event: any) {
-    this.fileChoose = true;
-    const files = $event.target.files;
-    if (files.length) {
-      const file = files[0];
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        const wb = read(event.target.result);
-        const sheets = wb.SheetNames;
-
-        if (sheets.length) {
-          const rows = utils.sheet_to_json(wb.Sheets[sheets[0]]);
-          this.bulkResult = rows;
-        }
-      }
-      reader.readAsArrayBuffer(file);
-    }
-
-  }
-
   addBulkExamResult() {
     let resultData = {
       examType: this.selectedExam,
@@ -791,24 +627,5 @@ export class AdminStudentMarksheetComponent implements OnInit {
       this.errorCheck = true;
       this.errorMsg = err.error;
     })
-  }
-
-  handleExport() {
-    let rollNumber = "rollNumber";
-    const headings = [[
-      rollNumber,
-      'Class',
-      'Hindi',
-      'English',
-      'Sanskrit',
-      'Maths',
-      'Science'
-    ]];
-    const wb = utils.book_new();
-    const ws: any = utils.json_to_sheet([]);
-    utils.sheet_add_aoa(ws, headings);
-    utils.sheet_add_json(ws, this.bulkResult, { origin: 'A2', skipHeader: true });
-    utils.book_append_sheet(wb, ws, 'Report');
-    writeFile(wb, 'Result.xlsx');
   }
 }

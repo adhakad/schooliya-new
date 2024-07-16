@@ -147,23 +147,23 @@ Dashboard section
 }
 
 .main-card h3 {
-  color: #4e4caacd;
+  color: #4a2b89c4;
   letter-spacing: .6px;
   font-size: 18px;
 }
 
 .modal-content h3 {
-  color: #4e4caacd;
+  color: #4a2b89c4;
   letter-spacing: .5px;
   font-size: 16px;
 }
 
 h4 {
-  color: #4e4caacd;
+  color: #4a2b89c4;
 }
 
 p {
-  color: #4e4caacd;
+  color: #4a2b89c4;
   font-size: 15px;
 }
 
@@ -179,12 +179,12 @@ p {
   margin-top: 25%;
   letter-spacing: .6px;
   font-size: 18px;
-  color: #4e4caacd;
+  color: #4a2b89c4;
 }
 
 .form-control {
   height: 45px;
-  color: #4e4caacd;
+  color: #4a2b89c4;
   border: 2px solid #e1dfeed7;
 }
 
@@ -213,7 +213,7 @@ p {
   /* background: #e7e6f897;
   color: #8C52FF9a; */
   background: #ebebff;
-  color: #4e4caacd;
+  color: #4a2b89c4;
   cursor: not-allowed;
 }
 
@@ -225,7 +225,7 @@ p {
 }
 
 .status-inactive {
-  color: #4e4caacd;
+  color: #4a2b89c4;
   cursor: pointer;
   text-decoration: none;
 }
@@ -240,23 +240,23 @@ p {
 
 th {
   white-space: nowrap;
-  color: #4e4caacd;
+  color: #4a2b89c4;
   ;
 }
 
 td {
   white-space: nowrap;
-  color: #4e4caacd;
+  color: #4a2b89c4;
   ;
 }
 
 table mat-icon {
-  color: #4e4caacd;
+  color: #4a2b89c4;
   cursor: pointer;
 }
 
 .table p {
-  color: #4e4caacd;
+  color: #4a2b89c4;
 }
 
 .pagination {
@@ -574,7 +574,7 @@ Side navigation section
     display: inline-block;
     font-size: 1.1em;
     font-weight: 500;
-    text-align: center;
+    text-align: left;
     /* margin-top: 2px; */
     margin-left: 15px;
     letter-spacing: .20px;

@@ -291,19 +291,19 @@ let ChangeResultPublishStatus = async (req, res, next) => {
         if (findResultPublishStatus == false) {
             let className;
             if (cls == 1) {
-                className = `${cls}ST`
+                className = `${cls}st`
             }
             if (cls == 2) {
-                className = `${cls}ND`
+                className = `${cls}nd`
             }
             if (cls == 3) {
-                className = `${cls}RD`
+                className = `${cls}rd`
             }
             if (cls >= 4 && cls <= 12) {
-                className = `${cls}TH`
+                className = `${cls}th`
             }
             if (cls == 200) {
-                className = `NURSERY`;
+                className = `Nursery`;
             }
             if (cls == 201) {
                 className = `LKG`;

@@ -7,19 +7,19 @@ export class ClassSuffixPipe implements PipeTransform {
 
   transform(classNumber: number): any {
     if (classNumber >= 4 && classNumber <= 12) {
-      return `${classNumber}TH`;
+      return `${classNumber}th`;
     }
     if(classNumber==1){
-      return `${classNumber}ST`;
+      return `${classNumber}st`;
     }
     if(classNumber==2){
-      return `${classNumber}ND`;
+      return `${classNumber}nd`;
     }
     if(classNumber==3){
-      return `${classNumber}RD`;
+      return `${classNumber}rd`;
     }
     if(classNumber==200){
-      return `NURSERY`
+      return `Nursery`
     }
     if(classNumber==201){
       return `LKG`

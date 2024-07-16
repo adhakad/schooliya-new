@@ -23,14 +23,13 @@ export class AdminStudentMarksheetStructureComponent implements OnInit {
   successMsg: String = '';
   errorMsg: String = '';
   errorCheck: Boolean = false;
-  cls: any;
   marksheetTemplate: any;
   marksheetSelectMode:boolean = true;
   selectedTemplate:string = '';
   examResultInfo: any;
   processedTheoryData: any[] = [];
   processedPracticalData: any[] = [];
-
+  cls: any;
   stream: any;
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
   loader: Boolean = true;

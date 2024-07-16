@@ -173,14 +173,14 @@ export class AdminStudentResultStructureComponent implements OnInit {
       class:cls,
       adminId:this.adminId,
     }
-    this.examResultStructureService.examResultStructureByClass(params).subscribe((res: any) => {
-      if (res) {
-        this.examResultStr = res;
-        setTimeout(() => {
-          this.loader = false;
-        }, 1000);
-      }
-    })
+    // this.examResultStructureService.examResultStructureByClass(params).subscribe((res: any) => {
+    //   if (res) {
+    //     this.examResultStr = res;
+    //     setTimeout(() => {
+    //       this.loader = false;
+    //     }, 1000);
+    //   }
+    // })
   }
 
   chooseStream(stream: any) {
