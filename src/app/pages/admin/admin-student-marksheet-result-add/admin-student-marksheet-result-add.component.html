@@ -32,7 +32,6 @@
                                 <thead class="bg-light">
                                     <tr class="text-muted">
                                         <th>No.</th>
-                                        <th>Admission No.</th>
                                         <th>Name</th>
                                         <th>Roll Number</th>
                                         <th>Stream</th>
@@ -45,9 +44,6 @@
                                     <tr *ngFor="let result of mappedResults,let i=index">
                                         <td>
                                             <p class="mb-0">{{i+1}}</p>
-                                        </td>
-                                        <td>
-                                            <p class="mb-0">{{result.admissionNo}}</p>
                                         </td>
                                         <td>
                                             <p class="mb-0">{{result.name | titlecase}}</p>

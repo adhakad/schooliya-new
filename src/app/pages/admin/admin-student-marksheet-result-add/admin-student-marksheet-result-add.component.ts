@@ -6,6 +6,7 @@ import { read, utils, writeFile } from 'xlsx';
 import { ExamResultService } from 'src/app/services/exam-result.service';
 import { PrintPdfService } from 'src/app/services/print-pdf/print-pdf.service';
 import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
+import { StudentService } from 'src/app/services/student.service';
 import { ExamResultStructureService } from 'src/app/services/exam-result-structure.service';
 import { SchoolService } from 'src/app/services/school.service';
 import { ClassService } from 'src/app/services/class.service';
@@ -44,6 +45,14 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
   noteBookSubjects: any[] = [];
   subjectEnrichmentSubjects: any[] = [];
   coScholastic: any[] = [];
+  theoryMaxMarks:any;
+  practicalMaxMarks:any;
+  periodicTestMaxMarks:any;
+  noteBookMaxMarks:any;
+  subjectEnrichmentMaxMarks:any;
+
+
+
 
   fileChoose: boolean = false;
   existRollnumber: number[] = [];
@@ -55,7 +64,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
   loader: Boolean = false;
   adminId!: string;
-  constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private printPdfService: PrintPdfService, private examResultService: ExamResultService, private classService: ClassService, private examResultStructureService: ExamResultStructureService) {
+  constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private printPdfService: PrintPdfService, private examResultService: ExamResultService, private classService: ClassService, private examResultStructureService: ExamResultStructureService,private studentService: StudentService) {
     this.examResultForm = this.fb.group({
       adminId: [''],
       rollNumber: ['', Validators.required],
@@ -89,7 +98,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
         cls: this.cls,
         stream: this.stream,
       }
-      this.getStudentExamResultByClass(params);
+      this.getStudentExamResultByClassStream(params);
       this.getSingleClassResultStrucByStream(params);
     }
   }
@@ -146,48 +155,33 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     setTimeout(() => {
       this.closeModal();
       this.successMsg = '';
-      this.getStudentExamResultByClass(this.cls);
+      this.getStudentExamResultByClassStream(this.cls);
     }, 1000)
   }
 
 
-  getStudentExamResultByClass(params: any) {
+  getStudentExamResultByClassStream(params: any) {
     let param = {
       class: params.cls,
       stream: params.stream,
       adminId: this.adminId,
     }
-    this.examResultService.getAllStudentExamResultByClass(param).subscribe((res: any) => {
+    this.examResultService.getAllStudentExamResultByClassStream(param).subscribe((res: any) => {
       if (res) {
-        this.examResultInfo = res.examResultInfo;
+        // this.examResultInfo = res.examResultInfo;
         this.studentInfo = res.studentInfo;
         let isDate = res.isDate;
         let marksheetTemplateStructure = res.marksheetTemplateStructure;
-        const gradeMinMarks = marksheetTemplateStructure.examStructure.term1.gradeMinMarks.map((grade: any) => Object.values(grade)[0]);
-        const gradeMaxMarks = marksheetTemplateStructure.examStructure.term1.gradeMaxMarks.map((grade: any) => Object.values(grade)[0]);
-        const mapExamResultsToStudents = (examResults: any, studentInfo: any) => {
-          const studentInfoMap = studentInfo.reduce((acc: any, student: any) => {
-            acc[student._id] = student;
-            return acc;
-          }, {});
-          return examResults.map((result: any) => {
-            const student = studentInfoMap[result.studentId];
-            if(marksheetTemplateStructure.templateName=='T5' && marksheetTemplateStructure.templateName=='T6'){
-              let overallMarksAndGrades = this.calculateAverageMarksAndGrades(result.resultDetail.term1.marks, result.resultDetail.term2.marks, result.resultDetail.term1.totalMaxMarks, result.resultDetail.term1.totalMaxMarks, marksheetTemplateStructure.examStructure.term1.gradeMinMarks, marksheetTemplateStructure.examStructure.term1.gradeMaxMarks);
-              result.resultDetail.overallMarksAndGrades = overallMarksAndGrades;
-            }
+        const mapExamResultsToStudents = (studentInfo: any) => {
+          return studentInfo.map((student: any) => {
             return {
               session: student.session,
-              adminId: result.adminId,
-              studentId: result.studentId,
-              class: result.class,
-              stream: result.stream,
+              adminId: student.adminId,
+              studentId: student._id,
+              class: student.class,
+              stream: student.stream,
               dob: student.dob,
               marksheetTemplateStructure: marksheetTemplateStructure,
-              gradeMinMarks,
-              gradeMaxMarks,
-              resultDetail: result.resultDetail,
-              status: result.status || "",
               name: student.name,
               fatherName: student.fatherName,
               motherName: student.motherName,
@@ -198,7 +192,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
           });
         };
 
-        this.mappedResults = mapExamResultsToStudents(this.examResultInfo, this.studentInfo);
+        this.mappedResults = mapExamResultsToStudents(this.studentInfo);
         console.log(this.mappedResults)
       }
     },err=>{
@@ -208,74 +202,14 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
       this.loader = false;
     }, 1000);
   }
-  private getGrade(averageMarks: any, gradeMinMarks: any, gradeMaxMarks: any) {
-    // const roundedMarks = Math.round(parseFloat(averageMarks));
-    // const grade = gradeMaxMarks.reduce((grade: string, gradeRange: any, i: number) => {
-    //   const maxMarks = parseFloat(String(Object.values(gradeRange)[0]));
-    //   const minMarks = parseFloat(String(Object.values(gradeMinMarks[i])[0]));
-    //   return roundedMarks >= minMarks && roundedMarks <= maxMarks ? Object.keys(gradeRange)[0] : grade;
-    // }, '');
-    // return grade;
-    for (let i = 0; i < gradeMinMarks.length; i++) {
-      const roundedMarks = Math.round(parseFloat(averageMarks)); // Round to the nearest integer
-      const grade = Object.keys(gradeMinMarks[i])[0];
-      const minMarks = parseFloat(String(Object.values(gradeMinMarks[i])[0]));
-      const maxMarks = parseFloat(String(Object.values(gradeMaxMarks[i])[0]));
-
-      if (i === 0 && roundedMarks >= minMarks && roundedMarks <= maxMarks) {
-        return grade;
-      } else if (roundedMarks >= minMarks && roundedMarks < maxMarks) {
-        return grade;
-      }
-    }
-    return "Unknown";
-  }
-  private calculateAverageMarksAndGrades(term1: any[], term2: any[], term1TotalMaxMarks: number, term2TotalMaxMarks: number, gradeMinMarks: any[], gradeMaxMarks: any[]) {
-    const subjects: { [key: string]: number[] } = {};
-
-    // Collect marks for all subjects from both terms in a single pass
-    const allTerms = [...term1, ...term2];
-    allTerms.forEach((mark: any) => {
-      if (!subjects[mark.subject]) {
-        subjects[mark.subject] = [];
-      }
-      subjects[mark.subject].push(mark.totalMarks);
-    });
-    // Calculate average marks and grades for each subject
-    const averageGradesAndMarks = Object.keys(subjects).map(subject => {
-      const totalMarks = subjects[subject].reduce((acc, val) => acc + val, 0);
-      const averageMarks = totalMarks / subjects[subject].length;
-      const grade = this.getGrade(averageMarks, gradeMinMarks, gradeMaxMarks);
-
-      return {
-        subject,
-        averageMarks,
-        grade
-      };
-    });
-
-    // Calculate total marks for each term
-    const term1TotalMarks = term1.reduce((acc: number, mark: any) => acc + mark.totalMarks, 0);
-    const term2TotalMarks = term2.reduce((acc: number, mark: any) => acc + mark.totalMarks, 0);
-    const totalMarks = term1TotalMarks + term2TotalMarks;
-    let averageTotalMarks = totalMarks / 2;
-    const averageTotalMaxMarks = (term1TotalMaxMarks + term2TotalMaxMarks) / 2;
-    const averagePercentile = parseFloat(((averageTotalMarks / averageTotalMaxMarks) * 100).toFixed(2));
-    const averagePercentileGrade = this.getGrade(averagePercentile, gradeMinMarks, gradeMaxMarks);
-    return {
-      averageGradesAndMarks,
-      averageTotalMaxMarks,
-      averageTotalMarks: (averageTotalMarks).toFixed(2),
-      averagePercentile,
-      averagePercentileGrade
-    };
-  }
+  
   selectExam(selectedExam: string) {
     if (this.theorySubjects || this.practicalSubjects || this.periodicTestSubjects || this.noteBookSubjects || this.subjectEnrichmentSubjects) {
       this.falseAllValue();
     }
     this.selectedExam = selectedExam;
     const examFilteredData = this.marksheetTemplateStructureInfo.marksheetTemplateStructure.examStructure[selectedExam];
+    console.log()
     let subjects = this.marksheetTemplateStructureInfo.classSubjectList.subject;
     this.practicalSubjects = [];
     this.periodicTestSubjects = [];
@@ -289,6 +223,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
         return theorySubject;
       })
       if (this.theorySubjects) {
+        this.theoryMaxMarks = examFilteredData.theoryMaxMarks;
         this.patchTheory();
       }
     }
@@ -298,6 +233,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
         return practicalSubject;
       })
       if (this.practicalSubjects) {
+        this.practicalMaxMarks = examFilteredData.practicalMaxMarks;
         this.patchPractical();
       }
     }
@@ -307,6 +243,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
         return periodicTestSubject;
       })
       if (this.periodicTestSubjects) {
+        this.practicalMaxMarks = examFilteredData.practicalMaxMarks;
         this.patchPeriodicTest();
       }
     }
@@ -318,6 +255,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
         return noteBookSubject;
       })
       if (this.noteBookSubjects) {
+        this.noteBookMaxMarks = examFilteredData.noteBookMaxMarks;
         this.patchNoteBook();
       }
     }
@@ -327,6 +265,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
         return subjectEnrichmentSubject;
       })
       if (this.subjectEnrichmentSubjects) {
+        this.subjectEnrichmentMaxMarks = examFilteredData.subjectEnrichmentMaxMarks;
         this.patchSubjectEnrichment();
       }
     }
@@ -411,29 +350,30 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
 
 
   patchTheoryValues(theoryMarks: any) {
+    console.log(this.theoryMaxMarks)
     return this.fb.group({
-      [theoryMarks]: ['',[Validators.required,Validators.max(100), Validators.pattern('^[0-9]+$')]],
+      [theoryMarks]: ['',[Validators.required,Validators.max(this.theoryMaxMarks), Validators.pattern('^[0-9]+$')]],
     })
   }
 
   patchPracticalValues(practicalMarks: any) {
     return this.fb.group({
-      [practicalMarks]: ['',[Validators.required,Validators.max(100), Validators.pattern('^[0-9]+$')]],
+      [practicalMarks]: ['',[Validators.required,Validators.max(this.practicalMaxMarks), Validators.pattern('^[0-9]+$')]],
     })
   }
   patchPeriodicTestValues(periodicTestMarks: any) {
     return this.fb.group({
-      [periodicTestMarks]: ['',[Validators.required,Validators.max(100), Validators.pattern('^[0-9]+$')]],
+      [periodicTestMarks]: ['',[Validators.required,Validators.max(periodicTestMarks), Validators.pattern('^[0-9]+$')]],
     })
   }
   patchNoteBookValues(noteBookMarks: any) {
     return this.fb.group({
-      [noteBookMarks]: ['',[Validators.required,Validators.max(100), Validators.pattern('^[0-9]+$')]],
+      [noteBookMarks]: ['',[Validators.required,Validators.max(this.noteBookMaxMarks), Validators.pattern('^[0-9]+$')]],
     })
   }
   patchSubjectEnrichmentValues(subjectEnrichmentMarks: any) {
     return this.fb.group({
-      [subjectEnrichmentMarks]: ['',[Validators.required,Validators.max(100), Validators.pattern('^[0-9]+$')]],
+      [subjectEnrichmentMarks]: ['',[Validators.required,Validators.max(this.subjectEnrichmentMaxMarks), Validators.pattern('^[0-9]+$')]],
     })
   }
   patchCoScholasticValues(coScholastic: any) {

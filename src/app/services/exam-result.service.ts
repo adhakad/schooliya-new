@@ -22,6 +22,9 @@ export class ExamResultService {
   singleStudentExamResultById(studentId: any) {
     return this.http.get(`${this.url}/student/${studentId}`);
   }
+  getAllStudentExamResultByClassStream(params:any){
+    return this.http.get(`${this.url}/admin/${params.adminId}/result/class/${params.class}/stream/${params.stream}`);
+  }
   getAllStudentExamResultByClass(params:any){
     return this.http.get(`${this.url}/admin/${params.adminId}/class/${params.class}/stream/${params.stream}`);
   }
