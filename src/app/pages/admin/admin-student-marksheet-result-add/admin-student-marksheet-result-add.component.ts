@@ -186,6 +186,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
         this.studentInfo = res.studentInfo;
         let isDate = res.isDate;
         let marksheetTemplateStructure = res.marksheetTemplateStructure;
+        console.log(marksheetTemplateStructure)
         const mapExamResultsToStudents = (studentInfo: any) => {
           return studentInfo.map((student: any) => {
             return {
@@ -321,7 +322,6 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     const controlOne = <FormArray>this.examResultForm.get('type.theoryMarks');
     this.theorySubjects.forEach((x: any) => {
       controlOne.push(this.patchTheoryValues(x));
-      // this.examResultForm.reset();
     })
   }
 
@@ -329,41 +329,35 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     const controlOne = <FormArray>this.examResultForm.get('type.practicalMarks');
     this.practicalSubjects.forEach((x: any) => {
       controlOne.push(this.patchPracticalValues(x))
-      // this.examResultForm.reset();
     })
   }
   patchPeriodicTest() {
     const controlOne = <FormArray>this.examResultForm.get('type.periodicTestMarks');
     this.periodicTestSubjects.forEach((x: any) => {
       controlOne.push(this.patchPeriodicTestValues(x))
-      // this.examResultForm.reset();
     })
   }
   patchNoteBook() {
     const controlOne = <FormArray>this.examResultForm.get('type.noteBookMarks');
     this.noteBookSubjects.forEach((x: any) => {
       controlOne.push(this.patchNoteBookValues(x))
-      // this.examResultForm.reset();
     })
   }
   patchSubjectEnrichment() {
     const controlOne = <FormArray>this.examResultForm.get('type.subjectEnrichmentMarks');
     this.subjectEnrichmentSubjects.forEach((x: any) => {
       controlOne.push(this.patchSubjectEnrichmentValues(x))
-      // this.examResultForm.reset();
     })
   }
   patchCoScholastic() {
     const controlOne = <FormArray>this.examResultForm.get('type.coScholastic');
     this.coScholastic.forEach((x: any) => {
       controlOne.push(this.patchCoScholasticValues(x))
-      // this.examResultForm.reset();
     })
   }
 
 
   patchTheoryValues(theoryMarks: any) {
-    console.log(this.theoryMaxMarks)
     return this.fb.group({
       [theoryMarks]: ['', [Validators.required, Validators.max(this.theoryMaxMarks), Validators.pattern('^[0-9]+$')]],
     })

@@ -228,7 +228,7 @@ export class AdminStudentMarksheetComponent implements OnInit {
           }, {});
           return examResults.map((result: any) => {
             const student = studentInfoMap[result.studentId];
-            if(marksheetTemplateStructure.templateName=='T5' && marksheetTemplateStructure.templateName=='T6'){
+            if(marksheetTemplateStructure.templateName =='T1' || marksheetTemplateStructure.templateName =='T2' || marksheetTemplateStructure.templateName =='T3' || marksheetTemplateStructure.templateName =='T4'){
               let overallMarksAndGrades = this.calculateAverageMarksAndGrades(result.resultDetail.term1.marks, result.resultDetail.term2.marks, result.resultDetail.term1.totalMaxMarks, result.resultDetail.term1.totalMaxMarks, marksheetTemplateStructure.examStructure.term1.gradeMinMarks, marksheetTemplateStructure.examStructure.term1.gradeMaxMarks);
               result.resultDetail.overallMarksAndGrades = overallMarksAndGrades;
             }
@@ -265,26 +265,13 @@ export class AdminStudentMarksheetComponent implements OnInit {
     }, 1000);
   }
   private getGrade(averageMarks: any, gradeMinMarks: any, gradeMaxMarks: any) {
-    // const roundedMarks = Math.round(parseFloat(averageMarks));
-    // const grade = gradeMaxMarks.reduce((grade: string, gradeRange: any, i: number) => {
-    //   const maxMarks = parseFloat(String(Object.values(gradeRange)[0]));
-    //   const minMarks = parseFloat(String(Object.values(gradeMinMarks[i])[0]));
-    //   return roundedMarks >= minMarks && roundedMarks <= maxMarks ? Object.keys(gradeRange)[0] : grade;
-    // }, '');
-    // return grade;
-    for (let i = 0; i < gradeMinMarks.length; i++) {
-      const roundedMarks = Math.round(parseFloat(averageMarks)); // Round to the nearest integer
-      const grade = Object.keys(gradeMinMarks[i])[0];
+    const roundedMarks = Math.round(parseFloat(averageMarks));
+    const grade = gradeMaxMarks.reduce((grade: string, gradeRange: any, i: number) => {
+      const maxMarks = parseFloat(String(Object.values(gradeRange)[0]));
       const minMarks = parseFloat(String(Object.values(gradeMinMarks[i])[0]));
-      const maxMarks = parseFloat(String(Object.values(gradeMaxMarks[i])[0]));
-
-      if (i === 0 && roundedMarks >= minMarks && roundedMarks <= maxMarks) {
-        return grade;
-      } else if (roundedMarks >= minMarks && roundedMarks < maxMarks) {
-        return grade;
-      }
-    }
-    return "Unknown";
+      return roundedMarks >= minMarks && roundedMarks <= maxMarks ? Object.keys(gradeRange)[0] : grade;
+    }, '');
+    return grade;
   }
   private calculateAverageMarksAndGrades(term1: any[], term2: any[], term1TotalMaxMarks: number, term2TotalMaxMarks: number, gradeMinMarks: any[], gradeMaxMarks: any[]) {
     const subjects: { [key: string]: number[] } = {};
