@@ -22,11 +22,11 @@
                                 <div class="col-8 col-lg-5">
                                     <input type="text" class="form-control" placeholder="Class Search...">
                                 </div>
-                                <div class="col-4 col-lg-2 offset-lg-5">
+                                <!-- <div class="col-4 col-lg-2 offset-lg-5">
                                     <button class="submit-button" mat-raised-button
-                                        (click)="addExamResultModel()"><mat-icon
+                                        (click)="addExamResultModel(selectedRollNumber)"><mat-icon
                                             style="font-size: 20px;">add</mat-icon>Add Result</button>
-                                </div>
+                                </div> -->
                             </div>
                             <table class="table table-hover align-middle mt-2 mb-1 bg-white">
                                 <thead class="bg-light">
@@ -37,6 +37,7 @@
                                         <th>Stream</th>
                                         <th>Exam</th>
                                         <th>Created By</th>
+                                        <th>Result</th>
                                     </tr>
                                 </thead>
 
@@ -59,6 +60,11 @@
                                         </td>
                                         <td>
                                             <p class="mb-0">{{result.createdBy}}</p>
+                                        </td>
+                                        <td>
+                                            <button class="submit-button" mat-raised-button
+                                                (click)="addExamResultModel(result.rollNumber)"><mat-icon
+                                                    style="font-size: 20px;">add</mat-icon>Add Result</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -90,14 +96,16 @@
                                                 <div *ngIf="errorCheck">
                                                     <p class="error-message">{{errorMsg}}</p>
                                                 </div>
-                                                <div class="scroll-content">
-                                                    <div class="wide-content">
+                                                <div >
+                                                    <div >
+                                                        <!-- class="scroll-content"class="wide-content" -->
                                                         <div class="container">
                                                             <div class="row">
                                                                 <div class="col-6">
                                                                     <mat-form-field appearance="outline">
                                                                         <mat-label>Exam Type</mat-label>
-                                                                        <mat-select #examSelect matInput>
+                                                                        <mat-select #examSelect matInput
+                                                                            formControlName="examType">
                                                                             <div *ngFor="let exam of examType">
                                                                                 <ng-container *ngIf="examType.length<2">
                                                                                     <mat-option
@@ -119,21 +127,19 @@
                                                                     </mat-form-field>
                                                                 </div>
                                                                 <div class="col-6">
-                                                                    <mat-form-field appearance="outline">
-                                                                        <mat-label>Roll Number</mat-label>
-                                                                        <input matInput type="number"
-                                                                            formControlName="rollNumber">
-                                                                        <mat-hint
-                                                                            *ngIf="!examResultForm.get('rollNumber')?.valid && examResultForm.get('rollNumber')?.touched"
-                                                                            class="form-text text-danger">Roll number is
-                                                                            required</mat-hint>
-                                                                    </mat-form-field>
+                                                                    <ng-container *ngIf="selectedRollNumber">
+                                                                        <mat-form-field appearance="outline">
+                                                                            <mat-label>Roll Number </mat-label>
+                                                                            <input [value]="selectedRollNumber" matInput
+                                                                                readonly>
+                                                                        </mat-form-field>
+                                                                    </ng-container>
                                                                 </div>
                                                                 <ng-container *ngIf="theorySubjects.length>0">
                                                                     <h3>Theory Marks</h3>
                                                                     <ng-container formGroupName="type">
                                                                         <ng-container formArrayName="theoryMarks">
-                                                                            <div class="col-2"
+                                                                            <div class="col-4 col-lg-2"
                                                                                 *ngFor="let subjects of theorySubjects; let i = index">
                                                                                 <div [formGroupName]="i">
                                                                                     <mat-form-field
@@ -153,7 +159,7 @@
                                                                     <h3>Practical Marks</h3>
                                                                     <ng-container formGroupName="type">
                                                                         <ng-container formArrayName="practicalMarks">
-                                                                            <div class="col-2"
+                                                                            <div class="col-4 col-lg-2"
                                                                                 *ngFor="let subjects of practicalSubjects; let i = index">
                                                                                 <div [formGroupName]="i">
                                                                                     <mat-form-field
@@ -173,7 +179,7 @@
                                                                     <h3>Perodic Test Marks</h3>
                                                                     <ng-container formGroupName="type">
                                                                         <ng-container formArrayName="periodicTestMarks">
-                                                                            <div class="col-2"
+                                                                            <div class="col-4 col-lg-2"
                                                                                 *ngFor="let subjects of periodicTestSubjects; let i = index">
                                                                                 <div [formGroupName]="i">
                                                                                     <mat-form-field
@@ -192,7 +198,7 @@
                                                                     <h3>Note Book Marks</h3>
                                                                     <ng-container formGroupName="type">
                                                                         <ng-container formArrayName="noteBookMarks">
-                                                                            <div class="col-2"
+                                                                            <div class="col-4 col-lg-2"
                                                                                 *ngFor="let subjects of noteBookSubjects; let i = index">
                                                                                 <div [formGroupName]="i">
                                                                                     <mat-form-field
@@ -213,7 +219,7 @@
                                                                     <ng-container formGroupName="type">
                                                                         <ng-container
                                                                             formArrayName="subjectEnrichmentMarks">
-                                                                            <div class="col-2"
+                                                                            <div class="col-4 col-lg-2"
                                                                                 *ngFor="let subjects of subjectEnrichmentSubjects; let i = index">
                                                                                 <div [formGroupName]="i">
                                                                                     <mat-form-field
@@ -229,21 +235,25 @@
                                                                     </ng-container>
                                                                 </ng-container>
 
-
-
                                                                 <ng-container *ngIf="coScholastic.length>0">
                                                                     <h3>Co-Scholastic Activity & Element</h3>
                                                                     <ng-container formGroupName="type">
                                                                         <ng-container formArrayName="coScholastic">
-                                                                            <div class="col-3"
+                                                                            <div class="col-6 col-lg-3"
                                                                                 *ngFor="let coScholastic of coScholastic; let i = index">
                                                                                 <div [formGroupName]="i">
                                                                                     <mat-form-field
                                                                                         appearance="outline">
                                                                                         <mat-label>{{coScholastic |
                                                                                             titlecase}}</mat-label>
-                                                                                        <input matInput type="text"
+                                                                                        <mat-select matInput type="text"
                                                                                             [formControlName]="coScholastic">
+                                                                                            <div
+                                                                                                *ngFor="let grade of coScholasticGrades">
+                                                                                                <mat-option
+                                                                                                    value="{{grade}}">{{grade}}</mat-option>
+                                                                                            </div>
+                                                                                        </mat-select>
                                                                                     </mat-form-field>
                                                                                 </div>
                                                                             </div>
@@ -256,18 +266,10 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="submit-button"
-                                                    [disabled]="!examResultForm.valid || !theorySubjects"
+                                                <button class="submit-button" [disabled]="!examResultForm.valid"
                                                     mat-raised-button type="submit">Submit</button>
                                             </div>
                                         </form>
-                                        <div *ngIf="deleteMode">
-                                            <h4>To delete examResult detail, click ok to confirm.</h4>
-                                            <div class="modal-footer">
-                                                <button class="delete-button" mat-raised-button type="button"
-                                                    (click)="examResultDelete(deleteById)">Ok</button>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

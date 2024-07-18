@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators, FormArray} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { read, utils, writeFile } from 'xlsx';
 import { ExamResultService } from 'src/app/services/exam-result.service';
@@ -45,11 +45,11 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
   noteBookSubjects: any[] = [];
   subjectEnrichmentSubjects: any[] = [];
   coScholastic: any[] = [];
-  theoryMaxMarks:any;
-  practicalMaxMarks:any;
-  periodicTestMaxMarks:any;
-  noteBookMaxMarks:any;
-  subjectEnrichmentMaxMarks:any;
+  theoryMaxMarks: any;
+  practicalMaxMarks: any;
+  periodicTestMaxMarks: any;
+  noteBookMaxMarks: any;
+  subjectEnrichmentMaxMarks: any;
 
 
 
@@ -58,19 +58,21 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
   existRollnumber: number[] = [];
   bulkResult: any[] = [];
   selectedExam: any = '';
+  selectedRollNumber !: number;
   stream: any;
   notApplicable: String = "stream";
   examType: any[] = [];
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
+  coScholasticGrades:any[]=['A','B','C'];
   loader: Boolean = false;
   adminId!: string;
-  constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private printPdfService: PrintPdfService, private examResultService: ExamResultService, private classService: ClassService, private examResultStructureService: ExamResultStructureService,private studentService: StudentService) {
+  constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private printPdfService: PrintPdfService, private examResultService: ExamResultService, private classService: ClassService, private examResultStructureService: ExamResultStructureService, private studentService: StudentService) {
     this.examResultForm = this.fb.group({
       adminId: [''],
-      rollNumber: ['', Validators.required],
-      examType: [''],
+      rollNumber: [''],
+      examType: ['', Validators.required],
       stream: [''],
-      class:[''],
+      class: [''],
       createdBy: [''],
       resultDetail: [''],
       type: this.fb.group({
@@ -85,7 +87,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
   }
 
 
-  
+
 
   ngOnInit(): void {
     let getAdmin = this.adminAuthService.getLoggedInAdminInfo();
@@ -94,7 +96,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     this.stream = this.activatedRoute.snapshot.paramMap.get('stream');
     if (this.stream && this.cls) {
       let params = {
-        adminId:this.adminId,
+        adminId: this.adminId,
         cls: this.cls,
         stream: this.stream,
       }
@@ -103,11 +105,14 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     }
   }
 
-  addExamResultModel() {
+  addExamResultModel(rollnumber: number) {
     this.showModal = true;
     this.deleteMode = false;
     this.updateMode = false;
     this.examResultForm.reset();
+    if (rollnumber !== 0) {
+      this.selectedRollNumber = rollnumber;
+    }
 
   }
   deleteExamResultModel(id: String) {
@@ -130,7 +135,6 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     controlFour.clear();
     controlFive.clear();
     controlSix.clear();
-    this.examResultForm.reset();
   }
   falseAllValue() {
     this.falseFormValue();
@@ -139,6 +143,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     this.noteBookSubjects = [];
     this.subjectEnrichmentSubjects = [];
     this.theorySubjects = [];
+    this.coScholastic = [];
   }
 
   closeModal() {
@@ -149,6 +154,15 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     this.selectedExam = '';
     this.examResultForm.reset();
     this.showModal = false;
+    if (this.stream && this.cls) {
+      let params = {
+        adminId: this.adminId,
+        cls: this.cls,
+        stream: this.stream,
+      }
+      this.getStudentExamResultByClassStream(params);
+      this.getSingleClassResultStrucByStream(params);
+    }
   }
 
   successDone() {
@@ -195,21 +209,20 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
         this.mappedResults = mapExamResultsToStudents(this.studentInfo);
         console.log(this.mappedResults)
       }
-    },err=>{
+    }, err => {
       console.log("error")
     })
     setTimeout(() => {
       this.loader = false;
     }, 1000);
   }
-  
+
   selectExam(selectedExam: string) {
     if (this.theorySubjects || this.practicalSubjects || this.periodicTestSubjects || this.noteBookSubjects || this.subjectEnrichmentSubjects) {
       this.falseAllValue();
     }
     this.selectedExam = selectedExam;
     const examFilteredData = this.marksheetTemplateStructureInfo.marksheetTemplateStructure.examStructure[selectedExam];
-    console.log()
     let subjects = this.marksheetTemplateStructureInfo.classSubjectList.subject;
     this.practicalSubjects = [];
     this.periodicTestSubjects = [];
@@ -287,7 +300,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
       gradeMaxMarks: examFilteredData.gradeMaxMarks,
       gradeMinMarks: examFilteredData.gradeMinMarks
     };
-    
+
 
   }
 
@@ -303,12 +316,12 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     })
   }
 
-  
+
   patchTheory() {
     const controlOne = <FormArray>this.examResultForm.get('type.theoryMarks');
     this.theorySubjects.forEach((x: any) => {
       controlOne.push(this.patchTheoryValues(x));
-      this.examResultForm.reset();
+      // this.examResultForm.reset();
     })
   }
 
@@ -316,35 +329,35 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     const controlOne = <FormArray>this.examResultForm.get('type.practicalMarks');
     this.practicalSubjects.forEach((x: any) => {
       controlOne.push(this.patchPracticalValues(x))
-      this.examResultForm.reset();
+      // this.examResultForm.reset();
     })
   }
   patchPeriodicTest() {
     const controlOne = <FormArray>this.examResultForm.get('type.periodicTestMarks');
     this.periodicTestSubjects.forEach((x: any) => {
       controlOne.push(this.patchPeriodicTestValues(x))
-      this.examResultForm.reset();
+      // this.examResultForm.reset();
     })
   }
   patchNoteBook() {
     const controlOne = <FormArray>this.examResultForm.get('type.noteBookMarks');
     this.noteBookSubjects.forEach((x: any) => {
       controlOne.push(this.patchNoteBookValues(x))
-      this.examResultForm.reset();
+      // this.examResultForm.reset();
     })
   }
   patchSubjectEnrichment() {
     const controlOne = <FormArray>this.examResultForm.get('type.subjectEnrichmentMarks');
     this.subjectEnrichmentSubjects.forEach((x: any) => {
       controlOne.push(this.patchSubjectEnrichmentValues(x))
-      this.examResultForm.reset();
+      // this.examResultForm.reset();
     })
   }
   patchCoScholastic() {
     const controlOne = <FormArray>this.examResultForm.get('type.coScholastic');
     this.coScholastic.forEach((x: any) => {
       controlOne.push(this.patchCoScholasticValues(x))
-      this.examResultForm.reset();
+      // this.examResultForm.reset();
     })
   }
 
@@ -352,33 +365,33 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
   patchTheoryValues(theoryMarks: any) {
     console.log(this.theoryMaxMarks)
     return this.fb.group({
-      [theoryMarks]: ['',[Validators.required,Validators.max(this.theoryMaxMarks), Validators.pattern('^[0-9]+$')]],
+      [theoryMarks]: ['', [Validators.required, Validators.max(this.theoryMaxMarks), Validators.pattern('^[0-9]+$')]],
     })
   }
 
   patchPracticalValues(practicalMarks: any) {
     return this.fb.group({
-      [practicalMarks]: ['',[Validators.required,Validators.max(this.practicalMaxMarks), Validators.pattern('^[0-9]+$')]],
+      [practicalMarks]: ['', [Validators.required, Validators.max(this.practicalMaxMarks), Validators.pattern('^[0-9]+$')]],
     })
   }
   patchPeriodicTestValues(periodicTestMarks: any) {
     return this.fb.group({
-      [periodicTestMarks]: ['',[Validators.required,Validators.max(periodicTestMarks), Validators.pattern('^[0-9]+$')]],
+      [periodicTestMarks]: ['', [Validators.required, Validators.max(periodicTestMarks), Validators.pattern('^[0-9]+$')]],
     })
   }
   patchNoteBookValues(noteBookMarks: any) {
     return this.fb.group({
-      [noteBookMarks]: ['',[Validators.required,Validators.max(this.noteBookMaxMarks), Validators.pattern('^[0-9]+$')]],
+      [noteBookMarks]: ['', [Validators.required, Validators.max(this.noteBookMaxMarks), Validators.pattern('^[0-9]+$')]],
     })
   }
   patchSubjectEnrichmentValues(subjectEnrichmentMarks: any) {
     return this.fb.group({
-      [subjectEnrichmentMarks]: ['',[Validators.required,Validators.max(this.subjectEnrichmentMaxMarks), Validators.pattern('^[0-9]+$')]],
+      [subjectEnrichmentMarks]: ['', [Validators.required, Validators.max(this.subjectEnrichmentMaxMarks), Validators.pattern('^[0-9]+$')]],
     })
   }
   patchCoScholasticValues(coScholastic: any) {
     return this.fb.group({
-      [coScholastic]: [coScholastic],
+      [coScholastic]: ['', [Validators.required]],
     })
   }
 
@@ -509,6 +522,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     if (this.examResultForm.valid) {
       this.examResultForm.value.resultDetail = examResultInfo;
       this.examResultForm.value.adminId = this.adminId;
+      this.examResultForm.value.rollNumber = this.selectedRollNumber;
       if (this.updateMode) {
         this.examResultService.updateExamResult(this.examResultForm.value).subscribe((res: any) => {
           if (res) {
@@ -524,7 +538,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
           delete this.examResultForm.value.type.practicalMarks;
         }
         this.examResultForm.value.createdBy = "Admin";
-        this.examResultForm.value.examType = this.selectedExam;
+        // this.examResultForm.value.examType = this.selectedExam;
         this.examResultForm.value.stream = this.stream;
         this.examResultForm.value.class = this.cls;
         this.examResultService.addExamResult(this.examResultForm.value).subscribe((res: any) => {
@@ -538,34 +552,5 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
         })
       }
     }
-  }
-
-  examResultDelete(id: String) {
-    this.examResultService.deleteExamResult(id).subscribe((res: any) => {
-      if (res) {
-        this.successDone();
-        this.successMsg = res;
-        this.deleteById = '';
-      }
-    })
-  }
-
-  addBulkExamResult() {
-    let resultData = {
-      examType: this.selectedExam,
-      stream: this.stream,
-      createdBy: "Admin",
-      bulkResult: this.bulkResult
-    }
-
-    this.examResultService.addBulkExamResult(resultData).subscribe((res: any) => {
-      if (res) {
-        this.successDone();
-        this.successMsg = res;
-      }
-    }, err => {
-      this.errorCheck = true;
-      this.errorMsg = err.error;
-    })
   }
 }
