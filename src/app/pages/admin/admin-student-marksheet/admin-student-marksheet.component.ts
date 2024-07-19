@@ -255,7 +255,7 @@ export class AdminStudentMarksheetComponent implements OnInit {
         };
 
         this.mappedResults = mapExamResultsToStudents(this.examResultInfo, this.studentInfo);
-        console.log(this.mappedResults)
+        // console.log(this.mappedResults)
       }
     },err=>{
       console.log("error")

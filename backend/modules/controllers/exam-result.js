@@ -96,10 +96,10 @@ let GetAllStudentResultByClassStream = async (req, res, next) => {
             return res.status(404).json({ errorMsg: 'This class any student not found !' });
         }
 
-        // const examResult = await ExamResultModel.find({ adminId: adminId, class: className, stream });
-        // if (examResult.length <= 0) {
-        //     return res.status(404).json({ errorMsg: 'This class exam result not found !' });
-        // }
+        let examResult = await ExamResultModel.find({ adminId: adminId, class: className, stream:stream });
+        if (examResult.length <= 0) {
+            examResult = 0;
+        }
         let marksheetTemplate = await MarksheetTemplateModel.findOne({ adminId: adminId, class: className, stream: stream });
         if (!marksheetTemplate) {
             if (stream === "N/A") {
@@ -115,7 +115,7 @@ let GetAllStudentResultByClassStream = async (req, res, next) => {
             }
             return res.status(404).json({errorMsg:`This class ${streamMsg} marksheet template not found !`});
         }
-        return res.status(200).json({ studentInfo: student, marksheetTemplateStructure: marksheetTemplateStructure,isDate:isDate });
+        return res.status(200).json({ studentInfo: student,examResultInfo:examResult, marksheetTemplateStructure: marksheetTemplateStructure,isDate:isDate });
     } catch (error) {
         return res.status(500).json({ errorMsg: 'Internal Server Error !' });
     }

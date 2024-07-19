@@ -63,7 +63,7 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
   notApplicable: String = "stream";
   examType: any[] = [];
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
-  coScholasticGrades:any[]=['A','B','C'];
+  coScholasticGrades: any[] = ['A', 'B', 'C'];
   loader: Boolean = false;
   adminId!: string;
   constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private printPdfService: PrintPdfService, private examResultService: ExamResultService, private classService: ClassService, private examResultStructureService: ExamResultStructureService, private studentService: StudentService) {
@@ -169,7 +169,15 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     setTimeout(() => {
       this.closeModal();
       this.successMsg = '';
-      this.getStudentExamResultByClassStream(this.cls);
+      if (this.stream && this.cls) {
+        let params = {
+          adminId: this.adminId,
+          cls: this.cls,
+          stream: this.stream,
+        }
+        this.getStudentExamResultByClassStream(params);
+        this.getSingleClassResultStrucByStream(params);
+      }
     }, 1000)
   }
 
@@ -182,13 +190,22 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
     }
     this.examResultService.getAllStudentExamResultByClassStream(param).subscribe((res: any) => {
       if (res) {
-        // this.examResultInfo = res.examResultInfo;
+        this.examResultInfo = res.examResultInfo;
         this.studentInfo = res.studentInfo;
+        // console.log(`examResultInfo:`, this.examResultInfo)
+        console.log(`studentInfo:`, this.studentInfo)
         let isDate = res.isDate;
         let marksheetTemplateStructure = res.marksheetTemplateStructure;
-        console.log(marksheetTemplateStructure)
+        let examType = Object.keys(marksheetTemplateStructure.examStructure);
         const mapExamResultsToStudents = (studentInfo: any) => {
           return studentInfo.map((student: any) => {
+
+            let exams: any = {};
+            let resultDetail = this.examResultInfo.find(info => info.studentId === student._id)?.resultDetail || {};
+
+            examType.forEach((exam: any) => {
+              exams[exam] = resultDetail[exam] ? "present" : "empty";
+            });
             return {
               session: student.session,
               adminId: student.adminId,
@@ -197,6 +214,8 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
               stream: student.stream,
               dob: student.dob,
               marksheetTemplateStructure: marksheetTemplateStructure,
+              examType: examType,
+              examTypeResultExist: examType.map((exam: any) => exams[exam]),
               name: student.name,
               fatherName: student.fatherName,
               motherName: student.motherName,
@@ -208,10 +227,11 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
         };
 
         this.mappedResults = mapExamResultsToStudents(this.studentInfo);
-        console.log(this.mappedResults)
+        console.log(`mappedResults:`, this.mappedResults)
       }
     }, err => {
       console.log("error")
+      console.log(err.error)
     })
     setTimeout(() => {
       this.loader = false;
