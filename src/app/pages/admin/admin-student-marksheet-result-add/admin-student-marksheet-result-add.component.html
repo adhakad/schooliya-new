@@ -36,7 +36,6 @@
                                         <th>Roll Number</th>
                                         <th>Stream</th>
                                         <th>Result Entry</th>
-                                        <th>Created By</th>
                                         <th>Result</th>
                                     </tr>
                                 </thead>
@@ -80,16 +79,11 @@
                                                         | titlecase}}</button>
                                                 </ng-container>
                                             </ng-container>
-                                            <!-- <button style="background-color: #339f5e8b;height: 38px;margin: 5px;padding:0 !important;" class="submit-button" mat-raised-button>Yearly</button> -->
-                                        </td>
-                                        <td>
-                                            <p class="mb-0">{{result.createdBy}}</p>
                                         </td>
                                         <td>
                                             <button class="submit-button" mat-raised-button
                                                 (click)="addExamResultModel(result.rollNumber)"><mat-icon
-                                                    style="color:#fff;font-size: 20px;">add</mat-icon>Add
-                                                Result</button>
+                                                    style="color:#fff;font-size: 20px;">add</mat-icon>Add</button>
                                         </td>
                                     </tr>
                                 </tbody>

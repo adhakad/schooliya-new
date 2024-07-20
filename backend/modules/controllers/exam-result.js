@@ -91,12 +91,12 @@ let GetAllStudentResultByClassStream = async (req, res, next) => {
     }
     let streamMsg = `${stream} stream`;
     try {
-        const student = await StudentModel.find({ adminId: adminId, class: className, stream:stream }, 'adminId session admissionNo name dob rollNumber class fatherName motherName stream');
+        const student = await StudentModel.find({ adminId: adminId, class: className, stream: stream }, 'adminId session admissionNo name dob rollNumber class fatherName motherName stream');
         if (student.length <= 0) {
             return res.status(404).json({ errorMsg: 'This class any student not found !' });
         }
 
-        let examResult = await ExamResultModel.find({ adminId: adminId, class: className, stream:stream });
+        let examResult = await ExamResultModel.find({ adminId: adminId, class: className, stream: stream });
         if (examResult.length <= 0) {
             examResult = 0;
         }
@@ -105,7 +105,7 @@ let GetAllStudentResultByClassStream = async (req, res, next) => {
             if (stream === "N/A") {
                 streamMsg = ``;
             }
-            return res.status(404).json({errorMsg:`This class ${streamMsg} marksheet template not found !`});
+            return res.status(404).json({ errorMsg: `This class ${streamMsg} marksheet template not found !` });
         }
         let templateName = marksheetTemplate.templateName;
         let marksheetTemplateStructure = await MarksheetTemplateStructureModel.findOne({ templateName: templateName });
@@ -113,9 +113,9 @@ let GetAllStudentResultByClassStream = async (req, res, next) => {
             if (stream === "N/A") {
                 streamMsg = ``;
             }
-            return res.status(404).json({errorMsg:`This class ${streamMsg} marksheet template not found !`});
+            return res.status(404).json({ errorMsg: `This class ${streamMsg} marksheet template not found !` });
         }
-        return res.status(200).json({ studentInfo: student,examResultInfo:examResult, marksheetTemplateStructure: marksheetTemplateStructure,isDate:isDate });
+        return res.status(200).json({ studentInfo: student, examResultInfo: examResult, marksheetTemplateStructure: marksheetTemplateStructure, isDate: isDate });
     } catch (error) {
         return res.status(500).json({ errorMsg: 'Internal Server Error !' });
     }
@@ -132,12 +132,12 @@ let GetAllStudentExamResultByClass = async (req, res, next) => {
     }
     let streamMsg = `${stream} stream`;
     try {
-        const student = await StudentModel.find({ adminId: adminId, class: className, stream:stream }, 'adminId session admissionNo name dob rollNumber class fatherName motherName stream');
+        const student = await StudentModel.find({ adminId: adminId, class: className, stream: stream }, 'adminId session admissionNo name dob rollNumber class fatherName motherName stream');
         if (student.length <= 0) {
             return res.status(404).json({ errorMsg: 'This class any student not found !' });
         }
 
-        
+
 
         const examResult = await ExamResultModel.find({ adminId: adminId, class: className, stream });
         if (examResult.length <= 0) {
@@ -148,7 +148,7 @@ let GetAllStudentExamResultByClass = async (req, res, next) => {
             if (stream === "N/A") {
                 streamMsg = ``;
             }
-            return res.status(404).json({errorMsg:`This class ${streamMsg} marksheet template not found !`});
+            return res.status(404).json({ errorMsg: `This class ${streamMsg} marksheet template not found !` });
         }
         let templateName = marksheetTemplate.templateName;
         let marksheetTemplateStructure = await MarksheetTemplateStructureModel.findOne({ templateName: templateName });
@@ -156,9 +156,9 @@ let GetAllStudentExamResultByClass = async (req, res, next) => {
             if (stream === "N/A") {
                 streamMsg = ``;
             }
-            return res.status(404).json({errorMsg:`This class ${streamMsg} marksheet template not found !`});
+            return res.status(404).json({ errorMsg: `This class ${streamMsg} marksheet template not found !` });
         }
-        return res.status(200).json({ examResultInfo: examResult, studentInfo: student, marksheetTemplateStructure: marksheetTemplateStructure,isDate:isDate });
+        return res.status(200).json({ examResultInfo: examResult, studentInfo: student, marksheetTemplateStructure: marksheetTemplateStructure, isDate: isDate });
     } catch (error) {
         return res.status(500).json({ errorMsg: 'Internal Server Error !' });
     }
@@ -331,12 +331,27 @@ let CreateExamResult = async (req, res, next) => {
 //         return res.status(500).json('Internal Server Error !');
 //     }
 // }
-
+let DeleteMarksheetResult = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const result = await ExamResultModel.findOne({ _id:id });
+        if (!result) {
+            return res.status(200).json('Marksheet result not found.');
+        }
+        const deleteResult = await ExamResultModel.findByIdAndRemove(id);
+        if (deleteResult) {
+            return res.status(200).json('Marksheet result delete successfully.');
+        }
+    } catch (error) {
+        return res.status(500).json('Internal Server Error !');;
+    }
+}
 module.exports = {
     GetSingleStudentExamResult,
     GetSingleStudentExamResultById,
     GetAllStudentExamResultByClass,
     GetAllStudentResultByClassStream,
     CreateExamResult,
+    DeleteMarksheetResult
     // CreateBulkExamResult,
 }

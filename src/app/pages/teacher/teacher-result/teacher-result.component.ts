@@ -299,15 +299,15 @@ export class TeacherResultComponent implements OnInit {
     }
   }
 
-  examResultDelete(id: String) {
-    this.examResultService.deleteExamResult(id).subscribe((res: any) => {
-      if (res) {
-        this.successDone();
-        this.successMsg = res;
-        this.deleteById = '';
-      }
-    })
-  }
+  // examResultDelete(id: String) {
+  //   this.examResultService.deleteExamResult(id).subscribe((res: any) => {
+  //     if (res) {
+  //       this.successDone();
+  //       this.successMsg = res;
+  //       this.deleteById = '';
+  //     }
+  //   })
+  // }
 
 
   handleImport($event: any) {

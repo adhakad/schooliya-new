@@ -34,7 +34,10 @@ export class ExamResultService {
   resultsByClass(cls: any) {
     return this.http.get(`${this.url}/student-results/${cls}`);
   }
-  deleteExamResult(id:any){
+  // deleteExamResult(id:any){
+  //   return this.http.delete(`${this.url}/${id}`);
+  // }
+  deleteMarksheetResult(id:any){
     return this.http.delete(`${this.url}/${id}`);
   }
   
