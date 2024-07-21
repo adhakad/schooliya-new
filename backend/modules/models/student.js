@@ -2,15 +2,26 @@
 const mongoose = require('mongoose');
 
 const StudentModel = mongoose.model('student', {
+    session: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    medium: {
+        type: String,
+        required: true,
+        trim: true
+    },
     adminId: {
         type: String,
         required: true,
         trim: true
     },
-    session: {
-        type: String,
+    admissionNo: {
+        type: Number,
         required: true,
         trim: true,
+        unique: true,
     },
     name: {
         type: String,
@@ -22,16 +33,15 @@ const StudentModel = mongoose.model('student', {
         required: true,
         trim: true
     },
+    stream: {
+        type: String,
+        required: true,
+        trim: true
+    },
     admissionClass: {
         type: Number,
         required: true,
         trim: true
-    },
-    admissionNo: {
-        type: Number,
-        required: true,
-        trim: true,
-        unique: true,
     },
     rollNumber: {
         type: Number,
@@ -40,11 +50,6 @@ const StudentModel = mongoose.model('student', {
         unique: true,
     },
     admissionType: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    stream: {
         type: String,
         required: true,
         trim: true
@@ -79,19 +84,30 @@ const StudentModel = mongoose.model('student', {
         required: true,
         trim: true
     },
+    udiseNumber: {
+        type: Number,
+        trim: true,
+
+    },
     aadharNumber: {
         type: Number,
         trim: true,
-        required: true,
         unique: true,
 
     },
     samagraId: {
         type: Number,
         trim: true,
-        required: true,
         unique: true,
 
+    },
+    bankAccountNo: {
+        type: Number,
+        trim: true,
+    },
+    bankIfscCode: {
+        type: String,
+        trim: true,
     },
     contact: {
         type: Number,
@@ -117,21 +133,6 @@ const StudentModel = mongoose.model('student', {
         required: true,
         trim: true
     },
-    fatherOccupation: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    fatherContact: {
-        type: Number,
-        required: true,
-        trim: true
-    },
-    fatherAnnualIncome: {
-        type: String,
-        required: true,
-        trim: true
-    },
     motherName: {
         type: String,
         required: true,
@@ -142,17 +143,17 @@ const StudentModel = mongoose.model('student', {
         required: true,
         trim: true
     },
-    motherOccupation: {
+    parentsOccupation: {
         type: String,
         required: true,
         trim: true
     },
-    motherContact: {
+    parentsContact: {
         type: Number,
         required: true,
         trim: true
     },
-    motherAnnualIncome: {
+    parentsAnnualIncome: {
         type: String,
         required: true,
         trim: true

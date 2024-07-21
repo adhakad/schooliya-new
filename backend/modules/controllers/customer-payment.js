@@ -19,6 +19,7 @@ let CreatePayment = async (req, res) => {
     amount: amount * 100,
     currency: currency,
   };
+  console.log(req.body)
   try {
     const order = await razorpay.orders.create(paymentData);
     const payment = new Payment({

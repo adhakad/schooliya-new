@@ -9,6 +9,7 @@ export class PaymentService {
   constructor(private http: HttpClient) {}
 
   createPayment(paymentData: any) {
+    console.log(paymentData)
     return this.http.post(`${this.url}/create`, paymentData);
   }
   validatePayment(paymentData: any) {

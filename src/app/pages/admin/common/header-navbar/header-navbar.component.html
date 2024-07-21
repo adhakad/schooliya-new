@@ -27,15 +27,15 @@
       <mat-icon>dashboard</mat-icon>
       <span>Dashboard</span>
     </button>
-    <button mat-menu-item class="menu-button" [routerLink]="['/admin/setting']" routerLinkActive="active-link">
+    <!-- <button mat-menu-item class="menu-button" [routerLink]="['/admin/setting']" routerLinkActive="active-link">
       <mat-icon>settings</mat-icon>
       <span>Settings</span>
-    </button>
-    <button mat-menu-item class="menu-button" [routerLink]="['/admin/online-admission-forms']"
+    </button> -->
+    <!-- <button mat-menu-item class="menu-button" [routerLink]="['/admin/online-admission-forms']"
       routerLinkActive="active-link">
       <mat-icon>app_registration</mat-icon>
       <span>Online Forms</span>
-    </button>
+    </button> -->
     <button mat-menu-item class="menu-button" [routerLink]="['/admin/admission']" routerLinkActive="active-link">
       <mat-icon>dialpad</mat-icon>
       <span>Admissions</span>
@@ -62,10 +62,10 @@
       <mat-icon>workspace_premium</mat-icon>
       <span>Issued T & C</span>
     </button>
-    <button mat-menu-item class="menu-button" [routerLink]="['/admin/notification']" routerLinkActive="active-link">
+    <!-- <button mat-menu-item class="menu-button" [routerLink]="['/admin/notification']" routerLinkActive="active-link">
       <mat-icon>notification_add</mat-icon>
       <span>Notifications</span>
-    </button>
+    </button> -->
     <button mat-menu-item class="menu-button" [routerLink]="['/admin/teacher']" routerLinkActive="active-link">
       <mat-icon>manage_accounts</mat-icon>
       <span>Teachers</span>
@@ -82,7 +82,7 @@
       <mat-icon>local_library</mat-icon>
       <span>Class With Subjects</span>
     </button>
-    <button mat-menu-item class="menu-button" [routerLink]="['/admin/banner']" routerLinkActive="active-link">
+    <!-- <button mat-menu-item class="menu-button" [routerLink]="['/admin/banner']" routerLinkActive="active-link">
       <mat-icon>wallpaper</mat-icon>
       <span>Banners</span>
     </button>
@@ -98,7 +98,7 @@
       <mat-icon>desktop_mac
       </mat-icon>
       <span>Ads</span>
-    </button>
+    </button> -->
     <button mat-menu-item class="menu-button" *ngIf="isAdminAuthenticated" (click)="onLogout('admin')">
       <mat-icon>logout</mat-icon>
       <span>Logout</span>

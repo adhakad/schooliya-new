@@ -148,7 +148,7 @@ let CreateStudent = async (req, res, next) => {
     let receiptNo = Math.floor(Math.random() * 899999 + 100000);
     const currentDateIst = DateTime.now().setZone('Asia/Kolkata');
     const istDateTimeString = currentDateIst.toFormat('dd-MM-yyyy hh:mm:ss a');
-    let { adminId, name, rollNumber, admissionClass, aadharNumber, samagraId, session, admissionFees, admissionFeesPaymentType, admissionType, stream, admissionNo, dob, doa, gender, category, religion, nationality, contact, address, lastSchool, fatherName, fatherQualification, fatherOccupation, fatherContact, fatherAnnualIncome, motherName, motherQualification, motherOccupation, motherContact, motherAnnualIncome, discountAmountInFees, createdBy } = req.body;
+    let { session,medium,adminId, name, rollNumber, admissionClass, aadharNumber,udiseNumber, samagraId, admissionFees, admissionFeesPaymentType, admissionType, stream, admissionNo, dob, doa, gender, category, religion, nationality,bankAccountNo,bankIfscCode, contact, address, lastSchool, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification, discountAmountInFees, createdBy } = req.body;
     let className = req.body.class;
     if (stream === "stream") {
         stream = "N/A";
@@ -167,7 +167,7 @@ let CreateStudent = async (req, res, next) => {
         dob = DateTime.fromISO(dob).toFormat("dd-MM-yyyy");
     }
     const studentData = {
-        adminId, name, rollNumber, aadharNumber, samagraId, session, admissionType, stream, admissionNo, class: className, admissionClass, dob: dob, doa: doa, gender, category, religion, nationality, contact, address, lastSchool, fatherName, fatherQualification, fatherOccupation, fatherContact, fatherAnnualIncome, motherName, motherQualification, motherOccupation, motherContact, motherAnnualIncome, discountAmountInFees, createdBy
+        session,medium, adminId, name, rollNumber, aadharNumber,udiseNumber, samagraId, admissionType, stream, admissionNo, class: className, admissionClass, dob: dob, doa: doa, gender, category, religion, nationality,bankAccountNo,bankIfscCode, contact, address, lastSchool, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification, discountAmountInFees, createdBy
     }
     try {
         const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className });
@@ -221,6 +221,7 @@ let CreateStudent = async (req, res, next) => {
             studentFeesData.admissionFeesReceiptNo = receiptNo;
             studentFeesData.admissionFeesPaymentDate = istDateTimeString;
         }
+        console.log(studentData)
         let createStudent = await StudentModel.create(studentData);
         if (createStudent) {
             let studentId = createStudent._id;
@@ -313,12 +314,14 @@ let CreateBulkStudentRecord = async (req, res, next) => {
     let studentData = [];
     for (const student of bulkStudentRecord) {
         studentData.push({
+            session: student.session,
+            medium:student.medium,
             adminId: adminId,
             name: student.name,
             rollNumber: student.rollNumber,
+            udiseNumber:student.udiseNumber,
             aadharNumber: student.aadharNumber,
             samagraId: student.samagraId,
-            session: student.session,
             admissionType: student.admissionType,
             stream: student.stream,
             admissionNo: student.admissionNo,
@@ -330,18 +333,17 @@ let CreateBulkStudentRecord = async (req, res, next) => {
             category: student.category,
             religion: student.religion,
             nationality: student.nationality,
+            bankAccountNo:student.bankAccountNo,
+            bankIfscCode:student.bankIfscCode,
             contact: student.contact,
             address: student.address,
             fatherName: student.fatherName,
             fatherQualification: student.fatherQualification,
-            fatherOccupation: student.fatherOccupation,
-            fatherContact: student.fatherContact,
-            fatherAnnualIncome: student.fatherAnnualIncome,
             motherName: student.motherName,
             motherQualification: student.motherQualification,
-            motherOccupation: student.motherOccupation,
-            motherContact: student.motherContact,
-            motherAnnualIncome: student.motherAnnualIncome,
+            parentsOccupation: student.parentsOccupation,
+            parentsContact: student.parentsContact,
+            parentsAnnualIncome: student.parentsAnnualIncome,
             createdBy: createdBy,
         });
     }

@@ -53,6 +53,7 @@ export class StudentComponent implements OnInit {
   religions: any;
   qualifications: any;
   occupations: any;
+  mediums:any;
   stream: string = '';
   notApplicable: String = "stream";
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
@@ -75,8 +76,9 @@ export class StudentComponent implements OnInit {
   constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private printPdfService: PrintPdfService, private schoolService: SchoolService, public ete: ExcelService,private adminAuthService:AdminAuthService, private issuedTransferCertificate: IssuedTransferCertificateService, private classService: ClassService, private classSubjectService: ClassSubjectService, private studentService: StudentService) {
     this.studentForm = this.fb.group({
       _id: [''],
-      adminId:[''],
       session: ['', Validators.required],
+      medium:['',Validators.required],
+      adminId:[''],
       admissionNo: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       admissionType: ['', Validators.required],
       class: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
@@ -88,6 +90,9 @@ export class StudentComponent implements OnInit {
       doa: ['', Validators.required],
       aadharNumber: ['', [Validators.required, Validators.pattern('^\\d{12}$')]],
       samagraId: ['', [Validators.required, Validators.pattern('^\\d{9}$')]],
+      udiseNumber:['', [ Validators.pattern('^\\d{11}$')]],
+      bankAccountNo:['', [ Validators.minLength(9),Validators.maxLength(18), Validators.pattern('^[0-9]+$')]],
+      bankIfscCode:['', [Validators.minLength(11),Validators.maxLength(11)]],
       gender: ['', Validators.required],
       category: ['', Validators.required],
       religion: ['', Validators.required],
@@ -97,15 +102,12 @@ export class StudentComponent implements OnInit {
       lastSchool: ['', [Validators.pattern('^[a-zA-Z\\s]+$'), Validators.maxLength(50)]],
       fatherName: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
       fatherQualification: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
-      fatherOccupation: ['', Validators.required],
-      fatherContact: ['', [Validators.required, Validators.pattern('^[6789]\\d{9}$')]],
-      fatherAnnualIncome: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       motherName: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
       motherQualification: ['', Validators.required],
-      motherOccupation: ['', Validators.required],
-      motherContact: ['', [Validators.required, Validators.pattern('^[6789]\\d{9}$')]],
-      motherAnnualIncome: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      discountAmountInFees:[''],
+      parentsOccupation: ['', Validators.required],
+      parentsContact: ['', [Validators.required, Validators.pattern('^[6789]\\d{9}$')]],
+      parentsAnnualIncome: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      discountAmountInFees:['',[Validators.required, Validators.pattern(/^\d+$/)]],
       createdBy: [''],
     })
 
@@ -364,7 +366,6 @@ export class StudentComponent implements OnInit {
   studentAddUpdate() {
     if (this.studentForm.valid) {
       this.studentForm.value.adminId = this.adminId;
-      this.studentForm.value.discountAmountInFees = 500;
       if (this.updateMode) {
         this.studentService.updateStudent(this.studentForm.value).subscribe((res: any) => {
           if (res) {
@@ -530,6 +531,8 @@ export class StudentComponent implements OnInit {
       className = `UKG`;
     }
     const header: string[] = [
+      'session',
+      'medium',
       'admissionNo',
       'name',
       'fatherName',
@@ -541,7 +544,6 @@ export class StudentComponent implements OnInit {
       'samagraId',
       'dob',
       'doa',
-      'session',
       'admissionType',
       'admissionClass',
       'gender',
@@ -550,14 +552,14 @@ export class StudentComponent implements OnInit {
       'nationality',
       'contact',
       'address',
+      'udiseNumber',
+      'bankAccountNo',
+      'bankIfscCode',
       'fatherQualification',
-      'fatherOccupation',
-      'fatherContact',
-      'fatherAnnualIncome',
       'motherQualification',
-      'motherOccupation',
-      'motherContact',
-      'motherAnnualIncome',
+      'parentsOccupation',
+      'parentsContact',
+      'parentsAnnualIncome',
     ];
 
     function orderObjectsByHeaders(studentInfoByClass: any, header: any) {
@@ -590,11 +592,12 @@ export class StudentComponent implements OnInit {
   }
 
   allOptions() {
-    this.sessions = [{ year: '2023-24' }, { year: '2024-25' }, { year: '2025-26' }, { year: '2026-27' }, { year: '2027-28' }, { year: '2028-29' }, { year: '2029-30' }]
+    this.sessions = [{ year: '2023-2024' }, { year: '2024-2025' }, { year: '2025-2026' }, { year: '2026-2027' }, { year: '2027-2028' }, { year: '2028-2029' }, { year: '2029-2030' }]
     this.categorys = [{ category: 'General' }, { category: 'OBC' }, { category: 'SC' }, { category: 'ST' }, { category: 'Other' }]
     this.religions = [{ religion: 'Hinduism' }, { religion: 'Buddhism' }, { religion: 'Christanity' }, { religion: 'Jainism' }, { religion: 'Sikhism' }, { religion: 'Muslim' }, { religion: 'Other' }]
     this.qualifications = [{ qualification: 'Doctoral Degree' }, { qualification: 'Masters Degree' }, { qualification: 'Graduate Diploma' }, { qualification: 'Graduate Certificate' }, { qualification: 'Graduate Certificate' }, { qualification: 'Bachelor Degree' }, { qualification: 'Advanced Diploma' }, { qualification: 'Primary School' }, { qualification: 'High School' }, { qualification: 'Higher Secondary School' }, { qualification: 'Illiterate' }, { qualification: 'Other' }]
     this.occupations = [{ occupation: 'Agriculture(Farmer)' }, { occupation: 'Laborer' }, { occupation: 'Self Employed' }, { occupation: 'Private Job' }, { occupation: 'State Govt. Employee' }, { occupation: 'Central Govt. Employee' }, { occupation: 'Military Job' }, { occupation: 'Para-Military Job' }, { occupation: 'PSU Employee' }, { occupation: 'Other' }]
+    this.mediums = [{medium:'Hindi'},{medium:'English'}]
   }
 
   studentClassPromote() {
