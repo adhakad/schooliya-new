@@ -95,6 +95,10 @@ let GetStudentPaginationByClass = async (req, res, next) => {
     let searchText = req.body.filters.searchText;
     let className = req.body.class;
     let adminId = req.body.adminId;
+    let stream = req.body.stream;
+    if (stream == "stream") {
+        stream = "N/A";
+    }
     let searchObj = {};
     if (searchText) {
         searchObj = /^(?:\d*\.\d{1,2}|\d+)$/.test(searchText) ? { $or: [{ class: searchText }, { rollNumber: searchText }, { admissionNo: searchText }] } : { name: new RegExp(`${searchText.toString().trim()}`, 'i') }
@@ -110,11 +114,11 @@ let GetStudentPaginationByClass = async (req, res, next) => {
         }
         let limit = (req.body.limit) ? parseInt(req.body.limit) : 10;
         let page = req.body.page || 1;
-        const studentList = await StudentModel.find({ adminId: adminId, class: className }).find(searchObj).sort({ _id: -1 })
+        const studentList = await StudentModel.find({ adminId: adminId, class: className,stream:stream }).find(searchObj).sort({ _id: -1 })
             .limit(limit * 1)
             .skip((page - 1) * limit)
             .exec();
-        const countStudent = await StudentModel.count({ adminId: adminId, class: className });
+        const countStudent = await StudentModel.count({ adminId: adminId, class: className,stream:stream });
         let studentData = { countStudent: 0 };
         studentData.studentList = studentList;
         studentData.countStudent = countStudent;

@@ -139,15 +139,10 @@ export class StudentComponent implements OnInit {
   ngOnInit(): void {
     let getAdmin = this.adminAuthService.getLoggedInAdminInfo();
     this.adminId = getAdmin?.id;
-    this.className = this.activatedRoute.snapshot.paramMap.get('id');
-    if (this.className) {
-      let load: any = this.getStudents({ page: 1 });
-      if (load) {
-        setTimeout(() => {
-          this.loader = false;
-        }, 1000);
-      }
-    }
+    // this.className = this.activatedRoute.snapshot.paramMap.get('id');
+    // if (this.className) {
+    // }
+    this.loader = false;
     this.getSchool();
     this.getClass();
     this.allOptions();
@@ -174,6 +169,28 @@ export class StudentComponent implements OnInit {
       }
     })
   }
+  chooseClass(cls: any) {
+    this.className = cls;
+    this.cls = cls;
+    this.studentForm.get('class')?.setValue(cls);
+    if(cls<11 && cls!==0 || cls == 200 || cls==201 || cls==202){
+      this.studentForm.get('stream')?.setValue("N/A");
+    }
+  }
+  filterStream(stream: any) {
+    this.stream = stream;
+    if (stream && this.cls) {
+      let params = {
+        adminId:this.adminId,
+        cls: this.cls,
+        stream: stream,
+      }
+      this.getStudents({ page: 1 });
+    }
+  }
+  chooseStream(event: any) {
+    this.stream = event.value;
+  }
   chooseAdmissionType(event: any) {
     if (event) {
       if (event.value == 'New') {
@@ -186,15 +203,6 @@ export class StudentComponent implements OnInit {
         this.studentForm.get('admissionNo')?.setValue(null);
       }
     }
-  }
-  chooseClass(cls: any) {
-    this.cls = cls;
-    if(cls<11 && cls!==0 || cls == 200 || cls==201 || cls==202){
-      this.studentForm.get('stream')?.setValue("N/A");
-    }
-  }
-  chooseStream(event: any) {
-    this.stream = event.value;
   }
 
   date(e: any) {
@@ -343,7 +351,8 @@ export class StudentComponent implements OnInit {
         page: $event.page,
         limit: $event.limit ? $event.limit : this.recordLimit,
         adminId:this.adminId,
-        class: this.className
+        class: this.className,
+        stream:this.stream,
       };
       this.recordLimit = params.limit;
       if (this.filters.searchText) {

@@ -87,74 +87,42 @@ let CreateExamResultStructure = async (req, res, next) => {
 
 // let CreateExamResultStructure = async (req, res, next) => {
 
+//     // TEMPLATE T1 OR T2 SECTION
+
 //     const gradeMinMarks = [
-//         { "A+": 91 }, { "A": 81 }, { "B+": 71 }, { "B": 61 },
-//         { "C+": 51 }, { "C": 41 }, { "D": 33 }, { "F": 0 }
+//         { "A1": 91 }, { "A2": 81 }, { "B1": 71 }, { "B2": 61 },
+//         { "C1": 51 }, { "C2": 41 }, { "D": 33 }, { "F": 0 }
 //     ];
 //     const gradeMaxMarks = [
-//         { "A+": 100 }, { "A": 90 }, { "B+": 80 }, { "B": 70 },
-//         { "C+": 60 }, { "C": 50 }, { "D": 40 }, { "F": 32 }
+//         { "A1": 100 }, { "A2": 90 }, { "B1": 80 }, { "B2": 70 },
+//         { "C1": 60 }, { "C2": 50 }, { "D": 40 }, { "F": 32 }
 //     ];
-//     const coScholastic = ['work education', 'arts education', 'discipline'];
+//     const coScholastic = ['work education', 'arts education','discipline'];
 //     const templateData = {
-//         templateName: "T6",
+//         templateName: "T1",
 //         examStructure: {
 //             term1: {
-//                 theoryMaxMarks: 100,
-//                 theoryPassMarks: 33,
-//                 practicalMaxMarks: 25,
+//                 theoryMaxMarks: 80,
+//                 theoryPassMarks: 27,
+//                 periodicTestMaxMarks: 10,
+//                 noteBookMaxMarks: 5,
+//                 subjectEnrichmentMaxMarks: 5,
 //                 gradeMinMarks: gradeMinMarks,
 //                 gradeMaxMarks: gradeMaxMarks,
 //                 coScholastic: coScholastic,
 //             },
-
+//             term2: {
+//                 theoryMaxMarks: 80,
+//                 theoryPassMarks: 27,
+//                 periodicTestMaxMarks: 10,
+//                 noteBookMaxMarks: 5,
+//                 subjectEnrichmentMaxMarks: 5,
+//                 gradeMinMarks: gradeMinMarks,
+//                 gradeMaxMarks: gradeMaxMarks,
+//                 coScholastic: coScholastic,
+//             }
 //         }
-//     };
-//     try {
-
-//         let examResultStructure = await MarksheetTemplateStructureModel.create(templateData)
-//         return res.status(200).json('Exam result structure structure add successfully.');
-
-//     } catch (error) {
-//         return res.status(500).json('Internal Server Error !');;
 //     }
-
-//     // TEMPLATE T1 OR T2 SECTION
-
-//     // const gradeMinMarks = [
-//     //     { "A1": 91 }, { "A2": 81 }, { "B1": 71 }, { "B2": 61 },
-//     //     { "C1": 51 }, { "C2": 41 }, { "D": 33 }, { "F": 0 }
-//     // ];
-//     // const gradeMaxMarks = [
-//     //     { "A1": 100 }, { "A2": 90 }, { "B1": 80 }, { "B2": 70 },
-//     //     { "C1": 60 }, { "C2": 50 }, { "D": 40 }, { "F": 32 }
-//     // ];
-//     // const coScholastic = ['work education', 'arts education','discipline'];
-//     // const templateData = {
-//     //     templateName: "T1",
-//     //     examStructure: {
-//     //         term1: {
-//     //             theoryMaxMarks: 80,
-//     //             theoryPassMarks: 27,
-//     //             periodicTestMaxMarks: 10,
-//     //             noteBookMaxMarks: 5,
-//     //             subjectEnrichmentMaxMarks: 5,
-//     //             gradeMinMarks: gradeMinMarks,
-//     //             gradeMaxMarks: gradeMaxMarks,
-//     //             coScholastic: coScholastic,
-//     //         },
-//     //         term2: {
-//     //             theoryMaxMarks: 80,
-//     //             theoryPassMarks: 27,
-//     //             periodicTestMaxMarks: 10,
-//     //             noteBookMaxMarks: 5,
-//     //             subjectEnrichmentMaxMarks: 5,
-//     //             gradeMinMarks: gradeMinMarks,
-//     //             gradeMaxMarks: gradeMaxMarks,
-//     //             coScholastic: coScholastic,
-//     //         }
-//     //     }
-
 
 //     // TEMPLATE T3 OR T4 SECTION
 
@@ -168,7 +136,7 @@ let CreateExamResultStructure = async (req, res, next) => {
 //     // ];
 //     // const coScholastic = ['work education', 'arts education','discipline'];
 //     // const templateData = {
-//     //     templateName: "T3",
+//     //     templateName: "T4",
 //     //     examStructure: {
 //     //         term1: {
 //     //             theoryMaxMarks: 80,
@@ -187,7 +155,7 @@ let CreateExamResultStructure = async (req, res, next) => {
 //     //             coScholastic: coScholastic,
 //     //         }
 //     //     }
-
+//     // }
 
 //     // TEMPLATE T5 SECTION
 
@@ -201,7 +169,7 @@ let CreateExamResultStructure = async (req, res, next) => {
 //     // ];
 //     // const coScholastic = ['work education', 'arts education', 'discipline'];
 //     // const templateData = {
-//     //     templateName: "T6",
+//     //     templateName: "T5",
 //     //     examStructure: {
 //     //         term1: {
 //     //             theoryMaxMarks: 75,
@@ -243,7 +211,14 @@ let CreateExamResultStructure = async (req, res, next) => {
 
 
 
+//     try {
 
+//         let examResultStructure = await MarksheetTemplateStructureModel.create(templateData)
+//         return res.status(200).json('Exam result structure structure add successfully.');
+
+//     } catch (error) {
+//         return res.status(500).json('Internal Server Error !');;
+//     }
 // }
 
 let DeleteResultStructure = async (req, res, next) => {
