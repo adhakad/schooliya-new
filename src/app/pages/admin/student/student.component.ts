@@ -540,6 +540,7 @@ export class StudentComponent implements OnInit {
       'rollNumber',
       'class',
       'stream',
+      'discountAmountInFees',
       'aadharNumber',
       'samagraId',
       'dob',

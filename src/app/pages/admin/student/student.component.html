@@ -171,20 +171,6 @@
                             </div>
                             <div class="col-12 col-lg-6">
                               <mat-form-field appearance="outline">
-                                <mat-label>Last School Optional</mat-label>
-                                <input matInput type="text" formControlName="lastSchool">
-                                <mat-error
-                                  *ngIf="studentForm.get('lastSchool')?.hasError('pattern') && studentForm.get('lastSchool')?.touched">
-                                  Please enter a valid Last School (only letters and spaces are allowed)
-                                </mat-error>
-                                <mat-error
-                                  *ngIf="studentForm.get('lastSchool')?.hasError('maxlength') && studentForm.get('lastSchool')?.touched">
-                                  Maximum length exceeded (maximum 50 characters allowed)
-                                </mat-error>
-                              </mat-form-field>
-                            </div>
-                            <div class="col-12 col-lg-6">
-                              <mat-form-field appearance="outline">
                                 <mat-label>Class Applied for</mat-label>
                                 <mat-select matInput formControlName="class">
                                   <div>
@@ -304,6 +290,20 @@
                                 </mat-error>
                               </mat-form-field>
 
+                            </div>
+                            <div class="col-12 col-lg-6">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Last School Optional</mat-label>
+                                <input matInput type="text" formControlName="lastSchool">
+                                <mat-error
+                                  *ngIf="studentForm.get('lastSchool')?.hasError('pattern') && studentForm.get('lastSchool')?.touched">
+                                  Please enter a valid Last School (only letters and spaces are allowed)
+                                </mat-error>
+                                <mat-error
+                                  *ngIf="studentForm.get('lastSchool')?.hasError('maxlength') && studentForm.get('lastSchool')?.touched">
+                                  Maximum length exceeded (maximum 50 characters allowed)
+                                </mat-error>
+                              </mat-form-field>
                             </div>
                             <div class="col-12 col-lg-6">
                               <mat-form-field appearance="outline">
@@ -866,16 +866,15 @@
                         <div class="row">
                           <ng-container *ngIf="singleStudentInfo">
                             <ng-container>
-                              <h3 style="color: #8d6dff;">Academic Info</h3>
+                              <h3 style="color: #4881dc;">Academic Info</h3>
                             </ng-container>
                             <div class="col-12 col-lg-6">
                               <p>Academic Session - {{singleStudentInfo.session}}</p>
                             </div>
                             <div class="col-12 col-lg-6">
-                              <p>Last School - <span
-                                  *ngIf="singleStudentInfo.lastSchool">{{singleStudentInfo.lastSchool|
-                                  titlecase}}</span><span *ngIf="!singleStudentInfo.lastSchool">N/A</span></p>
+                              <p>Medium - {{singleStudentInfo.medium}}</p>
                             </div>
+                            
                             <div class="col-12 col-lg-6">
                               <p>Admission No. - {{singleStudentInfo.admissionNo}}</p>
                             </div>
@@ -888,8 +887,16 @@
                             <div class="col-12 col-lg-6">
                               <p>Stream - {{singleStudentInfo.stream}}</p>
                             </div>
+                            <div class="col-12 col-lg-6">
+                              <p>Fees Discount - &#8377; {{singleStudentInfo.discountAmountInFees}}</p>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                              <p>Last School - <span
+                                  *ngIf="singleStudentInfo.lastSchool">{{singleStudentInfo.lastSchool|
+                                  titlecase}}</span><span *ngIf="!singleStudentInfo.lastSchool">N/A</span></p>
+                            </div>
                             <ng-container>
-                              <h3 style="color: #8d6dff;">Student Info</h3>
+                              <h3 style="color: #4881dc;">Student Info</h3>
                             </ng-container>
                             <div class="col-12 col-lg-6">
                               <p>Name - {{singleStudentInfo.name | titlecase}}</p>
@@ -921,22 +928,28 @@
                             <div class="col-12 col-lg-6">
                               <p>Address - {{singleStudentInfo.address | titlecase}}</p>
                             </div>
+                            <div class="col-12 col-lg-6">
+                              <p>Bank Account Number - {{singleStudentInfo.bankAccountNo}}</p>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                              <p>Bank IFSC Code - {{singleStudentInfo.bankIfscCode}}</p>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                              <p>UDISE Number - {{singleStudentInfo.udiseNumber}}</p>
+                            </div>
                             <ng-container>
-                              <h3 style="color: #8d6dff;">Parent's Info</h3>
+                              <h3 style="color: #4881dc;">Parent's Info</h3>
                             </ng-container>
                             <div class="col-12 col-lg-6">
                               <p>Father Name - {{singleStudentInfo.fatherName | titlecase}}</p>
                               <p>Father Qualification - {{singleStudentInfo.fatherQualification | titlecase}}</p>
-                              <p>Father Occupation - {{singleStudentInfo.fatherOccupation | titlecase}}</p>
-                              <p>Father Contact - {{singleStudentInfo.fatherContact}}</p>
-                              <p>Father AnnualIncome - {{singleStudentInfo.fatherAnnualIncome}}</p>
+                              <p>Parents Occupation - {{singleStudentInfo.parentsOccupation | titlecase}}</p>
+                              <p>Parents Annual Income - &#8377; {{singleStudentInfo.parentsAnnualIncome}}</p>
                             </div>
                             <div class="col-12 col-lg-6">
                               <p>Mother Name - {{singleStudentInfo.motherName | titlecase}}</p>
                               <p>Mother Qualification - {{singleStudentInfo.motherQualification | titlecase}}</p>
-                              <p>Mother Occupation - {{singleStudentInfo.motherOccupation | titlecase}}</p>
-                              <p>Mother Contact - {{singleStudentInfo.motherContact}}</p>
-                              <p>Mother AnnualIncome - {{singleStudentInfo.motherAnnualIncome}}</p>
+                              <p>Parents Contact - {{singleStudentInfo.parentsContact}}</p>
                             </div>
                           </ng-container>
                         </div>

@@ -221,7 +221,6 @@ let CreateStudent = async (req, res, next) => {
             studentFeesData.admissionFeesReceiptNo = receiptNo;
             studentFeesData.admissionFeesPaymentDate = istDateTimeString;
         }
-        console.log(studentData)
         let createStudent = await StudentModel.create(studentData);
         if (createStudent) {
             let studentId = createStudent._id;
@@ -319,6 +318,7 @@ let CreateBulkStudentRecord = async (req, res, next) => {
             adminId: adminId,
             name: student.name,
             rollNumber: student.rollNumber,
+            discountAmountInFees:student.discountAmountInFees,
             udiseNumber:student.udiseNumber,
             aadharNumber: student.aadharNumber,
             samagraId: student.samagraId,
@@ -423,11 +423,12 @@ let CreateBulkStudentRecord = async (req, res, next) => {
         const createStudent = await StudentModel.create(studentData, { session });
 
         let admissionFees = checkFeesStr.admissionFees;
-        let totalFees = checkFeesStr.totalFees;
         let studentFeesData = [];
-
+        let totalFeesInStr =  checkFeesStr.totalFees;
         for (let i = 0; i < createStudent.length; i++) {
+            let totalFees =  0;
             let student = createStudent[i];
+            totalFees = totalFeesInStr - student.discountAmountInFees;
             let feesObject = {
                 adminId: adminId,
                 studentId: student._id,
@@ -435,6 +436,7 @@ let CreateBulkStudentRecord = async (req, res, next) => {
                 admissionFeesPayable: false,
                 admissionFees: 0,
                 totalFees: totalFees,
+                discountAmountInFees : student.discountAmountInFees,
                 paidFees: 0,
                 dueFees: totalFees,
             };
