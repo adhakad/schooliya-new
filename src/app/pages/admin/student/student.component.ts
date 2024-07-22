@@ -172,10 +172,6 @@ export class StudentComponent implements OnInit {
   chooseClass(cls: any) {
     this.className = cls;
     this.cls = cls;
-    this.studentForm.get('class')?.setValue(cls);
-    if(cls<11 && cls!==0 || cls == 200 || cls==201 || cls==202){
-      this.studentForm.get('stream')?.setValue("N/A");
-    }
   }
   filterStream(stream: any) {
     this.stream = stream;
@@ -228,8 +224,6 @@ export class StudentComponent implements OnInit {
     this.readyTC = false;
     this.errorMsg = '';
     this.successMsg = '';
-    this.stream = '';
-    this.cls = 0;
     this.classSubject = [];
     this.promotedClass;
     this.singleStudentInfo;
@@ -245,6 +239,13 @@ export class StudentComponent implements OnInit {
     this.deleteMode = false;
     this.updateMode = false;
     this.studentForm.reset();
+    this.studentForm.get('class')?.setValue(this.cls);
+    if(this.cls<11 && this.cls!==0 || this.cls == 200 || this.cls==201 || this.cls==202){
+      this.studentForm.get('stream')?.setValue("N/A");
+    }
+    if(this.cls==12 || this.cls==11){
+      this.studentForm.get('stream')?.setValue(this.stream);
+    }
   }
   addBulkStudentImportModel() {
     this.showBulkImportModal = true;
