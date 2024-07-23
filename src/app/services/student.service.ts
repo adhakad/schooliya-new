@@ -24,7 +24,7 @@ export class StudentService {
     return this.http.get<Student[]>(this.url);
   }
   getStudentByClass(params:any){
-    return this.http.get(`${this.url}/admin/${params.adminId}/student/${params.class}`);
+    return this.http.get(`${this.url}/admin/${params.adminId}/student/${params.class}/stream/${params.stream}`);
   }
   getStudentCount() {
     return this.http.get(`${this.url}/student-count`);

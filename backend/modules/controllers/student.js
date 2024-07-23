@@ -131,8 +131,12 @@ let GetStudentPaginationByClass = async (req, res, next) => {
 }
 
 let GetAllStudentByClass = async (req, res, next) => {
+    let stream = req.params.stream;
+    if (stream == "stream") {
+        stream = "N/A";
+    }
     try {
-        let singleStudent = await StudentModel.find({ adminId: req.params.id, class: req.params.class }, '-status -__v').sort({ _id: -1 });
+        let singleStudent = await StudentModel.find({ adminId: req.params.id, class: req.params.class,stream:stream }, '-status -__v').sort({ _id: -1 });
         return res.status(200).json(singleStudent);
     } catch (error) {
         return res.status(500).json('Internal Server Error !');

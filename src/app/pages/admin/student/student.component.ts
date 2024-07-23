@@ -81,9 +81,9 @@ export class StudentComponent implements OnInit {
       adminId:[''],
       admissionNo: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       admissionType: ['', Validators.required],
-      class: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      class: [''],
       admissionClass: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      stream: ['', Validators.required],
+      stream: [''],
       rollNumber: ['', [Validators.required, Validators.maxLength(8), Validators.pattern('^[0-9]+$')]],
       name: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
       dob: ['', Validators.required],
@@ -239,7 +239,32 @@ export class StudentComponent implements OnInit {
     this.deleteMode = false;
     this.updateMode = false;
     this.studentForm.reset();
-    this.studentForm.get('class')?.setValue(this.cls);
+    this.classStreamFormValueSet();
+  }
+  classStreamFormValueSet(){
+    let cls = '';
+    if (this.className == 1) {
+      cls = `${this.className}st`;
+    }
+    if (this.className == 2) {
+      cls = `${this.className}nd`;
+    }
+    if (this.className == 3) {
+      cls = `${this.className}rd`;
+    }
+    if (this.className >= 4 && this.className <= 12) {
+      cls = `${this.className}th`;
+    }
+    if (this.className == 200) {
+      cls = `Nursery`;
+    }
+    if (this.className == 201) {
+      cls = `LKG`;
+    }
+    if (this.className == 202) {
+      cls = `UKG`;
+    }
+    this.studentForm.get('class')?.setValue(cls);
     if(this.cls<11 && this.cls!==0 || this.cls == 200 || this.cls==201 || this.cls==202){
       this.studentForm.get('stream')?.setValue("N/A");
     }
@@ -321,6 +346,7 @@ export class StudentComponent implements OnInit {
   getStudentByClass(cls: any) {
     let params = {
       class:cls,
+      stream:this.stream,
       adminId:this.adminId,
     }
     this.studentService.getStudentByClass(params).subscribe((res: any) => {
@@ -376,6 +402,7 @@ export class StudentComponent implements OnInit {
   studentAddUpdate() {
     if (this.studentForm.valid) {
       this.studentForm.value.adminId = this.adminId;
+      this.studentForm.value.class = this.className;
       if (this.updateMode) {
         this.studentService.updateStudent(this.studentForm.value).subscribe((res: any) => {
           if (res) {
@@ -499,6 +526,7 @@ export class StudentComponent implements OnInit {
     let studentRecordData = {
       bulkStudentRecord: this.bulkStudentRecord,
       class: this.className,
+      stream:this.stream,
       adminId:this.adminId,
       createdBy: 'Admin',
 

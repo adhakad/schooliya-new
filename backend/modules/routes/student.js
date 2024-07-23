@@ -4,7 +4,7 @@ const router = express.Router();
 const { GetAllStudentByClass, countStudent, GetSingleStudent, CreateStudent, CreateBulkStudentRecord, UpdateStudent, ChangeStatus, DeleteStudent, GetStudentPaginationByClass, GetStudentPaginationByAdmission, StudentClassPromote, GetStudentPaginationByAdmissionAndClass } = require('../controllers/student');
 
 router.get('/student-count', countStudent);
-router.get('/admin/:id/student/:class', GetAllStudentByClass);
+router.get('/admin/:id/student/:class/stream/:stream', GetAllStudentByClass);
 router.post('/student-pagination', GetStudentPaginationByClass);
 router.post('/student-admission-pagination', GetStudentPaginationByAdmission);
 router.post('/student-admission-pagination/class', GetStudentPaginationByAdmissionAndClass);

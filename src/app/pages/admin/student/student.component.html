@@ -6,7 +6,7 @@
     </div>
     <div class="col-12 col-lg-10">
 
-      <div class="row" style="margin: 15px;">
+      <div class="row" >
         <div class="col-4">
           <mat-form-field appearance="outline">
             <mat-label>Select class</mat-label>
@@ -210,29 +210,13 @@
                               <div class="col-12 col-lg-6">
                                 <mat-form-field appearance="outline">
                                   <mat-label>Class Applied for</mat-label>
-                                  <input matInput type="number" formControlName="class" readonly>
-                                  <mat-error
-                                    *ngIf="studentForm.get('class')?.hasError('required') && studentForm.get('class')?.touched">
-                                    Class is required
-                                  </mat-error>
-                                  <mat-error
-                                    *ngIf="studentForm.get('class')?.hasError('pattern') && studentForm.get('class')?.touched">
-                                    Please enter a valid class (numeric characters only)
-                                  </mat-error>
+                                  <input matInput type="text" formControlName="class" readonly>
                                 </mat-form-field>
                               </div>
                               <div class="col-12 col-lg-6">
                                 <mat-form-field appearance="outline">
                                   <mat-label>Stream</mat-label>
                                   <input matInput type="text" formControlName="stream" readonly>
-                                  <mat-error
-                                    *ngIf="studentForm.get('stream')?.hasError('required') && studentForm.get('stream')?.touched">
-                                    Stream is required
-                                  </mat-error>
-                                  <mat-error
-                                    *ngIf="studentForm.get('stream')?.hasError('pattern') && studentForm.get('stream')?.touched">
-                                    Please enter a valid Stream (only letters are allowed)
-                                  </mat-error>
                                 </mat-form-field>
                               </div>
                               <div class="col-12 col-lg-6">
