@@ -156,7 +156,7 @@ let CreateStudent = async (req, res, next) => {
     let receiptNo = Math.floor(Math.random() * 899999 + 100000);
     const currentDateIst = DateTime.now().setZone('Asia/Kolkata');
     const istDateTimeString = currentDateIst.toFormat('dd-MM-yyyy hh:mm:ss a');
-    let { session,medium,adminId, name, rollNumber, admissionClass, aadharNumber,udiseNumber, samagraId, admissionFees, admissionFeesPaymentType, admissionType, stream, admissionNo, dob, doa, gender, category, religion, nationality,bankAccountNo,bankIfscCode, contact, address, lastSchool, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification, discountAmountInFees, createdBy } = req.body;
+    let { session,medium,adminId, name, rollNumber, admissionClass, aadharNumber,udiseNumber, samagraId, admissionFees, admissionFeesPaymentType, admissionType, stream, admissionNo, dob, doa, gender, category, religion, nationality,bankAccountNo,bankIfscCode, address, lastSchool, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification, discountAmountInFees, createdBy } = req.body;
     let className = req.body.class;
     if (stream === "stream") {
         stream = "N/A";
@@ -175,7 +175,7 @@ let CreateStudent = async (req, res, next) => {
         dob = DateTime.fromISO(dob).toFormat("dd-MM-yyyy");
     }
     const studentData = {
-        session,medium, adminId, name, rollNumber, aadharNumber,udiseNumber, samagraId, admissionType, stream, admissionNo, class: className, admissionClass, dob: dob, doa: doa, gender, category, religion, nationality,bankAccountNo,bankIfscCode, contact, address, lastSchool, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification, discountAmountInFees, createdBy
+        session,medium, adminId, name, rollNumber, aadharNumber,udiseNumber, samagraId, admissionType, stream, admissionNo, class: className, admissionClass, dob: dob, doa: doa, gender, category, religion, nationality,bankAccountNo,bankIfscCode, address, lastSchool, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification, discountAmountInFees, createdBy
     }
     try {
         const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className });
@@ -343,7 +343,6 @@ let CreateBulkStudentRecord = async (req, res, next) => {
             nationality: student.nationality,
             bankAccountNo:student.bankAccountNo,
             bankIfscCode:student.bankIfscCode,
-            contact: student.contact,
             address: student.address,
             fatherName: student.fatherName,
             fatherQualification: student.fatherQualification,
@@ -484,9 +483,9 @@ let CreateBulkStudentRecord = async (req, res, next) => {
 let UpdateStudent = async (req, res, next) => {
     try {
         const id = req.params.id;
-        let { name, rollNumber, aadharNumber, samagraId, session, admissionType, stream, admissionNo, dob, gender, category, religion, nationality, contact, address, fatherName, fatherQualification, fatherOccupation, fatherContact, fatherAnnualIncome, motherName, motherQualification, motherOccupation, motherContact, motherAnnualIncome } = req.body;
+        let { name, rollNumber, aadharNumber, samagraId, session, admissionType, stream, admissionNo, dob, gender, category, religion, nationality, address, fatherName, fatherQualification, fatherOccupation, fatherContact, fatherAnnualIncome, motherName, motherQualification, motherOccupation, motherContact, motherAnnualIncome } = req.body;
         const studentData = {
-            name, rollNumber, aadharNumber, samagraId, session, admissionType, stream, admissionNo, class: className, dob: dob, doa: doa, gender, category, religion, nationality, contact, address, fatherName, fatherQualification, fatherOccupation, fatherContact, fatherAnnualIncome, motherName, motherQualification, motherOccupation, motherContact, motherAnnualIncome
+            name, rollNumber, aadharNumber, samagraId, session, admissionType, stream, admissionNo, class: className, dob: dob, doa: doa, gender, category, religion, nationality, address, fatherName, fatherQualification, fatherOccupation, fatherContact, fatherAnnualIncome, motherName, motherQualification, motherOccupation, motherContact, motherAnnualIncome
         }
         const updateStudent = await StudentModel.findByIdAndUpdate(id, { $set: studentData }, { new: true });
         return res.status(200).json('Student update successfully.');

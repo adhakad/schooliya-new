@@ -47,7 +47,6 @@ const StudentModel = mongoose.model('student', {
         type: Number,
         required: true,
         trim: true,
-        unique: true,
     },
     admissionType: {
         type: String,
@@ -109,11 +108,6 @@ const StudentModel = mongoose.model('student', {
         type: String,
         trim: true,
     },
-    contact: {
-        type: Number,
-        required: true,
-        trim: true
-    },
     address: {
         type: String,
         required: true,
@@ -150,7 +144,6 @@ const StudentModel = mongoose.model('student', {
     },
     parentsContact: {
         type: Number,
-        required: true,
         trim: true
     },
     parentsAnnualIncome: {

@@ -192,6 +192,11 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
       if (res) {
         this.examResultInfo = res.examResultInfo;
         this.studentInfo = res.studentInfo;
+        if (res.examResultInfo == 0) {
+          this.examResultInfo = [];
+          this.examResultInfo = res.studentInfo;
+        }
+
         // console.log(`examResultInfo:`, this.examResultInfo)
         console.log(`studentInfo:`, this.studentInfo)
         let isDate = res.isDate;
@@ -201,7 +206,10 @@ export class AdminStudentMarksheetResultAddComponent implements OnInit {
           return studentInfo.map((student: any) => {
 
             let exams: any = {};
-            let resultDetail = this.examResultInfo.find(info => info.studentId === student._id)?.resultDetail || {};
+
+
+            let resultDetail = res.examResultInfo ==0? this.examResultInfo.find(info => info._id === student._id)?.resultDetail || {}:this.examResultInfo.find(info => info.studentId === student._id)?.resultDetail || {};
+
 
             examType.forEach((exam: any) => {
               exams[exam] = resultDetail[exam] ? "present" : "empty";

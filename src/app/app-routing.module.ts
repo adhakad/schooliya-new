@@ -46,8 +46,8 @@ const routes: Routes = [
   { path: 'admin/setting/admit-card/class/structure/:id', loadChildren: () => import('src/app/pages/admin/admin-student-admit-card-structure/admin-student-admit-card-structure.module').then((module) => module.AdminStudentAdmitCardStructureModule), canActivate: [AdminAuthGuard] },
   { path: 'admin/setting/school/detail', loadChildren: () => import('src/app/pages/admin/school/school.module').then((module) => module.SchoolModule), canActivate: [AdminAuthGuard] },
 
-  { path: 'admin/students/:id', loadChildren: () => import('src/app/pages/admin/admin-student-cls/admin-student-cls.module').then((module) => module.AdminStudentClsModule), canActivate: [AdminAuthGuard] },
-  { path: 'admin/students/student/class/:id', loadChildren: () => import('src/app/pages/admin/student/student.module').then((module) => module.StudentModule), canActivate: [AdminAuthGuard] },  
+  // { path: 'admin/students/:id', loadChildren: () => import('src/app/pages/admin/admin-student-cls/admin-student-cls.module').then((module) => module.AdminStudentClsModule), canActivate: [AdminAuthGuard] },
+  { path: 'admin/student', loadChildren: () => import('src/app/pages/admin/student/student.module').then((module) => module.StudentModule), canActivate: [AdminAuthGuard] },  
   { path: 'admin/marksheet', loadChildren: () => import('src/app/pages/admin/admin-student-marksheet/admin-student-marksheet.module').then((module) => module.AdminStudentMarksheetModule), canActivate: [AdminAuthGuard] },
   { path: 'admin/students/admit-card/class/:id', loadChildren: () => import('src/app/pages/admin/admin-student-admit-card/admin-student-admit-card.module').then((module) => module.AdminStudentAdmitCardModule), canActivate: [AdminAuthGuard] },
   { path: 'admin/students/fees/class/:id', loadChildren: () => import('src/app/pages/admin/admin-student-fees/admin-student-fees.module').then((module) => module.AdminStudentFeesModule), canActivate: [AdminAuthGuard] },

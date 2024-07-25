@@ -97,7 +97,6 @@ export class StudentComponent implements OnInit {
       category: ['', Validators.required],
       religion: ['', Validators.required],
       nationality: ['', Validators.required],
-      contact: ['', [Validators.required, Validators.pattern('^[6789]\\d{9}$')]],
       address: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$'), Validators.maxLength(50)]],
       lastSchool: ['', [Validators.pattern('^[a-zA-Z\\s]+$'), Validators.maxLength(50)]],
       fatherName: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
@@ -105,7 +104,7 @@ export class StudentComponent implements OnInit {
       motherName: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
       motherQualification: ['', Validators.required],
       parentsOccupation: ['', Validators.required],
-      parentsContact: ['', [Validators.required, Validators.pattern('^[6789]\\d{9}$')]],
+      parentsContact: ['', [Validators.pattern('^[6789]\\d{9}$')]],
       parentsAnnualIncome: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       discountAmountInFees:['',[Validators.required, Validators.pattern(/^\d+$/)]],
       createdBy: [''],
@@ -139,9 +138,6 @@ export class StudentComponent implements OnInit {
   ngOnInit(): void {
     let getAdmin = this.adminAuthService.getLoggedInAdminInfo();
     this.adminId = getAdmin?.id;
-    // this.className = this.activatedRoute.snapshot.paramMap.get('id');
-    // if (this.className) {
-    // }
     this.loader = false;
     this.getSchool();
     this.getClass();
@@ -170,8 +166,11 @@ export class StudentComponent implements OnInit {
     })
   }
   chooseClass(cls: any) {
+    this.page = 0;
     this.className = cls;
     this.cls = cls;
+    this.stream = '';
+    this.studentInfo = [];
   }
   filterStream(stream: any) {
     this.stream = stream;
@@ -589,7 +588,6 @@ export class StudentComponent implements OnInit {
       'category',
       'religion',
       'nationality',
-      'contact',
       'address',
       'udiseNumber',
       'bankAccountNo',

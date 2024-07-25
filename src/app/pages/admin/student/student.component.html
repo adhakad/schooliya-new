@@ -5,77 +5,71 @@
       <app-side-navbar></app-side-navbar>
     </div>
     <div class="col-12 col-lg-10">
+      <div class="row">
+        <div class="col-12 main-container">
+          <div class="row">
+            <div class="col-3" style="text-align: left;">
+              <button mat-button class="menu-button">
+                <mat-icon>assistant_navigation</mat-icon>
+                <span>Students > Listing</span>
+              </button>
+            </div>
+            <div class="col-9" style="text-align: right;">
+              <mat-form-field class="custom-select">
+                <mat-label *ngIf="!cls">Class</mat-label>
+                <mat-select type="number" matInput>
+                  <div *ngFor="let classInfo of classInfo">
+                    <mat-option value="{{classInfo.class}}" (click)="chooseClass(classInfo.class)">{{classInfo.class |
+                      classSuffix}}</mat-option>
+                  </div>
+                </mat-select>
+              </mat-form-field>
 
-      <div class="row" >
-        <div class="col-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Select class</mat-label>
-            <mat-select type="number" matInput>
-              <div *ngFor="let classInfo of classInfo">
-                <mat-option value="{{classInfo.class}}" (click)="chooseClass(classInfo.class)">{{classInfo.class |
-                  classSuffix}}</mat-option>
-              </div>
-            </mat-select>
-          </mat-form-field>
+              <mat-form-field class="custom-select">
+                <mat-label *ngIf="!stream">Stream</mat-label>
+                <mat-select type="text" matInput>
+                  <ng-container *ngIf="cls==12 || cls==11">
+                    <div *ngFor="let subject of streamMainSubject">
+                      <mat-option (click)="filterStream(subject)" value="{{subject}}">{{subject}}</mat-option>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="cls<11 && cls!==0 || cls == 200 || cls==201 || cls==202">
+                    <mat-option value="{{notApplicable}}" (click)="filterStream(notApplicable)">N/A</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+              <input type="text" class="form-control" placeholder="Student Search..." id="searchText" name="searchText"
+                #searchText="ngModel" [(ngModel)]="filters.searchText" (keyup)="getStudents({page : 1, limit : 0})">
+              <button class="btn setting-button" [matMenuTriggerFor]="settings">
+                <mat-icon style="margin-top: 5px;cursor: pointer;">settings</mat-icon>
+              </button>
+              <button class="submit-button" mat-raised-button *ngIf="cls && stream"
+                (click)="addStudentModel()"><mat-icon>add</mat-icon>Create</button>
+              <button class="submit-button" mat-raised-button
+                *ngIf="!cls || !stream"><mat-icon>add</mat-icon>Create</button>
+            </div>
+          </div>
+          <mat-menu #settings="matMenu">
+            <button mat-menu-item (click)="addBulkStudentImportModel()" *ngIf="cls && stream">
+              <mat-icon>cloud_download</mat-icon>
+              <span>Bulk Excel Import</span>
+            </button>
+            <button mat-menu-item (click)="addBulkStudentExportModel()" *ngIf="cls && stream">
+              <mat-icon>cloud_upload</mat-icon>
+              <span>Bulk Excel Export</span>
+            </button>
+            <button mat-menu-item *ngIf="!cls || !stream">
+              <mat-icon>error</mat-icon>
+              <span>Please Choose Class & Stream</span>
+            </button>
+          </mat-menu>
         </div>
-
-        <div class="col-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Stream</mat-label>
-            <mat-select type="text" matInput>
-              <ng-container *ngIf="cls==12 || cls==11">
-                <div *ngFor="let subject of streamMainSubject">
-                  <mat-option (click)="filterStream(subject)" value="{{subject}}">{{subject}}</mat-option>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="cls<11 && cls!==0 || cls == 200 || cls==201 || cls==202">
-                <mat-option value="{{notApplicable}}" (click)="filterStream(notApplicable)">N/A</mat-option>
-              </ng-container>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-
-
-
-
-
-
-
-        <div class="row">
-          <div class="col-12 big-container">
-            <div class="col-lg-12 offset-lg-0">
+        <div class="row main-container">
+          <div class="col-12 col-lg-12 big-container">
+            <div class="col-12 col-lg-12 offset-lg-0">
               <div class="main-card">
-                <div class="row mt-4 mb-2">
-                  <div class="col-12 radio-btn-mobile mb-3">
-                    <mat-radio-group (change)="onChange($event)">
-                      <mat-radio-button [value]="0" [checked]="selectedValue==0">Single Create</mat-radio-button>
-                      <mat-radio-button [value]="1" [checked]="selectedValue==1">Bulk Import</mat-radio-button>
-                      <mat-radio-button [value]="2" [checked]="selectedValue==2">Bulk Export</mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                  <div class="col-8 col-lg-5 mb-2">
-                    <input type="text" class="form-control" placeholder="{{className | classSuffix}} Student Search..."
-                      id="searchText" name="searchText" #searchText="ngModel" [(ngModel)]="filters.searchText"
-                      (keyup)="getStudents({page : 1, limit : 0})">
-                  </div>
-                  <div class="col-9 col-lg-5 radio-btn-desktop mt-2">
-                    <mat-radio-group (change)="onChange($event)">
-                      <mat-radio-button [value]="0" [checked]="selectedValue==0">Single Create</mat-radio-button>
-                      <mat-radio-button [value]="1" [checked]="selectedValue==1">Bulk Import</mat-radio-button>
-                      <mat-radio-button [value]="2" [checked]="selectedValue==2">Bulk Export</mat-radio-button>
-                    </mat-radio-group>
-                  </div>
-                  <div class="col-4 col-lg-2">
-                    <button *ngIf="selectedValue==0" class="submit-button" mat-raised-button
-                      (click)="addStudentModel()"><mat-icon>add</mat-icon>Create</button>
-                    <button *ngIf="selectedValue==1" class="submit-button" mat-raised-button
-                      (click)="addBulkStudentImportModel()"><mat-icon>cloud_upload</mat-icon> Import</button>
-                    <button *ngIf="selectedValue==2" class="submit-button" mat-raised-button
-                      (click)="addBulkStudentExportModel()"><mat-icon>cloud_download</mat-icon> Export</button>
-                  </div>
-                </div>
-                <table class="table table-hover align-middle mb-1 bg-white">
+
+                <table class="table table-hover align-middle mb-1 bg-white mt-3">
                   <thead class="bg-light">
                     <tr class="text-muted">
                       <th>No.</th>
@@ -85,7 +79,7 @@
                       <th>Class</th>
                       <th>Stream</th>
                       <th>Session</th>
-                      <th>Status</th>
+                      <!-- <th>Status</th> -->
                       <th *ngIf="className!=12">Class Promote</th>
                       <th>Transfer Certificate</th>
                       <th>View</th>
@@ -116,13 +110,13 @@
                       <td>
                         <p class="mb-0">{{students.session}}</p>
                       </td>
-                      <td>
+                      <!-- <td>
                         <a class="mb-0 status-active" (click)="changeStatus(students._id,0)"
                           *ngIf="students.status == 'Active'"
                           href="javascript:void(0)">{{students.status}}&nbsp;&nbsp;</a>
                         <a class="mb-0 status-inactive" (click)="changeStatus(students._id,1)"
                           *ngIf="students.status == 'Inactive'" href="javascript:void(0)">{{students.status}}</a>
-                      </td>
+                      </td> -->
                       <td *ngIf="className!=12">
                         <button style="background-color: transparent;color: #8d6dff;border: 1px solid #8d6dff;"
                           class="submit-button" (click)="addStudentClassPromoteModel(students)"
@@ -130,7 +124,8 @@
                       </td>
                       <td>
                         <button style="background-color: transparent;color: #8d6dff;border: 1px solid #8d6dff;"
-                          class="submit-button print-pdf" (click)="addStudentTCModel(students)" mat-raised-button>T &
+                          class="submit-button print-pdf" (click)="addStudentTCModel(students)" mat-raised-button>T
+                          &
                           C</button>
                       </td>
                       <td class="mb-0">
@@ -460,20 +455,6 @@
                               </div>
                               <div class="col-12 col-lg-6">
                                 <mat-form-field appearance="outline">
-                                  <mat-label>Contact</mat-label>
-                                  <input matInput type="number" formControlName="contact">
-                                  <mat-error
-                                    *ngIf="studentForm.get('contact')?.hasError('required') && studentForm.get('contact')?.touched">
-                                    Contact is required
-                                  </mat-error>
-                                  <mat-error
-                                    *ngIf="studentForm.get('contact')?.hasError('pattern') && studentForm.get('contact')?.touched">
-                                    Please enter a valid Contact (10-digit phone number starting with 6, 7, 8, or 9)
-                                  </mat-error>
-                                </mat-form-field>
-                              </div>
-                              <div class="col-12 col-lg-6">
-                                <mat-form-field appearance="outline">
                                   <mat-label>Address</mat-label>
                                   <input matInput type="text" formControlName="address">
                                   <mat-error
@@ -614,12 +595,8 @@
                                   </mat-error>
                                 </mat-form-field>
                                 <mat-form-field appearance="outline">
-                                  <mat-label>Parents Contact</mat-label>
+                                  <mat-label>Parents Contact (Optional)</mat-label>
                                   <input matInput type="number" formControlName="parentsContact">
-                                  <mat-error
-                                    *ngIf="studentForm.get('parentsContact')?.hasError('required') && studentForm.get('parentsContact')?.touched">
-                                    Parents contact is required
-                                  </mat-error>
                                   <mat-error
                                     *ngIf="studentForm.get('parentsContact')?.hasError('pattern') && studentForm.get('parentsContact')?.touched">
                                     Please enter a valid Contact (10-digit phone number starting with 6, 7, 8, or 9)
@@ -635,7 +612,8 @@
                         </div>
                         <div *ngIf="deleteMode">
                           <div class="modal-body">
-                            <h3>Note : When deleting student details, all related data such as login information, fee
+                            <h3>Note : When deleting student details, all related data such as login information,
+                              fee
                               records, student details, admit cards, results, etc., will be removed.</h3>
                           </div>
                           <div class="modal-footer">
@@ -764,7 +742,8 @@
                         <h5 class="modal-title" style="color: transparent;">&nbsp;</h5>
                       </div>
                       <div class="modal-body">
-                        <p class="success-message" *ngIf="promotedClass">{{successMsg}} {{promotedClass | classSuffix}}
+                        <p class="success-message" *ngIf="promotedClass">{{successMsg}} {{promotedClass |
+                          classSuffix}}
                         </p>
                         <p class="success-message" *ngIf="!promotedClass">{{successMsg}}</p>
                       </div>
@@ -780,7 +759,8 @@
                       <form [formGroup]="studentClassPromoteForm" (ngSubmit)="studentClassPromote()">
                         <div class="modal-body">
                           <div *ngIf="errorCheck">
-                            <p class="error-message" *ngIf="promotedClass">{{errorMsg}} {{promotedClass | classSuffix}}
+                            <p class="error-message" *ngIf="promotedClass">{{errorMsg}} {{promotedClass |
+                              classSuffix}}
                             </p>
                             <p class="error-message" *ngIf="!promotedClass">{{errorMsg}}</p>
                           </div>
@@ -927,9 +907,6 @@
                               </div>
                               <div class="col-12 col-lg-6">
                                 <p>Nationality - {{singleStudentInfo.nationality | titlecase}}</p>
-                              </div>
-                              <div class="col-12 col-lg-6">
-                                <p>Contact - {{singleStudentInfo.contact}}</p>
                               </div>
                               <div class="col-12 col-lg-6">
                                 <p>Address - {{singleStudentInfo.address | titlecase}}</p>
@@ -1122,9 +1099,11 @@
                                   <p>S.No. <span class="text-bold">: {{serialNo}}</span></p>
                                 </div>
                                 <div class="col-6" style="text-align: right;">
-                                  <p>Affiliation No. <span class="text-bold">: {{schoolInfo?.affiliationNumber}}</span>
+                                  <p>Affiliation No. <span class="text-bold">:
+                                      {{schoolInfo?.affiliationNumber}}</span>
                                   </p>
-                                  <p>Admission No. <span class="text-bold">: {{singleStudentTCInfo?.admissionNo}}</span>
+                                  <p>Admission No. <span class="text-bold">:
+                                      {{singleStudentTCInfo?.admissionNo}}</span>
                                   </p>
                                 </div>
                               </div>
@@ -1186,7 +1165,8 @@
                                     <p>6. Samagra Id</p>
                                   </div>
                                   <div class="col-6">
-                                    <p><span class="text-bold">: &nbsp;&nbsp; {{singleStudentTCInfo.samagraId}}</span>
+                                    <p><span class="text-bold">: &nbsp;&nbsp;
+                                        {{singleStudentTCInfo.samagraId}}</span>
                                     </p>
                                   </div>
                                 </div>
@@ -1203,7 +1183,8 @@
                                     <p>8. Whether the pupil belongs to General/OBC/SC/ST</p>
                                   </div>
                                   <div class="col-6">
-                                    <p><span class="text-bold">: &nbsp;&nbsp; {{singleStudentTCInfo.category}}</span>
+                                    <p><span class="text-bold">: &nbsp;&nbsp;
+                                        {{singleStudentTCInfo.category}}</span>
                                     </p>
                                   </div>
                                 </div>
@@ -1249,7 +1230,8 @@
                                           <ng-container *ngFor="let subjectObject of subjects; let j = index">
                                             <ng-container *ngFor="let entry of subjectObject | keyvalue">
                                               <td>
-                                                <p class="text-bold"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ entry.value }}
+                                                <p class="text-bold"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ entry.value
+                                                  }}
                                                 </p>
                                               </td>
                                             </ng-container>
@@ -1297,7 +1279,8 @@
                                     <p>16. Date of issue of Certificate</p>
                                   </div>
                                   <div class="col-6">
-                                    <p><span class="text-bold">: &nbsp;&nbsp; {{singleStudentTCInfo.isDate}}</span></p>
+                                    <p><span class="text-bold">: &nbsp;&nbsp; {{singleStudentTCInfo.isDate}}</span>
+                                    </p>
                                   </div>
                                 </div>
                                 <div class="row">
@@ -1305,7 +1288,8 @@
                                     <p>17. Reasion for leaving the school</p>
                                   </div>
                                   <div class="col-6">
-                                    <p><span class="text-bold">: &nbsp;&nbsp; {{singleStudentTCInfo.reasonForLeaving |
+                                    <p><span class="text-bold">: &nbsp;&nbsp; {{singleStudentTCInfo.reasonForLeaving
+                                        |
                                         uppercase}}</span></p>
                                   </div>
                                 </div>
@@ -1323,7 +1307,8 @@
                                     <p>19. Any other remarks</p>
                                   </div>
                                   <div class="col-6">
-                                    <p><span class="text-bold">: &nbsp;&nbsp; {{singleStudentTCInfo.anyOtherRemarks |
+                                    <p><span class="text-bold">: &nbsp;&nbsp; {{singleStudentTCInfo.anyOtherRemarks
+                                        |
                                         uppercase}}</span></p>
                                   </div>
                                 </div>
@@ -1374,3 +1359,4 @@
       <mat-progress-spinner *ngIf="loader" diameter="65" mode="indeterminate" strokeWidth="3"></mat-progress-spinner>
     </div>
   </div>
+</div>
