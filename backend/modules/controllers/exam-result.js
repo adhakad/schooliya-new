@@ -93,7 +93,7 @@ let GetAllStudentResultByClassStream = async (req, res, next) => {
     try {
         const student = await StudentModel.find({ adminId: adminId, class: className, stream: stream }, 'adminId session admissionNo name dob rollNumber class fatherName motherName stream');
         if (student.length <= 0) {
-            return res.status(404).json({ errorMsg: 'This class any student not found !' });
+            return res.status(404).json({statusCode:404, errorMsg: 'Not Found !' });
         }
 
         let examResult = await ExamResultModel.find({ adminId: adminId, class: className, stream: stream });
@@ -105,7 +105,7 @@ let GetAllStudentResultByClassStream = async (req, res, next) => {
             if (stream === "N/A") {
                 streamMsg = ``;
             }
-            return res.status(404).json({ errorMsg: `This class ${streamMsg} marksheet template not found !` });
+            return res.status(404).json({statusCode:404, errorMsg: `Not Found !` });
         }
         let templateName = marksheetTemplate.templateName;
         let marksheetTemplateStructure = await MarksheetTemplateStructureModel.findOne({ templateName: templateName });
@@ -113,11 +113,11 @@ let GetAllStudentResultByClassStream = async (req, res, next) => {
             if (stream === "N/A") {
                 streamMsg = ``;
             }
-            return res.status(404).json({ errorMsg: `This class ${streamMsg} marksheet template not found !` });
+            return res.status(404).json({errorMsg: `Not Found !` });
         }
-        return res.status(200).json({ studentInfo: student, examResultInfo: examResult, marksheetTemplateStructure: marksheetTemplateStructure, isDate: isDate });
+        return res.status(200).json({studentInfo: student, examResultInfo: examResult, marksheetTemplateStructure: marksheetTemplateStructure, isDate: isDate });
     } catch (error) {
-        return res.status(500).json({ errorMsg: 'Internal Server Error !' });
+        return res.status(500).json({errorMsg: 'Internal Server Error !' });
     }
 }
 

@@ -22,6 +22,7 @@ export class AdminStudentMarksheetComponent implements OnInit {
   deleteById: String = '';
   successMsg: String = '';
   errorMsg: String = '';
+  statusCode: Number = 0;
   errorCheck: Boolean = false;
   schoolInfo: any;
   marksheetTemplateStructureInfo: any;
@@ -81,7 +82,7 @@ export class AdminStudentMarksheetComponent implements OnInit {
     this.stream = stream;
     if (stream && this.cls) {
       let params = {
-        adminId:this.adminId,
+        adminId: this.adminId,
         cls: this.cls,
         stream: stream,
       }
@@ -104,7 +105,7 @@ export class AdminStudentMarksheetComponent implements OnInit {
   }
 
   falseFormValue() {
-    
+
   }
   falseAllValue() {
     this.falseFormValue();
@@ -147,6 +148,8 @@ export class AdminStudentMarksheetComponent implements OnInit {
     }
     this.examResultService.getAllStudentExamResultByClass(param).subscribe((res: any) => {
       if (res) {
+        this.errorCheck = false;
+        this.statusCode = 200;
         this.examResultInfo = res.examResultInfo;
         this.studentInfo = res.studentInfo;
         let isDate = res.isDate;
@@ -191,7 +194,8 @@ export class AdminStudentMarksheetComponent implements OnInit {
         // console.log(this.mappedResults)
       }
     }, err => {
-      console.log("error")
+      this.errorCheck = true;
+      this.statusCode = err.status;
     })
     setTimeout(() => {
       this.loader = false;

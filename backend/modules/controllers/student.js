@@ -114,6 +114,10 @@ let GetStudentPaginationByClass = async (req, res, next) => {
         }
         let limit = (req.body.limit) ? parseInt(req.body.limit) : 10;
         let page = req.body.page || 1;
+        const isStudent = await StudentModel.findOne({ adminId: adminId, class: className,stream:stream});
+        if (!isStudent) {
+            return res.status(404).json(`Student Not Found !`);
+        }
         const studentList = await StudentModel.find({ adminId: adminId, class: className,stream:stream }).find(searchObj).sort({ _id: -1 })
             .limit(limit * 1)
             .skip((page - 1) * limit)

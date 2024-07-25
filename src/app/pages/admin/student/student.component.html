@@ -11,7 +11,7 @@
             <div class="col-3" style="text-align: left;">
               <button mat-button class="menu-button">
                 <mat-icon>assistant_navigation</mat-icon>
-                <span>Students > Listing</span>
+                <span>Students > List</span>
               </button>
             </div>
             <div class="col-9" style="text-align: right;">
@@ -69,7 +69,7 @@
             <div class="col-12 col-lg-12 offset-lg-0">
               <div class="main-card">
 
-                <table class="table table-hover align-middle mb-1 bg-white mt-3">
+                <table class="table table-hover align-middle mb-1 bg-white mt-3" *ngIf="!errorCheck && statusCode !==404 && statusCode !==500">
                   <thead class="bg-light">
                     <tr class="text-muted">
                       <th>No.</th>
@@ -140,6 +140,10 @@
                     </tr>
                   </tbody>
                 </table>
+                <div *ngIf="errorCheck && statusCode ==404 || statusCode ==500" style="text-align: center;margin-top: 200px;">
+                  <p *ngIf="statusCode ==404">Student Not Found !</p>
+                  <p *ngIf="statusCode ==500">Internal Server Error !</p>
+                </div>
                 <div class="pagination">
                   <app-pagination [paginationValues]="paginationValues" (onChange)="getStudents($event)">
                   </app-pagination>

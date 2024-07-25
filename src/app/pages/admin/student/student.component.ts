@@ -38,6 +38,7 @@ export class StudentComponent implements OnInit {
   successMsg: String = '';
   errorMsg: String = '';
   errorCheck: Boolean = false;
+  statusCode: Number = 0;
   classInfo: any[] = [];
   studentInfo: any[] = [];
   studentInfoByClass: any[] = [];
@@ -53,7 +54,7 @@ export class StudentComponent implements OnInit {
   religions: any;
   qualifications: any;
   occupations: any;
-  mediums:any;
+  mediums: any;
   stream: string = '';
   notApplicable: String = "stream";
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
@@ -72,13 +73,13 @@ export class StudentComponent implements OnInit {
   isDate: string = '';
   readyTC: Boolean = false;
   baseURL!: string;
-  adminId!:String
-  constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private printPdfService: PrintPdfService, private schoolService: SchoolService, public ete: ExcelService,private adminAuthService:AdminAuthService, private issuedTransferCertificate: IssuedTransferCertificateService, private classService: ClassService, private classSubjectService: ClassSubjectService, private studentService: StudentService) {
+  adminId!: String
+  constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private printPdfService: PrintPdfService, private schoolService: SchoolService, public ete: ExcelService, private adminAuthService: AdminAuthService, private issuedTransferCertificate: IssuedTransferCertificateService, private classService: ClassService, private classSubjectService: ClassSubjectService, private studentService: StudentService) {
     this.studentForm = this.fb.group({
       _id: [''],
       session: ['', Validators.required],
-      medium:['',Validators.required],
-      adminId:[''],
+      medium: ['', Validators.required],
+      adminId: [''],
       admissionNo: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       admissionType: ['', Validators.required],
       class: [''],
@@ -90,9 +91,9 @@ export class StudentComponent implements OnInit {
       doa: ['', Validators.required],
       aadharNumber: ['', [Validators.required, Validators.pattern('^\\d{12}$')]],
       samagraId: ['', [Validators.required, Validators.pattern('^\\d{9}$')]],
-      udiseNumber:['', [ Validators.pattern('^\\d{11}$')]],
-      bankAccountNo:['', [ Validators.minLength(9),Validators.maxLength(18), Validators.pattern('^[0-9]+$')]],
-      bankIfscCode:['', [Validators.minLength(11),Validators.maxLength(11)]],
+      udiseNumber: ['', [Validators.pattern('^\\d{11}$')]],
+      bankAccountNo: ['', [Validators.minLength(9), Validators.maxLength(18), Validators.pattern('^[0-9]+$')]],
+      bankIfscCode: ['', [Validators.minLength(11), Validators.maxLength(11)]],
       gender: ['', Validators.required],
       category: ['', Validators.required],
       religion: ['', Validators.required],
@@ -106,7 +107,7 @@ export class StudentComponent implements OnInit {
       parentsOccupation: ['', Validators.required],
       parentsContact: ['', [Validators.pattern('^[6789]\\d{9}$')]],
       parentsAnnualIncome: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      discountAmountInFees:['',[Validators.required, Validators.pattern(/^\d+$/)]],
+      discountAmountInFees: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       createdBy: [''],
     })
 
@@ -116,13 +117,13 @@ export class StudentComponent implements OnInit {
 
     this.studentClassPromoteForm = this.fb.group({
       _id: ['', Validators.required],
-      adminId:[''],
+      adminId: [''],
       class: [''],
       session: ['', Validators.required],
       admissionNo: ['', Validators.required],
       rollNumber: ['', Validators.required],
       stream: ['', Validators.required],
-      createdBy:['']
+      createdBy: ['']
     })
 
     this.tcForm = this.fb.group({
@@ -176,7 +177,7 @@ export class StudentComponent implements OnInit {
     this.stream = stream;
     if (stream && this.cls) {
       let params = {
-        adminId:this.adminId,
+        adminId: this.adminId,
         cls: this.cls,
         stream: stream,
       }
@@ -240,7 +241,7 @@ export class StudentComponent implements OnInit {
     this.studentForm.reset();
     this.classStreamFormValueSet();
   }
-  classStreamFormValueSet(){
+  classStreamFormValueSet() {
     let cls = '';
     if (this.className == 1) {
       cls = `${this.className}st`;
@@ -264,10 +265,10 @@ export class StudentComponent implements OnInit {
       cls = `UKG`;
     }
     this.studentForm.get('class')?.setValue(cls);
-    if(this.cls<11 && this.cls!==0 || this.cls == 200 || this.cls==201 || this.cls==202){
+    if (this.cls < 11 && this.cls !== 0 || this.cls == 200 || this.cls == 201 || this.cls == 202) {
       this.studentForm.get('stream')?.setValue("N/A");
     }
-    if(this.cls==12 || this.cls==11){
+    if (this.cls == 12 || this.cls == 11) {
       this.studentForm.get('stream')?.setValue(this.stream);
     }
   }
@@ -300,7 +301,7 @@ export class StudentComponent implements OnInit {
     let params = {
       cls: student.class,
       stream: stream,
-      adminId:this.adminId,
+      adminId: this.adminId,
     }
     this.getSingleClassSubjectByStream(params);
   }
@@ -344,9 +345,9 @@ export class StudentComponent implements OnInit {
 
   getStudentByClass(cls: any) {
     let params = {
-      class:cls,
-      stream:this.stream,
-      adminId:this.adminId,
+      class: cls,
+      stream: this.stream,
+      adminId: this.adminId,
     }
     this.studentService.getStudentByClass(params).subscribe((res: any) => {
       if (res) {
@@ -376,9 +377,9 @@ export class StudentComponent implements OnInit {
         filters: {},
         page: $event.page,
         limit: $event.limit ? $event.limit : this.recordLimit,
-        adminId:this.adminId,
+        adminId: this.adminId,
         class: this.className,
-        stream:this.stream,
+        stream: this.stream,
       };
       this.recordLimit = params.limit;
       if (this.filters.searchText) {
@@ -387,6 +388,8 @@ export class StudentComponent implements OnInit {
 
       this.studentService.studentPaginationList(params).subscribe((res: any) => {
         if (res) {
+          this.errorCheck = false;
+          this.statusCode = 200;
           this.studentInfo = res.studentList;
           this.serialNo = res.serialNo;
           this.isDate = res.isDate;
@@ -394,6 +397,10 @@ export class StudentComponent implements OnInit {
           this.paginationValues.next({ type: 'page-init', page: params.page, totalTableRecords: res.countStudent });
           return resolve(true);
         }
+      }, err => {
+        this.errorCheck = true;
+        this.statusCode = err.status;
+        console.log(err.status)
       });
     });
   }
@@ -525,8 +532,8 @@ export class StudentComponent implements OnInit {
     let studentRecordData = {
       bulkStudentRecord: this.bulkStudentRecord,
       class: this.className,
-      stream:this.stream,
-      adminId:this.adminId,
+      stream: this.stream,
+      adminId: this.adminId,
       createdBy: 'Admin',
 
     }
@@ -634,7 +641,7 @@ export class StudentComponent implements OnInit {
     this.religions = [{ religion: 'Hinduism' }, { religion: 'Buddhism' }, { religion: 'Christanity' }, { religion: 'Jainism' }, { religion: 'Sikhism' }, { religion: 'Muslim' }, { religion: 'Other' }]
     this.qualifications = [{ qualification: 'Doctoral Degree' }, { qualification: 'Masters Degree' }, { qualification: 'Graduate Diploma' }, { qualification: 'Graduate Certificate' }, { qualification: 'Graduate Certificate' }, { qualification: 'Bachelor Degree' }, { qualification: 'Advanced Diploma' }, { qualification: 'Primary School' }, { qualification: 'High School' }, { qualification: 'Higher Secondary School' }, { qualification: 'Illiterate' }, { qualification: 'Other' }]
     this.occupations = [{ occupation: 'Agriculture(Farmer)' }, { occupation: 'Laborer' }, { occupation: 'Self Employed' }, { occupation: 'Private Job' }, { occupation: 'State Govt. Employee' }, { occupation: 'Central Govt. Employee' }, { occupation: 'Military Job' }, { occupation: 'Para-Military Job' }, { occupation: 'PSU Employee' }, { occupation: 'Other' }]
-    this.mediums = [{medium:'Hindi'},{medium:'English'}]
+    this.mediums = [{ medium: 'Hindi' }, { medium: 'English' }]
   }
 
   studentClassPromote() {
