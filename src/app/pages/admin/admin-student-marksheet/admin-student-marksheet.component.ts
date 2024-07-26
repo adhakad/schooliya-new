@@ -23,6 +23,7 @@ export class AdminStudentMarksheetComponent implements OnInit {
   successMsg: String = '';
   errorMsg: String = '';
   statusCode: Number = 0;
+  templateStatusCode: Number = 0;
   errorCheck: Boolean = false;
   schoolInfo: any;
   marksheetTemplateStructureInfo: any;
@@ -86,8 +87,8 @@ export class AdminStudentMarksheetComponent implements OnInit {
         cls: this.cls,
         stream: stream,
       }
-      this.getStudentExamResultByClass(params);
       this.getSingleClassResultStrucByStream(params);
+      this.getStudentExamResultByClass(params);
     }
   }
 
@@ -130,8 +131,8 @@ export class AdminStudentMarksheetComponent implements OnInit {
           cls: this.cls,
           stream: this.stream,
         }
-        this.getStudentExamResultByClass(params);
         this.getSingleClassResultStrucByStream(params);
+        this.getStudentExamResultByClass(params);
       }
     }, 1000)
   }
@@ -191,7 +192,6 @@ export class AdminStudentMarksheetComponent implements OnInit {
         };
 
         this.mappedResults = mapExamResultsToStudents(this.examResultInfo, this.studentInfo);
-        // console.log(this.mappedResults)
       }
     }, err => {
       this.errorCheck = true;
@@ -325,10 +325,12 @@ export class AdminStudentMarksheetComponent implements OnInit {
   getSingleClassResultStrucByStream(params: any) {
     this.examResultStructureService.getSingleClassResultStrucByStream(params).subscribe((res: any) => {
       if (res) {
+        this.templateStatusCode = 200;
         this.marksheetTemplateStructureInfo = res;
         this.examType = Object.keys(res.marksheetTemplateStructure.examStructure);
       }
     }, err => {
+      this.templateStatusCode = err.status;
       this.falseAllValue();
     })
   }

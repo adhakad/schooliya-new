@@ -16,7 +16,7 @@ export class ExamResultStructureService {
     return this.http.get(`${this.url}/admin/${params.adminId}/class/${params.cls}/stream/${params.stream}`);
   }
   getSingleClassResultStrucByStream(params: any) {
-    return this.http.get(`${this.url}/admin/${params.adminId}/class/${params.cls}/stream/${params.stream}/exam/${params.examType}`);
+    return this.http.get(`${this.url}/admin/${params.adminId}/template/structure/class/${params.cls}/stream/${params.stream}`);
   }
   changeResultPublishStatus(params:any){
     return this.http.put(`${this.url}/result-publish-status/${params.id}`,params);

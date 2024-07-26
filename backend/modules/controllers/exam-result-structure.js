@@ -26,33 +26,34 @@ let GetSingleClassMarksheetTemplateByStream = async (req, res, next) => {
     }
 }
 
-let GetSingleClassExamResultStructureByStream = async (req, res, next) => {
+let GetSingleClassMarksheetTemplateStructureByStream = async (req, res, next) => {
     let adminId = req.params.id;
     let className = req.params.class;
     let stream = req.params.stream;
     if (stream === "stream") {
         stream = "N/A";
     }
+    let streamMsg = '';
     try {
         const classSubjectList = await ClassSubjectModel.findOne({ adminId: adminId, class: className, stream: stream }, 'subject');
         if (!classSubjectList) {
             return res.status(404).json('This class and subject group not found. !');
         }
-        const singleExamResultStructure = await MarksheetTemplateModel.findOne({ adminId: adminId, class: className, stream: stream });
-        if (!singleExamResultStructure) {
+        const marksheetTemplate = await MarksheetTemplateModel.findOne({ adminId: adminId, class: className, stream: stream });
+        if (!marksheetTemplate) {
             if (stream === "N/A") {
 
                 streamMsg = ``;
             }
-            return res.status(404).json(`Class ${className} ${streamMsg} exam not found !`);
+            return res.status(404).json(`Marksheet template not found !`);
         }
-        const templateName = singleExamResultStructure.templateName;
+        const templateName = marksheetTemplate.templateName;
         const marksheetTemplateStructure = await MarksheetTemplateStructureModel.findOne({ templateName: templateName });
         if (!marksheetTemplateStructure) {
             if (stream === "N/A") {
                 streamMsg = ``;
             }
-            return res.status(404).json(`Class ${className} ${streamMsg} marksheet template not found !`);
+            return res.status(404).json(`Marksheet template structure not found !`);
         }
         return res.status(200).json({ marksheetTemplateStructure: marksheetTemplateStructure, classSubjectList: classSubjectList });
     } catch (error) {
@@ -319,7 +320,7 @@ let ChangeResultPublishStatus = async (req, res, next) => {
 
 module.exports = {
     GetSingleClassMarksheetTemplateByStream,
-    GetSingleClassExamResultStructureByStream,
+    GetSingleClassMarksheetTemplateStructureByStream,
     CreateExamResultStructure,
     ChangeResultPublishStatus,
     DeleteResultStructure

@@ -54,11 +54,11 @@
               <mat-icon>article</mat-icon>
               <span>Marksheet Template Format</span>
             </button>
-            <button mat-menu-item routerLink="/admin/marksheet/result/add/{{cls}}/{{stream}}" *ngIf="cls && stream">
+            <button mat-menu-item routerLink="/admin/marksheet/result/add/{{cls}}/{{stream}}" *ngIf="cls && stream && templateStatusCode==200 && templateStatusCode !==404 && templateStatusCode !==500 && templateStatusCode !==0">
               <mat-icon>add</mat-icon>
               <span>Result Add</span>
             </button>
-            <button mat-menu-item (click)="bulkPrint()" *ngIf="cls && stream">
+            <button mat-menu-item (click)="bulkPrint()" *ngIf="cls && stream && templateStatusCode==200 && templateStatusCode !==404 && templateStatusCode !==500 && templateStatusCode !==0">
               <mat-icon>cloud_upload</mat-icon>
               <span>Bulk Marksheet's Print</span>
             </button>
@@ -113,9 +113,10 @@
                     </tr>
                   </tbody>
                 </table>
-                <div *ngIf="errorCheck && statusCode ==404 || statusCode ==500" style="text-align: center;margin-top: 200px;">
-                  <p *ngIf="statusCode ==404">Marksheet Not Found !</p>
-                  <p *ngIf="statusCode ==500">Internal Server Error !</p>
+                <div *ngIf="errorCheck && statusCode ==404 || statusCode ==500 || templateStatusCode==404 || templateStatusCode==500" style="text-align: center;margin-top: 200px;">
+                  <p *ngIf="statusCode ==404 && templateStatusCode==200">Marksheet Not Found !</p>
+                  <p *ngIf="statusCode ==500 || templateStatusCode==500">Internal Server Error !</p>
+                  <p *ngIf="templateStatusCode ==404">Please Choose Marksheet Template Format !</p>
                 </div>
                 <div class="modal fade show" [class.show]="showModal">
                   <div class="modal-dialog" role="document">
