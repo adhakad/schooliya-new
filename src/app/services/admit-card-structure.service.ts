@@ -13,7 +13,7 @@ export class AdmitCardStructureService {
     return this.http.post(`${this.url}`,formData);
   }
   admitCardStructureByClass(params: any) {
-    return this.http.get(`${this.url}/admin/${params.adminId}/class/${params.class}`);
+    return this.http.get(`${this.url}/admin/${params.adminId}/class/${params.cls}/stream/${params.stream}`);
   }
   changeAdmitCardPublishStatus(params:any){
     return this.http.put(`${this.url}/admitcard-publish-status/${params.id}`,params);

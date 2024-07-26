@@ -6,6 +6,7 @@ import { AdmitCardService } from 'src/app/services/admit-card.service';
 import { PrintPdfService } from 'src/app/services/print-pdf/print-pdf.service';
 import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
 import { SchoolService } from 'src/app/services/school.service';
+import { ClassService } from 'src/app/services/class.service';
 
 @Component({
   selector: 'app-admin-student-admit-card',
@@ -15,8 +16,8 @@ import { SchoolService } from 'src/app/services/school.service';
 export class AdminStudentAdmitCardComponent implements OnInit {
 
   allAdmitCards: any[] = [];
-  allAdmitCardsByStream: any[] = [];
   cls: any;
+  classInfo: any[] = [];
   admitCardInfo: any;
   studentInfo: any;
   loader: Boolean = true;
@@ -26,59 +27,75 @@ export class AdminStudentAdmitCardComponent implements OnInit {
   processedData: any[] = [];
   schoolInfo: any;
   baseURL!: string;
-  selectedStream: string = '';
-  streamSection: boolean = true;
-  streamMainSubject: any[] = [];
+  stream: string = '';
+  notApplicable: String = "stream";
+  examType: any[] = [];
+  streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
+
   selectedValue: number = 0;
-  adminId!:string;
-  constructor(public activatedRoute: ActivatedRoute,private adminAuthService:AdminAuthService, private schoolService: SchoolService, private admitCardService: AdmitCardService, private printPdfService: PrintPdfService, private admitCardStructureService: AdmitCardStructureService) {
+  adminId!: string;
+  constructor(public activatedRoute: ActivatedRoute, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private classService: ClassService, private admitCardService: AdmitCardService, private printPdfService: PrintPdfService, private admitCardStructureService: AdmitCardStructureService) {
 
   }
 
   ngOnInit(): void {
     let getAdmin = this.adminAuthService.getLoggedInAdminInfo();
     this.adminId = getAdmin?.id;
-    this.cls = this.activatedRoute.snapshot.paramMap.get('id');
-    this.getStudentAdmitCardByClass(this.cls);
-    this.getAdmitCardStructureByClass(this.cls);
     this.getSchool();
+    this.getClass();
     var currentURL = window.location.href;
     this.baseURL = new URL(currentURL).origin;
+    setTimeout(() => {
+      this.loader = false;
+    }, 1000)
+  }
+  getClass() {
+    this.classService.getClassList().subscribe((res: any) => {
+      if (res) {
+        this.classInfo = res;
+      }
+    })
   }
   onChange(event: MatRadioChange) {
     this.selectedValue = event.value;
   }
+  chooseClass(cls: any) {
+    this.cls = cls;
+    if (cls < 11 && cls !== 0 || cls == 200 || cls == 201 || cls == 202) {
+      // this.studentForm.get('stream')?.setValue("N/A");
+      // this.getStudentExamResultByClass(this.cls);
+    }
+  }
+  filterStream(stream: any) {
+    this.stream = stream;
+    if (stream && this.cls) {
+      let params = {
+        adminId: this.adminId,
+        cls: this.cls,
+        stream: stream,
+      }
+      this.getStudentAdmitCardByClass(params);
+      this.getAdmitCardStructureByClass(params);
+    }
+  }
+
+
   closeModal() {
     this.showModal = false;
-    this.streamSection = true;
-    this.selectedStream = '';
     this.processedData = [];
   }
-  bulkPrint() {
-    if (this.cls <= 10 || this.cls == 200 || this.cls==201 || this.cls == 202) {
-      this.selectedStream = 'N/A';
-      this.admitCardStrInfoByStream = this.admitCardStrInfo.filter((item: any) => item.stream === 'N/A');
-      this.processData(this.selectedStream);
-    }
+  bulkPrint(selectedValue:any) {
+    this.selectedValue = selectedValue;
+      this.processData();
+
     this.showModal = true;
   }
-  selectStream(subject: any) {
-    this.selectedStream = subject;
-    this.admitCardStrInfoByStream = this.admitCardStrInfo.filter((item: any) => item.stream === subject);
-    this.processData(this.selectedStream);
-    this.streamSection = false;
-  }
-  getAdmitCardStructureByClass(cls: any) {
-    let params = {
-      class:cls,
-      adminId:this.adminId
-    }
+
+  getAdmitCardStructureByClass(params: any) {
     this.admitCardStructureService.admitCardStructureByClass(params).subscribe((res: any) => {
       if (res) {
         this.admitCardStrInfo = res;
-        for(let i=0;i<res.length;i++){
-          this.streamMainSubject.push(res[i].stream);
-        }
+        console.log(this.admitCardStrInfo)
       }
     })
   }
@@ -90,11 +107,11 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     })
   }
   printStudentData() {
-    if (this.selectedValue==0) {
+    if (this.selectedValue == 0) {
       const printContent = this.getPrintOneAdmitCardContent();
       this.printPdfService.printContent(printContent);
     }
-    if(this.selectedValue==1){
+    if (this.selectedValue == 1) {
       const printContent = this.getPrintTwoAdmitCardContent();
       this.printPdfService.printContent(printContent);
     }
@@ -106,28 +123,29 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     let printHtml = '<html>';
     printHtml += '<head>';
     printHtml += '<style>';
-    printHtml += 'body { margin: 0; padding: 0; }';
-    printHtml += 'div { margin: 0; padding: 0;}';
-    printHtml += '.custom-container {font-family: Arial, sans-serif;overflow: auto;}';
-    printHtml += '.table-container {background-color: #fff;border: none;}';
-    printHtml += '.logo { height: 75px;margin-right:10px; }';
+    printHtml += 'body {width: 100%; height: 100%; margin: 0; padding: 0; }';
+    printHtml += 'div {margin: 0; padding: 0;}';
+    printHtml += '.custom-container {font-family: Arial, sans-serif;overflow: auto; width: 100%; height: 100%; box-sizing: border-box;}';
+    printHtml += '.table-container {width: 100%;height: 100%; background-color: #fff;border: 2px solid #9e9e9e; box-sizing: border-box;}';
+    printHtml += '.logo { height: 75px;margin-top:5px;margin-left:5px;}';
     printHtml += '.school-name {display: flex; align-items: center; justify-content: center; text-align: center; }';
-    printHtml += '.school-name h3 { color: #2e2d6a !important; font-size: 18px !important;margin-top:-120px !important; margin-bottom: 0 !important; }';
-    printHtml += '.address{margin-top: -45px;}';
-    printHtml += '.address p{margin-top: -10px !important;}';
+    printHtml += '.school-name h3 { color: #252525 !important; font-size: 18px !important;font-weight: bolder;margin-top:-115px !important; margin-bottom: 0 !important; }';
 
-    printHtml += '.info-table {width:100%;color: #2e2d6a !important;border: none;font-size: 12px;letter-spacing: .25px;margin-top: 1.5vh;margin-bottom: 2vh;display: inline-table;}';
-    printHtml += '.table-container .info-table th, .table-container .info-table td{color: #2e2d6a !important;text-align:center}';
-    printHtml += '.title-lable {max-height: 45px;text-align: center;margin-bottom: 15px;border:1px solid #2e2d6a;border-radius: 5px;margin-top: 25px;}';
-    printHtml += '.title-lable p {color: #2e2d6a !important;font-size: 15px;font-weight: 500;letter-spacing: 1px;}';
-    printHtml += '.codes .school-code  {margin-right:65%;}';
-    printHtml += '.custom-table {width: 100%;color: #2e2d6a !important;border-collapse:collapse;font-size: 12px;letter-spacing: .25px;margin-bottom: 20px;display: inline-table;border-radius:5px}';
-    printHtml += '.custom-table th{height:38px;text-align: center;border:1px solid #2e2d6a;}';
-    printHtml += '.custom-table tr{height:38px;}';
-    printHtml += '.custom-table td {text-align: center;border:1px solid #2e2d6a;}';
+    printHtml += '.address{margin-top: -42px;}';
+    printHtml += '.address p{font-size:10px;margin-top: -8px !important;}';
+    printHtml += '.title-lable {text-align: center;margin-bottom: 15px;}';
+    printHtml += '.title-lable p {color: #252525 !important;font-size: 15px;font-weight: bolder;letter-spacing: .5px;}';
+
+    printHtml += '.info-table {width:100%;color: #252525 !important;border: none;font-size: 11px;margin-top: 1.5vh;margin-bottom: 2vh;display: inline-table;}';
+    printHtml += '.table-container .info-table th, .table-container .info-table td{color: #252525 !important;text-align:left;padding-left:15px;padding-top:5px;}';
+    printHtml += '.custom-table {width: 100%;color: #252525 !important;border-collapse:collapse;margin-bottom: 20px;display: inline-table;border-radius:5px}';
+    printHtml += '.custom-table th{height: 31px;text-align: center;border:1px solid #9e9e9e;line-height:15px;font-size: 10px;}';
+    printHtml += '.custom-table tr{height: 30px;}';
+    printHtml += '.custom-table td {text-align: center;border:1px solid #9e9e9e;font-size: 10px;}';
     printHtml += '.text-bold { font-weight: bold;}';
-    printHtml += 'p {color: #2e2d6a !important;font-size:12px;}'
-    printHtml += 'h4 {color: #2e2d6a !important;}'
+    printHtml += '.text-left { text-align: left;}';
+    printHtml += 'p {color: #252525 !important;font-size:12px;}'
+    printHtml += 'h4 {color: #252525 !important;}'
     printHtml += '@media print {';
     printHtml += '  body::before {';
     printHtml += `    content: "${schoolName}, ${city}";`;
@@ -135,6 +153,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     printHtml += '    top: 40%;';
     printHtml += '    left:10%;';
     printHtml += '    font-size: 20px;';
+    printHtml += '    text-transform: uppercase;';
     printHtml += '    font-weight: bold;';
     printHtml += '    font-family: Arial, sans-serif;';
     printHtml += '    color: rgba(0, 0, 0, 0.08);';
@@ -166,35 +185,37 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     let printHtml = '<html>';
     printHtml += '<head>';
     printHtml += '<style>';
-    printHtml += 'body { margin: 0; padding: 0; }';
-    printHtml += 'div { margin: 0; padding: 0;}';
-    printHtml += '.custom-container {font-family: Arial, sans-serif;overflow: auto;}';
-    printHtml += '.table-container {background-color: #fff;border: none;}';
+    printHtml += 'body {width: 100%; height: 100%; margin: 0; padding: 0; }';
+    printHtml += 'div {margin: 0; padding: 0;}';
+    printHtml += '.custom-container {font-family: Arial, sans-serif;overflow: auto; width: 100%; height: 100%; box-sizing: border-box;}';
+    printHtml += '.table-container {width: 100%;height: 100%; background-color: #fff;border: 2px solid #9e9e9e; box-sizing: border-box;}';
+    printHtml += '.logo { height: 75px;margin-top:5px;margin-left:5px;}';
     printHtml += '.school-name {display: flex; align-items: center; justify-content: center; text-align: center; }';
-    printHtml += '.address{margin-top: -46px;}';
-    printHtml += '.address p{margin-top: -10px !important;}';
-    printHtml += '.logo { height: 75px;margin-right:10px; }';
-    printHtml += '.school-name h3 { color: #2e2d6a !important; font-size: 18px !important;margin-top:-120px !important; margin-bottom: 0 !important; }';
-    printHtml += '.info-table {width:100%;color: #2e2d6a !important;border: none;font-size: 12px;letter-spacing: .25px;margin-top: 5px;margin-bottom: 15px;display: inline-table;}';
-    printHtml += '.table-container .info-table th, .table-container .info-table td{color: #2e2d6a !important;text-align:center}';
-    printHtml += '.title-lable {text-align: center;border-radius: 5px;margin-top:10px;margin-bottom:10px;}';
-    printHtml += '.title-lable p {color: #2e2d6a !important;font-size: .9rem;font-weight: 500;letter-spacing: .8px;}';
-    printHtml += '.codes .school-code  {margin-right:65%;}';
-    printHtml += '.custom-table {width: 100%;color: #2e2d6a !important;border-collapse:collapse;font-size: 12px;letter-spacing: .25px;margin-bottom: 20px;display: inline-table;border-radius:5px;}';
-    printHtml += '.custom-table th{height:26px;text-align: center;border:1px solid #2e2d6a;}';
-    printHtml += '.custom-table tr{height:26px;}';
-    printHtml += '.custom-table td {text-align: center;border:1px solid #2e2d6a;}';
+    printHtml += '.school-name h3 { color: #252525 !important; font-size: 18px !important;font-weight: bolder;margin-top:-115px !important; margin-bottom: 0 !important; }';
+
+    printHtml += '.address{margin-top: -42px;}';
+    printHtml += '.address p{font-size:10px;margin-top: -8px !important;}';
+    printHtml += '.title-lable {text-align: center;margin-bottom: 15px;}';
+    printHtml += '.title-lable p {color: #252525 !important;font-size: 15px;font-weight: bolder;letter-spacing: .5px;}';
+
+    printHtml += '.info-table {width:100%;color: #252525 !important;border: none;font-size: 11px;margin-top: 1.5vh;margin-bottom: 2vh;display: inline-table;}';
+    printHtml += '.table-container .info-table th, .table-container .info-table td{color: #252525 !important;text-align:left;padding-left:15px;padding-top:5px;}';
+    printHtml += '.custom-table {width: 100%;color: #252525 !important;border-collapse:collapse;margin-bottom: 20px;display: inline-table;border-radius:5px}';
+    printHtml += '.custom-table th{height: 31px;text-align: center;border:1px solid #9e9e9e;line-height:15px;font-size: 10px;}';
+    printHtml += '.custom-table tr{height: 30px;}';
+    printHtml += '.custom-table td {text-align: center;border:1px solid #9e9e9e;font-size: 10px;}';
     printHtml += '.text-bold { font-weight: bold;}';
-    printHtml += 'p {color: #2e2d6a !important;font-size:12px;}'
-    printHtml += 'h4 {color: #2e2d6a !important;}'
-    printHtml += '.watermark { position: fixed;font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; color: rgba(0, 0, 0, 0.03); top: 75%; left:10%; pointer-events: none; z-index: 1; }';
+    printHtml += '.text-left { text-align: left;}';
+    printHtml += 'p {color: #252525 !important;font-size:12px;}'
+    printHtml += 'h4 {color: #252525 !important;}'
     printHtml += '@media print {';
     printHtml += '  body::before {';
     printHtml += `    content: "${schoolName}, ${city}";`;
     printHtml += '    position: fixed;';
-    printHtml += '    top: 25%;';
+    printHtml += '    top: 40%;';
     printHtml += '    left:10%;';
     printHtml += '    font-size: 20px;';
+    printHtml += '    text-transform: uppercase;';
     printHtml += '    font-weight: bold;';
     printHtml += '    font-family: Arial, sans-serif;';
     printHtml += '    color: rgba(0, 0, 0, 0.08);';
@@ -233,13 +254,12 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     return '';
   }
 
-  processData(selectedStream: any) {
-    this.allAdmitCardsByStream = this.allAdmitCards.filter((item: any) => item.stream === selectedStream);
-    for (let i = 0; i < this.admitCardStrInfoByStream[0].examDate.length; i++) {
-      const subject = Object.keys(this.admitCardStrInfoByStream[0].examDate[i])[0];
-      const date = Object.values(this.admitCardStrInfoByStream[0].examDate[i])[0];
-      const startTime = Object.values(this.admitCardStrInfoByStream[0].examStartTime[i])[0];
-      const endTime = Object.values(this.admitCardStrInfoByStream[0].examEndTime[i])[0];
+  processData() {
+    for (let i = 0; i < this.admitCardStrInfo[0].examDate.length; i++) {
+      const subject = Object.keys(this.admitCardStrInfo[0].examDate[i])[0];
+      const date = Object.values(this.admitCardStrInfo[0].examDate[i])[0];
+      const startTime = Object.values(this.admitCardStrInfo[0].examStartTime[i])[0];
+      const endTime = Object.values(this.admitCardStrInfo[0].examEndTime[i])[0];
 
       this.processedData.push({
         subject,
@@ -249,11 +269,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     }
   }
 
-  getStudentAdmitCardByClass(cls: any) {
-    let params = {
-      class:cls,
-      adminId:this.adminId,
-    }
+  getStudentAdmitCardByClass(params: any) {
     this.admitCardService.getAllStudentAdmitCardByClass(params).subscribe((res: any) => {
       if (res) {
         this.admitCardInfo = res.admitCardInfo;
@@ -268,6 +284,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
 
           if (studentInfo) {
             result.push({
+              session: studentInfo.session,
               studentId: admitCard.studentId,
               class: admitCard.class,
               stream: admitCard.stream,
@@ -285,9 +302,6 @@ export class AdminStudentAdmitCardComponent implements OnInit {
         }, []);
         if (combinedData) {
           this.allAdmitCards = combinedData;
-          setTimeout(() => {
-            this.loader = false;
-          }, 1000)
         }
       }
     })

@@ -7,8 +7,9 @@ const NotificationModel = require('../models/notification');
 let GetSingleClassAdmitCardStructure = async (req, res, next) => {
     let adminId = req.params.id;
     let className = req.params.class;
+    let stream = req.params.stream;
     try {
-        const singleAdmitCardStr = await AdmitCardStructureModel.find({adminId:adminId, class: className });
+        const singleAdmitCardStr = await AdmitCardStructureModel.find({adminId:adminId, class: className,stream:stream });
         if (!singleAdmitCardStr) {
             return res.status(404).json('Fees structure not found !');
         }

@@ -78,12 +78,13 @@ let GetSingleStudentAdmitCardById = async (req, res, next) => {
 let GetAllStudentAdmitCardByClass = async (req, res, next) => {
     let adminId = req.params.id;
     let className = req.params.class;
+    let stream = req.params.stream;
     try {
-        const studentInfo = await StudentModel.find({ adminId: adminId, class: className }, '_id adminId session admissionNo name rollNumber class fatherName motherName stream');
+        const studentInfo = await StudentModel.find({ adminId: adminId, class: className,stream:stream }, '_id adminId session admissionNo name rollNumber class fatherName motherName stream');
         if (!studentInfo) {
             return res.status(404).json({ errorMsg: 'This class any student not found !' });
         }
-        const admitCardInfo = await AdmitCardModel.find({ adminId: adminId, class: className });
+        const admitCardInfo = await AdmitCardModel.find({ adminId: adminId, class: className,stream:stream });
         if (!admitCardInfo) {
             return res.status(404).json({ errorMsg: 'This class admit card not found !' });
         }

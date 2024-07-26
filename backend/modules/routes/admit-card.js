@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const {GetAllStudentAdmitCardByClass,ChangeStatus,GetSingleStudentAdmitCard,GetSingleStudentAdmitCardById} = require('../controllers/admit-card');
 
-router.get('/admin/:id/class/:class',GetAllStudentAdmitCardByClass);
+router.get('/admin/:id/class/:class/stream/:stream',GetAllStudentAdmitCardByClass);
 router.get('/student/:id',GetSingleStudentAdmitCardById);
 router.post('/',GetSingleStudentAdmitCard);
 router.put('/status/:id',ChangeStatus);

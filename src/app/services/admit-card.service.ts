@@ -12,7 +12,7 @@ export class AdmitCardService {
     return this.http.get(`${this.url}/${cls}`);
   }
   getAllStudentAdmitCardByClass(params:any){
-    return this.http.get(`${this.url}/admin/${params.adminId}/class/${params.class}`);
+    return this.http.get(`${this.url}/admin/${params.adminId}/class/${params.cls}/stream/${params.stream}`);
   }
   singleStudentAdmitCardById(id: any) {
     return this.http.get(`${this.url}/student/${id}`);
