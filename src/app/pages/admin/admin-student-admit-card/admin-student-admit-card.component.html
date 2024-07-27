@@ -168,9 +168,9 @@
                                 </div>
                                 <table class="custom-table" style="margin-bottom: 0;">
                                   <tr
-                                    style="height: 22px !important;background-color: rgb(180, 172, 240);padding-bottom: 10px;">
+                                    style="height: 22px !important;background-color: rgba(61, 55, 109, 0.874);padding-bottom: 10px;">
                                     <th class="text-bold"
-                                      style="height: 22px !important;font-size:12px;padding-left: 15px;border: none;">
+                                      style="height: 22px !important;color: #fff;font-size:12px;padding-left: 15px;border: none;">
                                       STUDENT'S PROFILE</th>
                                   </tr>
                                 </table>
@@ -199,10 +199,10 @@
                                 </table>
                                 <table class="custom-table" style="margin-bottom: 0;">
                                   <tr
-                                    style="height: 22px !important;background-color: rgb(180, 172, 240);padding-bottom: 10px;">
+                                    style="height: 22px !important;background-color: rgba(61, 55, 109, 0.874);padding-bottom: 10px;">
                                     <th class="text-bold"
-                                      style="height: 22px !important;font-size: 12px;padding-left: 15px; border: none;">
-                                      EXAM TIME SCHEDULE</th>
+                                      style="height: 22px !important;color:#fff;font-size: 12px;padding-left: 15px; border: none;">
+                                      EXAM TIME SCHEDULE <span *ngIf="cls>10">- {{stream | uppercase}}</span></th>
                                   </tr>
                                 </table>
                                 <table class="custom-table">
@@ -229,15 +229,20 @@
                                     </tr>
                                   </ng-container>
                                 </table>
-                                <table class="custom-table" style="border: none;margin-top: 20px;margin-bottom: 30px;">
+                                <table class="custom-table" style="border: none;margin-top: 30px;padding-bottom: 0;">
                                   <tr>
                                     <td class="text-bold"
-                                      style="width:50%;padding-left:10%;text-align: left;border: none;">Class Teacher (Signature)</td>
-                                    <td class="text-bold"
-                                      style="width:50%;padding-right:10%;text-align: right;border: none;">Principal (Sign. with official seal)</td>
+                                      style="width:50%;padding-left:10%;text-align: left;border: none;">Class Teacher
+                                      (Signature)</td>
+                                    <td *ngIf="cls>8" class="text-bold"
+                                      style="width:50%;padding-right:10%;text-align: right;border: none;">Principal
+                                      (Sign. with official seal)</td>
+                                      <td *ngIf="cls<=8" class="text-bold"
+                                      style="width:50%;padding-right:10%;text-align: right;border: none;">Principal / Head Master
+                                      (Sign. with official seal)</td>
                                   </tr>
                                 </table>
-                                <div>
+                                <div style="padding-left: 20px;padding-right: 20px;">
                                   <h4 class="text-bold">Disclaimer:</h4>
                                   <p>This is your online admit card, issued in accordance with our institution's
                                     policies.
@@ -313,9 +318,9 @@
                                 </div>
                                 <table class="custom-table" style="margin-top: -8px;margin-bottom: 0;">
                                   <tr
-                                    style="height: 20px !important;background-color: rgb(180, 172, 240);padding-bottom: 5px;">
+                                    style="height: 20px !important;background-color: rgba(61, 55, 109, 0.874);padding-bottom: 5px;">
                                     <th class="text-bold"
-                                      style="height: 20px !important;font-size:12px;padding-left: 15px;border: none;">
+                                      style="height: 20px !important;color: #fff;font-size:12px;padding-left: 15px;border: none;">
                                       STUDENT'S PROFILE</th>
                                   </tr>
                                 </table>
@@ -344,10 +349,10 @@
                                 </table>
                                 <table class="custom-table" style="margin-bottom: 0;">
                                   <tr
-                                    style="height: 20px !important;background-color: rgb(180, 172, 240);padding-bottom: 5px;">
+                                    style="height: 20px !important;background-color: rgba(61, 55, 109, 0.874);padding-bottom: 5px;">
                                     <th class="text-bold"
-                                      style="height: 20px !important;font-size: 12px;padding-left: 15px; border: none;">
-                                      EXAM TIME SCHEDULE</th>
+                                      style="height: 20px !important;color:#fff;font-size: 12px;padding-left: 15px; border: none;">
+                                      EXAM TIME SCHEDULE <span *ngIf="cls>10">- {{stream | uppercase}}</span></th>
                                   </tr>
                                 </table>
                                 <table class="custom-table">
@@ -379,14 +384,17 @@
                                     <td class="text-bold"
                                       style="width:50%;padding-left:10%;text-align: left;border: none;">Class Teacher
                                       (Signature)</td>
-                                    <td class="text-bold"
+                                    <td *ngIf="cls>8" class="text-bold"
                                       style="width:50%;padding-right:10%;text-align: right;border: none;">Principal
+                                      (Sign. with official seal)</td>
+                                      <td *ngIf="cls<=8" class="text-bold"
+                                      style="width:50%;padding-right:10%;text-align: right;border: none;">Principal / Head Master
                                       (Sign. with official seal)</td>
                                   </tr>
                                 </table>
                               </div>
                             </div>
-                            <div class="row" style="padding-top: 2px;margin-bottom: 2px;border-bottom:1px dashed #2e2d6a"></div>
+                            <div class="row" style="padding-top: 5px;margin-bottom: 5px;border-bottom:1px dashed #2e2d6a"></div>
                           </div>
                         </ng-container>
                       </ng-container>
