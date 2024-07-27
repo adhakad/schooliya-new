@@ -139,7 +139,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     printHtml += '.info-table {width:100%;color: #252525 !important;border: none;font-size: 11px;margin-top: 1.5vh;margin-bottom: 2vh;display: inline-table;}';
     printHtml += '.table-container .info-table th, .table-container .info-table td{color: #252525 !important;text-align:left;padding-left:15px;padding-top:5px;}';
     printHtml += '.custom-table {width: 100%;color: #252525 !important;border-collapse:collapse;margin-bottom: 20px;display: inline-table;border-radius:5px}';
-    printHtml += '.custom-table th{height: 31px;text-align: center;border:1px solid #9e9e9e;line-height:15px;font-size: 10px;}';
+    printHtml += '.custom-table th{height: 30px;text-align: center;border:1px solid #9e9e9e;line-height:15px;font-size: 10px;}';
     printHtml += '.custom-table tr{height: 30px;}';
     printHtml += '.custom-table td {text-align: center;border:1px solid #9e9e9e;font-size: 10px;}';
     printHtml += '.text-bold { font-weight: bold;}';
@@ -156,7 +156,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     printHtml += '    text-transform: uppercase;';
     printHtml += '    font-weight: bold;';
     printHtml += '    font-family: Arial, sans-serif;';
-    printHtml += '    color: rgba(0, 0, 0, 0.08);';
+    printHtml += '    color: rgba(50, 48, 65, 0.108);';
     printHtml += '    pointer-events: none;';
     printHtml += '  }';
     printHtml += '}';
@@ -208,6 +208,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     printHtml += '.text-left { text-align: left;}';
     printHtml += 'p {color: #252525 !important;font-size:12px;}'
     printHtml += 'h4 {color: #252525 !important;}'
+    printHtml += '.watermark { position: fixed;font-family: Arial, sans-serif; font-size: 20px; font-weight: bold;text-transform: uppercase; color: rgba(162, 165, 182, 0.015); top: 75%; left:10%; pointer-events: none; z-index: 1; }';
     printHtml += '@media print {';
     printHtml += '  body::before {';
     printHtml += `    content: "${schoolName}, ${city}";`;
@@ -218,7 +219,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     printHtml += '    text-transform: uppercase;';
     printHtml += '    font-weight: bold;';
     printHtml += '    font-family: Arial, sans-serif;';
-    printHtml += '    color: rgba(0, 0, 0, 0.08);';
+    printHtml += '    color: rgba(50, 48, 65, 0.108);';
     printHtml += '    pointer-events: none;';
     printHtml += '  }';
     printHtml += '}';
@@ -230,7 +231,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
       const student1 = this.allAdmitCards[i];
       const student2 = i + 1 < this.allAdmitCards.length ? this.allAdmitCards[i + 1] : null;
 
-      // printHtml += `<div class="watermark">${schoolName}, ${city}</div>`;
+      printHtml += `<div class="watermark">${schoolName}, ${city}</div>`;
       // Print details for the first student
       printHtml += this.getStudentHtml(student1);
 
