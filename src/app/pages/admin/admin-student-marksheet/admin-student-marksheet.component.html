@@ -54,11 +54,13 @@
               <mat-icon>article</mat-icon>
               <span>Marksheet Template Format</span>
             </button>
-            <button mat-menu-item routerLink="/admin/marksheet/result/add/{{cls}}/{{stream}}" *ngIf="cls && stream && templateStatusCode==200 && templateStatusCode !==404 && templateStatusCode !==500 && templateStatusCode !==0">
+            <button mat-menu-item routerLink="/admin/marksheet/result/add/{{cls}}/{{stream}}"
+              *ngIf="cls && stream && templateStatusCode==200 && templateStatusCode !==404 && templateStatusCode !==500 && templateStatusCode !==0">
               <mat-icon>add</mat-icon>
               <span>Result Add</span>
             </button>
-            <button mat-menu-item (click)="bulkPrint()" *ngIf="cls && stream && templateStatusCode==200 && templateStatusCode !==404 && templateStatusCode !==500 && templateStatusCode !==0">
+            <button mat-menu-item (click)="bulkPrint()"
+              *ngIf="cls && stream && templateStatusCode==200 && templateStatusCode !==404 && templateStatusCode !==500 && templateStatusCode !==0">
               <mat-icon>cloud_upload</mat-icon>
               <span>Bulk Marksheet's Print</span>
             </button>
@@ -74,47 +76,55 @@
             <div class="col-12 col-lg-12 offset-lg-0">
               <div class="main-card">
 
-                <table class="table table-hover align-middle mb-1 bg-white mt-3" *ngIf="!errorCheck && statusCode !==404 && statusCode !==500 && templateStatusCode !==404 && templateStatusCode !==500">
-                  <thead class="bg-light">
-                    <tr class="text-muted">
-                      <th>No.</th>
-                      <th>Name</th>
-                      <th>Admission No.</th>
-                      <th>Roll Number</th>
-                      <th>Class</th>
-                      <th>Stream</th>
-                      <th>Remove</th>
-                    </tr>
-                  </thead>
+                <table class="table table-hover align-middle mb-1 bg-white mt-3"
+                  *ngIf="cls && stream && !errorCheck && statusCode !==404 && statusCode !==500 && templateStatusCode !==404 && templateStatusCode !==500">
+                  <ng-container *ngIf="mappedResults && mappedResults.length>0">
+                    <thead class="bg-light">
+                      <tr class="text-muted">
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Admission No.</th>
+                        <th>Roll Number</th>
+                        <th>Class</th>
+                        <th>Stream</th>
+                        <th>Remove</th>
+                      </tr>
+                    </thead>
 
-                  <tbody *ngIf="mappedResults && mappedResults.length>0">
-                    <tr *ngFor="let result of mappedResults,let i=index">
-                      <td>
-                        <p class="mb-0">{{i+1}}</p>
-                      </td>
-                      <td>
-                        <p class="mb-0">{{result.name | titlecase}}</p>
-                      </td>
-                      <td>
-                        <p class="mb-0">{{result.admissionNo}}</p>
-                      </td>
-                      <td>
-                        <p class="mb-0">{{result.rollNumber}}</p>
-                      </td>
-                      <td>
-                        <p class="mb-0">{{result.class | classSuffix}}</p>
-                      </td>
-                      <td>
-                        <p class="mb-0">{{result.stream}}</p>
-                      </td>
-                      <td class="mb-0">
-                        <mat-icon (click)="deleteMarksheetResultModel(result.resultId)">delete</mat-icon>
-                      </td>
-                    </tr>
-                  </tbody>
+                    <tbody>
+                      <tr *ngFor="let result of mappedResults,let i=index">
+                        <td>
+                          <p class="mb-0">{{i+1}}</p>
+                        </td>
+                        <td>
+                          <p class="mb-0">{{result.name | titlecase}}</p>
+                        </td>
+                        <td>
+                          <p class="mb-0">{{result.admissionNo}}</p>
+                        </td>
+                        <td>
+                          <p class="mb-0">{{result.rollNumber}}</p>
+                        </td>
+                        <td>
+                          <p class="mb-0">{{result.class | classSuffix}}</p>
+                        </td>
+                        <td>
+                          <p class="mb-0">{{result.stream}}</p>
+                        </td>
+                        <td class="mb-0">
+                          <mat-icon (click)="deleteMarksheetResultModel(result.resultId)">delete</mat-icon>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </ng-container>
                 </table>
-                <div *ngIf="errorCheck && statusCode ==404 || statusCode ==500 || templateStatusCode==404 || templateStatusCode==500" style="text-align: center;margin-top: 200px;">
-                  <p *ngIf="statusCode ==404 && templateStatusCode==200">Marksheet Not Found !</p>
+                <div *ngIf="!cls || !stream" style="text-align: center;margin-top: 200px;">
+                  <p>Please Choose Class & Stream !</p>
+                </div>
+                <div
+                  *ngIf="cls && stream && errorCheck && statusCode ==404 || statusCode ==500 || templateStatusCode==404 || templateStatusCode==500"
+                  style="text-align: center;margin-top: 200px;">
+                  <p *ngIf="templateStatusCode==200 && statusCode ==404">Marksheet Not Found, Please Add Result !</p>
                   <p *ngIf="statusCode ==500 || templateStatusCode==500">Internal Server Error !</p>
                   <p *ngIf="templateStatusCode ==404">Please Choose Marksheet Template Format !</p>
                 </div>
@@ -157,7 +167,8 @@
                   <div class="modal-dialog print-model-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title">MARKSHEET'S PRINT/DOWNLOAD - {{cls | classSuffix | uppercase}} {{stream | uppercase}}</h5>
+                        <h5 class="modal-title">MARKSHEET'S PRINT/DOWNLOAD - {{cls | classSuffix | uppercase}} {{stream
+                          | uppercase}}</h5>
                         <mat-icon matRipple (click)="closeModal()">close</mat-icon>
                       </div>
                       <div class="modal-body print-model-body">

@@ -138,17 +138,16 @@ let GetAllStudentExamResultByClass = async (req, res, next) => {
         }
 
 
-
-        const examResult = await ExamResultModel.find({ adminId: adminId, class: className, stream });
-        if (examResult.length <= 0) {
-            return res.status(404).json({ errorMsg: 'This class exam result not found !' });
-        }
         let marksheetTemplate = await MarksheetTemplateModel.findOne({ adminId: adminId, class: className, stream: stream });
         if (!marksheetTemplate) {
             if (stream === "N/A") {
                 streamMsg = ``;
             }
             return res.status(404).json({ errorMsg: `This class ${streamMsg} marksheet template not found !` });
+        }
+        const examResult = await ExamResultModel.find({ adminId: adminId, class: className, stream });
+        if (examResult.length <= 0) {
+            return res.status(404).json({ errorMsg: 'This class exam result not found !' });
         }
         let templateName = marksheetTemplate.templateName;
         let marksheetTemplateStructure = await MarksheetTemplateStructureModel.findOne({ templateName: templateName });

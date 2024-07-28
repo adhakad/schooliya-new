@@ -196,6 +196,7 @@ export class AdminStudentMarksheetComponent implements OnInit {
     }, err => {
       this.errorCheck = true;
       this.statusCode = err.status;
+      console.log(err.error)
     })
     setTimeout(() => {
       this.loader = false;
@@ -327,6 +328,7 @@ export class AdminStudentMarksheetComponent implements OnInit {
       if (res) {
         this.errorCheck = false;
         this.templateStatusCode = 200;
+        console.log(this.templateStatusCode)
         this.marksheetTemplateStructureInfo = res;
         this.examType = Object.keys(res.marksheetTemplateStructure.examStructure);
       }
