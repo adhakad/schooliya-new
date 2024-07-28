@@ -99,7 +99,7 @@
                                                     <div *ngIf="errorCheck">
                                                         <p class="error-message">{{errorMsg}}</p>
                                                     </div>
-                                                    <div class="container mt-3 mb-3">
+                                                    <div class="container mt-3 mb-3" *ngIf="classSubject.length>0">
                                                         <div class="row">
                                                             <div class="col-12 col-lg-6">
                                                                 <mat-form-field appearance="outline">
@@ -219,7 +219,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <ng-container>
+                                                    <ng-container *ngIf="classSubject.length>0">
                                                         <h3 style="font-size: 16px;letter-spacing: normal;">Note : As
                                                             soon
                                                             as the admit card structure for the {{cls | classSuffix}}
@@ -229,7 +229,7 @@
                                                             automatically generated.</h3>
                                                     </ng-container>
                                                 </div>
-                                                <div class="modal-footer" *ngIf="!deleteMode">
+                                                <div class="modal-footer" *ngIf="!deleteMode && classSubject.length>0">
                                                     <button class="submit-button" mat-raised-button
                                                         [disabled]="!admitcardForm.valid" type="submit">Submit</button>
                                                 </div>

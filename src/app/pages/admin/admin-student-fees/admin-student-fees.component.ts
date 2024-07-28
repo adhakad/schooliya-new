@@ -9,6 +9,7 @@ import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
 import { FeesStructureService } from 'src/app/services/fees-structure.service';
 import { PrintPdfService } from 'src/app/services/print-pdf/print-pdf.service';
 import { SchoolService } from 'src/app/services/school.service';
+import { ClassService } from 'src/app/services/class.service';
 
 @Component({
   selector: 'app-admin-student-fees',
@@ -32,6 +33,7 @@ export class AdminStudentFeesComponent implements OnInit {
   paginationValues: Subject<any> = new Subject();
   page: Number = 0;
   cls: any;
+  classInfo: any[] = [];
   classSubject: any;
   showBulkFeesModal: boolean = false;
   movies: any[] = [];
@@ -39,7 +41,6 @@ export class AdminStudentFeesComponent implements OnInit {
   fileChoose: boolean = false;
   existRollnumber: number[] = [];
   clsFeesStructure: any;
-
   schoolInfo: any;
   studentList: any[] = [];
   singleStudent: any;
@@ -47,9 +48,13 @@ export class AdminStudentFeesComponent implements OnInit {
   payNow: boolean = false;
   receiptInstallment: any = {};
   receiptMode: boolean = false;
-  loader: Boolean = true;
+
+  stream: string = '';
+  notApplicable: String = "stream";
+  streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
+  loader: Boolean = false;
   adminId!: string;
-  constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private printPdfService: PrintPdfService, private feesService: FeesService, private feesStructureService: FeesStructureService) {
+  constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private classService: ClassService, private printPdfService: PrintPdfService, private feesService: FeesService, private feesStructureService: FeesStructureService) {
     this.feesForm = this.fb.group({
       adminId: [''],
       class: [''],
@@ -65,10 +70,8 @@ export class AdminStudentFeesComponent implements OnInit {
     this.getSchool();
     let getAdmin = this.adminAuthService.getLoggedInAdminInfo();
     this.adminId = getAdmin?.id;
+    this.getClass();
     // this.getFees({ page: 1 });
-    this.cls = this.activatedRoute.snapshot.paramMap.get('id');
-    this.feesStructureByClass(this.cls);
-    this.getAllStudentFeesCollectionByClass(this.cls);
   }
 
   printReceipt() {
@@ -76,6 +79,29 @@ export class AdminStudentFeesComponent implements OnInit {
     this.closeModal();
   }
 
+  getClass() {
+    this.classService.getClassList().subscribe((res: any) => {
+      if (res) {
+        this.classInfo = res;
+      }
+    })
+  }
+  chooseClass(cls: any) {
+    this.stream = '';
+    this.cls = cls;
+  }
+  filterStream(stream: any) {
+    this.stream = stream;
+    if (stream && this.cls) {
+      let params = {
+        adminId: this.adminId,
+        cls: this.cls,
+        stream: stream,
+      }
+      this.feesStructureByClass(this.cls);
+      this.getAllStudentFeesCollectionByClass(this.cls);
+    }
+  }
   getSchool() {
     this.schoolService.getSchool(this.adminId).subscribe((res: any) => {
       if (res) {

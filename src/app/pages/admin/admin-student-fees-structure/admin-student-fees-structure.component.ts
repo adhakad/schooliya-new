@@ -37,6 +37,7 @@ export class AdminStudentFeesStructureComponent implements OnInit {
   clsFeesStructure: any;
   particularsAdmissionFees: any[] = [];
   feePerticulars: any[] = ['Registration', 'Tution', 'Books', 'Uniform', 'Examination','Sports','Library','Transport'];
+  stream: any;
   schoolInfo: any;
   loader: Boolean = true;
   adminId!:string;
@@ -55,7 +56,8 @@ export class AdminStudentFeesStructureComponent implements OnInit {
     this.getSchool();
     let getAdmin = this.adminAuthService.getLoggedInAdminInfo();
     this.adminId = getAdmin?.id;
-    this.cls = this.activatedRoute.snapshot.paramMap.get('id');
+    this.cls = this.activatedRoute.snapshot.paramMap.get('class');
+    this.stream = this.activatedRoute.snapshot.paramMap.get('stream');
     this.getFeesStructureByClass(this.cls);
     setTimeout(() => {
       this.loader = false;

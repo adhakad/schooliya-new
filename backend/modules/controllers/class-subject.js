@@ -52,7 +52,7 @@ let GetSingleClassSubjectByStream = async (req, res, next) => {
     try {
         const classSubjectList = await ClassSubjectModel.findOne({adminId:adminId,class:className,stream:stream});
         if(!classSubjectList){
-            return res.status(404).json( 'This class and subject group not found. !' );
+            return res.status(404).json( 'Please group subjcts according to class !' );
         }
         return res.status(200).json(classSubjectList);
     } catch (error) {
@@ -92,7 +92,7 @@ let CreateClassSubject = async (req, res, next) => {
         }
         let checkClassSubject = await ClassSubjectModel.findOne({adminId:adminId, class: className, stream: stream });
         if(checkClassSubject){
-            return res.status(400).json(`This class and subject group already exist !`)
+            return res.status(400).json(`Class and subject group already exist !`)
         }
         const createClassSubject = await ClassSubjectModel.create(classSubjectData);
         return res.status(200).json("Class and subject group created successfully.");

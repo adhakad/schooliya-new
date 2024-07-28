@@ -6,19 +6,60 @@
         </div>
         <div class="col-12 col-lg-10">
             <div class="row">
-                <div class="col-12 big-container">
-                    <div class="col-lg-12 offset-lg-0">
-                        <div class="main-card pb-4">
-                            <div class="row">
-                                <div class="col-12 col-lg-4 pt-2 pb-2">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h3>Fee Payment ><span>
-                                                    {{cls | classSuffix}}</span></h3>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="col-12 main-container">
+                    <div class="row">
+                      <div class="col-3" style="text-align: left;">
+                        <button mat-button class="menu-button">
+                          <mat-icon>assistant_navigation</mat-icon>
+                          <span>Fee Payment</span>
+                        </button>
+                      </div>
+                      <div class="col-9" style="text-align: right;">
+                        <mat-form-field class="custom-select">
+                          <mat-label *ngIf="!cls">Class</mat-label>
+                          <mat-select type="number" matInput>
+                            <div *ngFor="let classInfo of classInfo">
+                              <mat-option value="{{classInfo.class}}" (click)="chooseClass(classInfo.class)">{{classInfo.class |
+                                classSuffix}}</mat-option>
                             </div>
+                          </mat-select>
+                        </mat-form-field>
+          
+                        <mat-form-field class="custom-select">
+                          <mat-label *ngIf="!stream">Stream</mat-label>
+                          <mat-select type="text" matInput>
+                            <ng-container *ngIf="cls==12 || cls==11">
+                              <div *ngFor="let subject of streamMainSubject">
+                                <mat-option (click)="filterStream(subject)" value="{{subject}}">{{subject}}</mat-option>
+                              </div>
+                            </ng-container>
+                            <ng-container *ngIf="cls<11 && cls!==0 || cls == 200 || cls==201 || cls==202">
+                              <mat-option value="{{notApplicable}}" (click)="filterStream(notApplicable)">N/A</mat-option>
+                            </ng-container>
+                          </mat-select>
+                        </mat-form-field>
+                        <button class="btn setting-button" [matMenuTriggerFor]="settings">
+                          <mat-icon style="margin-top: 5px;cursor: pointer;">settings</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                    <mat-menu #settings="matMenu">
+                      <button mat-menu-item routerLink="/admin/fees/structure/{{cls}}/{{stream}}" *ngIf="cls && stream">
+                        <mat-icon>assignment</mat-icon>
+                        <span>Admit Card Structure</span>
+                      </button>
+                      <button mat-menu-item *ngIf="!cls || !stream">
+                        <mat-icon>error</mat-icon>
+                        <span>Please Choose Class & Stream</span>
+                      </button>
+                    </mat-menu>
+                  </div>
+          
+          
+                  <div class="row main-container">
+                    <div class="col-12 col-lg-12 big-container">
+                      <div class="col-12 col-lg-12 offset-lg-0">
+                        <div class="main-card">
                             <table class="table table-hover align-middle mt-2 mb-1 bg-white">
                                 <thead class="bg-light">
                                     <tr class="text-muted">

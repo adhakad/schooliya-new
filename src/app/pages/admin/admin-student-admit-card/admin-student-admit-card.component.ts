@@ -34,7 +34,6 @@ export class AdminStudentAdmitCardComponent implements OnInit {
   notApplicable: String = "stream";
   examType: any[] = [];
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
-
   selectedValue: number = 0;
   adminId!: string;
   constructor(public activatedRoute: ActivatedRoute, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private classService: ClassService, private admitCardService: AdmitCardService, private printPdfService: PrintPdfService, private admitCardStructureService: AdmitCardStructureService) {
@@ -65,10 +64,6 @@ export class AdminStudentAdmitCardComponent implements OnInit {
   chooseClass(cls: any) {
     this.stream = '';
     this.cls = cls;
-    if (cls < 11 && cls !== 0 || cls == 200 || cls == 201 || cls == 202) {
-      // this.studentForm.get('stream')?.setValue("N/A");
-      // this.getStudentExamResultByClass(this.cls);
-    }
   }
   filterStream(stream: any) {
     this.stream = stream;
