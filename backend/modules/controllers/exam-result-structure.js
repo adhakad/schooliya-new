@@ -6,6 +6,7 @@ const ExamResultModel = require('../models/exam-result');
 const NotificationModel = require('../models/notification');
 const classModel = require('../models/class');
 const ClassSubjectModel = require('../models/class-subject');
+const StudentModel = require('../models/student');
 
 let GetSingleClassMarksheetTemplateByStream = async (req, res, next) => {
     let adminId = req.params.id;
@@ -68,6 +69,10 @@ let CreateExamResultStructure = async (req, res, next) => {
         stream = "N/A";
     }
     try {
+        let student = await StudentModel.findOne({ adminId: adminId, class: className, stream: stream});
+        if (!student) {
+            return res.status(404).json('No student was found in this class, please add students !');
+        }
         const checkExamExist = await MarksheetTemplateModel.findOne({ adminId: adminId, class: className, stream: stream});
         if (checkExamExist) {
             return res.status(400).json(`This class template ${checkExamExist.templateName} already exist !`);

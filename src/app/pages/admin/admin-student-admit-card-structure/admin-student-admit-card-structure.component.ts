@@ -28,7 +28,7 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
   stream: any;
   className: any;
   notApplicable: String = "stream";
-  examTypes: any[] = ["quarterly", "half yearly", "final"];
+  // examTypes: any[] = ["quarterly", "half yearly", "final"];
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
   examTime: any[] = ["8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM"];
   loader: Boolean = true;
@@ -37,7 +37,7 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
     this.admitcardForm = this.fb.group({
       adminId: [''],
       class: [''],
-      examType: ['', Validators.required],
+      examType: ['',[Validators.required,Validators.minLength(5), Validators.maxLength(20)]],
       stream: [''],
       type: this.fb.group({
         examDate: this.fb.array([], [Validators.required]),

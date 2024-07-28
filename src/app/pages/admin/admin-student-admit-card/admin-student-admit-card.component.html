@@ -44,20 +44,6 @@
             </div>
           </div>
           <mat-menu #settings="matMenu">
-            <!-- <div class="col-lg-6 radio-btn-mobile mb-3">
-              <mat-radio-group (change)="onChange($event)">
-                <mat-radio-button [value]="0" [checked]="">One Admit Card Print on Single Page</mat-radio-button>
-                <mat-radio-button [value]="1" [checked]="selectedValue==1">Two Admit Card Print on Single Page</mat-radio-button>
-              </mat-radio-group>
-            </div> -->
-            <!-- <button mat-menu-item routerLink="/admin/marksheet/structure/{{cls}}/{{stream}}" *ngIf="cls && stream">
-              <mat-icon>article</mat-icon>
-              <span>Marksheet Template Format</span>
-            </button>
-            <button mat-menu-item routerLink="/admin/marksheet/student/add/{{cls}}/{{stream}}" *ngIf="cls && stream && templateStatusCode==200 && templateStatusCode !==404 && templateStatusCode !==500 && templateStatusCode !==0">
-              <mat-icon>add</mat-icon>
-              <span>Result Add</span>
-            </button> -->
             <button mat-menu-item routerLink="/admin/admit-card/structure/{{cls}}/{{stream}}" *ngIf="cls && stream">
               <mat-icon>assignment</mat-icon>
               <span>Admit Card Structure</span>
@@ -145,7 +131,7 @@
                 <div class="modal-dialog print-model-dialog modal-dialog-scrollable">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">ADMIT CARD'S PRINT/DOWNLOAD - {{cls | classSuffix | uppercase}} {{stream | uppercase}}</h5>
+                      <h5 class="modal-title">ADMIT CARD'S PRINT/DOWNLOAD - {{cls | classSuffix | uppercase}} <span *ngIf="cls==12 || cls==11">{{stream | uppercase}}</span></h5>
                       <mat-icon matRipple (click)="closeModal()">close</mat-icon>
                     </div>
                     <div class="modal-body print-model-body">
@@ -177,7 +163,7 @@
                                 </div>
                                 <div class="row">
                                   <div class="col-12 title-lable">
-                                    <p>{{student?.examType | uppercase}} EXAM ADMIT CARD {{student?.session}}</p>
+                                    <p>{{student?.examType | uppercase}} ADMIT CARD {{student?.session}}</p>
                                   </div>
                                 </div>
                                 <table class="custom-table" style="margin-bottom: 0;">
@@ -216,7 +202,7 @@
                                     style="height: 22px !important;background-color: rgba(61, 55, 109, 0.874);padding-bottom: 10px;">
                                     <th class="text-bold"
                                       style="height: 22px !important;color:#fff;font-size: 12px;padding-left: 15px; border: none;">
-                                      EXAM TIME SCHEDULE <span *ngIf="cls>10">- {{stream | uppercase}}</span></th>
+                                      EXAM TIME SCHEDULE <span *ngIf="cls==12 || cls==11">- {{stream | uppercase}}</span></th>
                                   </tr>
                                 </table>
                                 <table class="custom-table">
@@ -248,10 +234,10 @@
                                     <td class="text-bold"
                                       style="width:50%;padding-left:10%;text-align: left;border: none;">Class Teacher
                                       (Signature)</td>
-                                    <td *ngIf="cls>8" class="text-bold"
+                                    <td *ngIf="cls==9 || cls==10 || cls==11 || cls==12" class="text-bold"
                                       style="width:50%;padding-right:10%;text-align: right;border: none;">Principal
                                       (Sign. with official seal)</td>
-                                      <td *ngIf="cls<=8" class="text-bold"
+                                      <td *ngIf="cls !==9 || cls !==10 || cls !==11 || cls !==12" class="text-bold"
                                       style="width:50%;padding-right:10%;text-align: right;border: none;">Principal / Head Master
                                       (Sign. with official seal)</td>
                                   </tr>
@@ -327,7 +313,7 @@
                                 </div>
                                 <div class="row">
                                   <div class="col-12 title-lable">
-                                    <p>{{student?.examType | uppercase}} EXAM ADMIT CARD {{student?.session}}</p>
+                                    <p>{{student?.examType | uppercase}} ADMIT CARD {{student?.session}}</p>
                                   </div>
                                 </div>
                                 <table class="custom-table" style="margin-top: -8px;margin-bottom: 0;">
@@ -366,7 +352,7 @@
                                     style="height: 20px !important;background-color: rgba(61, 55, 109, 0.874);padding-bottom: 5px;">
                                     <th class="text-bold"
                                       style="height: 20px !important;color:#fff;font-size: 12px;padding-left: 15px; border: none;">
-                                      EXAM TIME SCHEDULE <span *ngIf="cls>10">- {{stream | uppercase}}</span></th>
+                                      EXAM TIME SCHEDULE <span *ngIf="cls==11 || cls==12">- {{stream | uppercase}}</span></th>
                                   </tr>
                                 </table>
                                 <table class="custom-table">
@@ -398,10 +384,10 @@
                                     <td class="text-bold"
                                       style="width:50%;padding-left:10%;text-align: left;border: none;">Class Teacher
                                       (Signature)</td>
-                                    <td *ngIf="cls>8" class="text-bold"
+                                    <td *ngIf="cls==9 || cls==10 || cls==11 || cls==12" class="text-bold"
                                       style="width:50%;padding-right:10%;text-align: right;border: none;">Principal
                                       (Sign. with official seal)</td>
-                                      <td *ngIf="cls<=8" class="text-bold"
+                                      <td *ngIf="cls !==9 || cls !==10 || cls !==11 || cls !==12" class="text-bold"
                                       style="width:50%;padding-right:10%;text-align: right;border: none;">Principal / Head Master
                                       (Sign. with official seal)</td>
                                   </tr>

@@ -391,10 +391,6 @@
                                   Address is required
                                 </mat-error>
                                 <mat-error
-                                  *ngIf="studentForm.get('address')?.hasError('pattern') && studentForm.get('address')?.touched">
-                                  Please enter a valid Address (only letters and spaces are allowed)
-                                </mat-error>
-                                <mat-error
                                   *ngIf="studentForm.get('address')?.hasError('maxlength') && studentForm.get('address')?.touched">
                                   Maximum length exceeded (maximum 50 characters allowed)
                                 </mat-error>
@@ -404,10 +400,6 @@
                               <mat-form-field appearance="outline">
                                 <mat-label>Last School Optional</mat-label>
                                 <input matInput type="text" formControlName="lastSchool">
-                                <mat-error
-                                  *ngIf="studentForm.get('lastSchool')?.hasError('pattern') && studentForm.get('lastSchool')?.touched">
-                                  Please enter a valid Last School (only letters and spaces are allowed)
-                                </mat-error>
                                 <mat-error
                                   *ngIf="studentForm.get('lastSchool')?.hasError('maxlength') && studentForm.get('lastSchool')?.touched">
                                   Maximum length exceeded (maximum 50 characters allowed)

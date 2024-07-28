@@ -63,6 +63,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     this.selectedValue = event.value;
   }
   chooseClass(cls: any) {
+    this.stream = '';
     this.cls = cls;
     if (cls < 11 && cls !== 0 || cls == 200 || cls == 201 || cls == 202) {
       // this.studentForm.get('stream')?.setValue("N/A");

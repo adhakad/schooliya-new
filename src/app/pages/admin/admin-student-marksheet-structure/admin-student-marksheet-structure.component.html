@@ -11,7 +11,7 @@
                         <div class="col-3" style="text-align: left;">
                             <button mat-button class="menu-button">
                                 <mat-icon>assistant_navigation</mat-icon>
-                                <span>Marksheet's > Template Format</span>
+                                <span>Marksheet's > Template Format &nbsp;*&nbsp; {{cls | classSuffix}}<span *ngIf="cls==11 || cls==12">{{stream}}</span></span>
                             </button>
                         </div>
                     </div>
@@ -179,7 +179,7 @@
                                                                         {{selectedTemplate}} For {{cls | classSuffix |
                                                                         lowercase}}
                                                                         <span
-                                                                            *ngIf="stream !=='stream'">{{stream}}</span>
+                                                                            *ngIf="cls==11 || cls==12">{{stream}}</span>
                                                                     </h6>
                                                                 </div>
                                                             </div>
@@ -199,7 +199,7 @@
                                                                 Note :
                                                                 As
                                                                 soon as the marksheet template for the {{cls |
-                                                                classSuffix}} <span *ngIf="stream !=='stream'">{{stream
+                                                                classSuffix}} <span *ngIf="cls==11 || cls==12">{{stream
                                                                     |lowercase}}</span>
                                                                 is
                                                                 deleted, the exam result for all the students will be
