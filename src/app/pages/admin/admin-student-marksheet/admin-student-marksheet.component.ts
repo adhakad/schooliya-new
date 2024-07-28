@@ -325,11 +325,13 @@ export class AdminStudentMarksheetComponent implements OnInit {
   getSingleClassResultStrucByStream(params: any) {
     this.examResultStructureService.getSingleClassResultStrucByStream(params).subscribe((res: any) => {
       if (res) {
+        this.errorCheck = false;
         this.templateStatusCode = 200;
         this.marksheetTemplateStructureInfo = res;
         this.examType = Object.keys(res.marksheetTemplateStructure.examStructure);
       }
     }, err => {
+      this.errorCheck = true;
       this.templateStatusCode = err.status;
       this.falseAllValue();
     })

@@ -8,8 +8,11 @@ let GetSingleClassAdmitCardStructure = async (req, res, next) => {
     let adminId = req.params.id;
     let className = req.params.class;
     let stream = req.params.stream;
+    if (stream === "stream") {
+        stream = "N/A";
+    }
     try {
-        const singleAdmitCardStr = await AdmitCardStructureModel.find({adminId:adminId, class: className,stream:stream });
+        const singleAdmitCardStr = await AdmitCardStructureModel.findOne({adminId:adminId, class: className,stream:stream });
         if (!singleAdmitCardStr) {
             return res.status(404).json('Fees structure not found !');
         }
@@ -25,37 +28,15 @@ let CreateAdmitCardStructure = async (req, res, next) => {
     if (stream === "stream") {
         stream = "N/A";
     }
-    let streamMsg = `${stream} stream`;
 
     try {
-        const checkExamExist = await AdmitCardStructureModel.findOne({adminId:adminId, class: className, stream: stream });
-        if (checkExamExist) {
-            if (stream === "N/A") {
-                streamMsg = ``;
-            }
-            let cls;
-            if (className == 1) {
-                cls = `${className}st`
-            }
-            if (className == 2) {
-                cls = `${className}nd`
-            }
-            if (cls == 3) {
-                cls = `${className}rd`
-            }
-            if (className >= 4 && className <= 12) {
-                cls = `${className}th`
-            }
-            if (className == 200) {
-                cls = `Nursery`;
-            }
-            if (className == 201) {
-                cls = `LKG`;
-            }
-            if (className == 202) {
-                cls = `UKG`;
-            }
-            return res.status(400).json(`Class ${cls} ${streamMsg} exam admit card structure already exist !`);
+        const checkAdmitCardStrExist = await AdmitCardStructureModel.findOne({adminId:adminId, class: className, stream: stream });
+        if (checkAdmitCardStrExist) {
+            return res.status(400).json(`Admit card structure already exist !`);
+        }
+        const checkAdmitCardExist = await AdmitCardModel.findOne({adminId:adminId, class: className, stream: stream });
+        if (checkAdmitCardExist) {
+            return res.status(400).json(`Admit card's already exist !`);
         }
         let admitCardStructureData = {
             adminId:adminId,
@@ -66,11 +47,11 @@ let CreateAdmitCardStructure = async (req, res, next) => {
             examStartTime: startTime,
             examEndTime: endTime,
         }
-        const studentData = await StudentModel.find({adminId:adminId, class: className, stream: stream });
         const checkStudent = await StudentModel.findOne({adminId:adminId, class: className, stream: stream });
         if (!checkStudent) {
             return res.status(404).json('Student not found , please add students then create admit card structure !')
         }
+        const studentData = await StudentModel.find({adminId:adminId, class: className, stream: stream });
         let studentAdmitCardData = [];
         for (const student of studentData) {
             studentAdmitCardData.push({

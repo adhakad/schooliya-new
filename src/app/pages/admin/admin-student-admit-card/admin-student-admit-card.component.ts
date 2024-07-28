@@ -24,6 +24,9 @@ export class AdminStudentAdmitCardComponent implements OnInit {
   showModal: Boolean = false;
   admitCardStrInfo: any;
   admitCardStrInfoByStream: any;
+  errorCheck: Boolean = false;
+  statusCode: Number = 0;
+  templateStatusCode: Number = 0;
   processedData: any[] = [];
   schoolInfo: any;
   baseURL!: string;
@@ -74,8 +77,8 @@ export class AdminStudentAdmitCardComponent implements OnInit {
         cls: this.cls,
         stream: stream,
       }
-      this.getStudentAdmitCardByClass(params);
       this.getAdmitCardStructureByClass(params);
+      this.getStudentAdmitCardByClass(params);
     }
   }
 
@@ -94,9 +97,13 @@ export class AdminStudentAdmitCardComponent implements OnInit {
   getAdmitCardStructureByClass(params: any) {
     this.admitCardStructureService.admitCardStructureByClass(params).subscribe((res: any) => {
       if (res) {
+        this.errorCheck = false;
+        this.templateStatusCode = 200;
         this.admitCardStrInfo = res;
-        console.log(this.admitCardStrInfo)
       }
+    },err => {
+      this.errorCheck = true;
+      this.templateStatusCode = err.status;
     })
   }
   getSchool() {
@@ -150,7 +157,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     printHtml += '  body::before {';
     printHtml += `    content: "${schoolName}, ${city}";`;
     printHtml += '    position: fixed;';
-    printHtml += '    top: 40%;';
+    printHtml += '    top: 35%;';
     printHtml += '    left:10%;';
     printHtml += '    font-size: 20px;';
     printHtml += '    text-transform: uppercase;';
@@ -256,11 +263,11 @@ export class AdminStudentAdmitCardComponent implements OnInit {
   }
 
   processData() {
-    for (let i = 0; i < this.admitCardStrInfo[0].examDate.length; i++) {
-      const subject = Object.keys(this.admitCardStrInfo[0].examDate[i])[0];
-      const date = Object.values(this.admitCardStrInfo[0].examDate[i])[0];
-      const startTime = Object.values(this.admitCardStrInfo[0].examStartTime[i])[0];
-      const endTime = Object.values(this.admitCardStrInfo[0].examEndTime[i])[0];
+    for (let i = 0; i < this.admitCardStrInfo.examDate.length; i++) {
+      const subject = Object.keys(this.admitCardStrInfo.examDate[i])[0];
+      const date = Object.values(this.admitCardStrInfo.examDate[i])[0];
+      const startTime = Object.values(this.admitCardStrInfo.examStartTime[i])[0];
+      const endTime = Object.values(this.admitCardStrInfo.examEndTime[i])[0];
 
       this.processedData.push({
         subject,
@@ -273,6 +280,8 @@ export class AdminStudentAdmitCardComponent implements OnInit {
   getStudentAdmitCardByClass(params: any) {
     this.admitCardService.getAllStudentAdmitCardByClass(params).subscribe((res: any) => {
       if (res) {
+        this.errorCheck = false;
+        this.statusCode = 200;
         this.admitCardInfo = res.admitCardInfo;
         this.studentInfo = res.studentInfo;
         const studentInfoMap = new Map();
@@ -305,6 +314,9 @@ export class AdminStudentAdmitCardComponent implements OnInit {
           this.allAdmitCards = combinedData;
         }
       }
+    },err => {
+      this.errorCheck = true;
+      this.statusCode = err.status;
     })
   }
 

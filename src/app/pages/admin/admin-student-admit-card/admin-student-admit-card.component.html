@@ -58,13 +58,17 @@
               <mat-icon>add</mat-icon>
               <span>Result Add</span>
             </button> -->
-            <button mat-menu-item (click)="bulkPrint(0)" *ngIf="cls && stream">
-              <mat-icon>print</mat-icon>
-              <span>Bulk Print of One Entry</span>
+            <button mat-menu-item routerLink="/admin/admit-card/structure/{{cls}}/{{stream}}" *ngIf="cls && stream">
+              <mat-icon>assignment</mat-icon>
+              <span>Admit Card Structure</span>
             </button>
-            <button mat-menu-item (click)="bulkPrint(1)" *ngIf="cls && stream">
+            <button mat-menu-item (click)="bulkPrint(0)" *ngIf="cls && stream && templateStatusCode==200 && templateStatusCode !==404 && templateStatusCode !==500 && templateStatusCode !==0">
               <mat-icon>print</mat-icon>
-              <span>Bulk Print of Two Entry</span>
+              <span>One Entry in Bulk Print</span>
+            </button>
+            <button mat-menu-item (click)="bulkPrint(1)" *ngIf="cls && stream && templateStatusCode==200 && templateStatusCode !==404 && templateStatusCode !==500 && templateStatusCode !==0">
+              <mat-icon>print</mat-icon>
+              <span>Two Entry in Bulk Print</span>
             </button>
            
             <button mat-menu-item *ngIf="!cls || !stream">
@@ -80,7 +84,7 @@
             <div class="col-12 col-lg-12 offset-lg-0">
               <div class="main-card">
 
-                <table class="table table-hover align-middle mb-1 bg-white mt-3">
+                <table class="table table-hover align-middle mb-1 bg-white mt-3" *ngIf="!errorCheck && statusCode !==404 && statusCode !==500 && templateStatusCode !==404 && templateStatusCode !==500">
                 <thead class="bg-light">
                   <tr class="text-muted">
                     <th>No.</th>
@@ -111,7 +115,8 @@
                       <p class="mb-0">{{students.class | classSuffix}}</p>
                     </td>
                     <td>
-                      <p class="mb-0">{{students.stream | titlecase}}</p>
+                      <p class="mb-0" *ngIf="students.class>10">{{students.stream | titlecase}}</p>
+                      <p class="mb-0" *ngIf="students.class<=10">N/A</p>
                     </td>
                     <td>
                       <p class="mb-0">{{students.examType | titlecase}}</p>
@@ -126,7 +131,11 @@
                   </tr>
                 </tbody>
               </table>
-
+              <div *ngIf="errorCheck && statusCode ==404 || statusCode ==500 || templateStatusCode==404 || templateStatusCode==500" style="text-align: center;margin-top: 200px;">
+                <p *ngIf="statusCode ==404 && templateStatusCode==200">Admit Card Not Found !</p>
+                <p *ngIf="statusCode ==500 || templateStatusCode==500">Internal Server Error !</p>
+                <p *ngIf="templateStatusCode ==404">Please Create Admit Card Structure !</p>
+              </div>
               <div class="modal fade show custom-modal" [class.show]="showModal">
                 <div class="modal-dialog print-model-dialog modal-dialog-scrollable">
                   <div class="modal-content">
@@ -252,7 +261,7 @@
                                   <p>1. Identification: This admit card serves as your identification for the
                                     examination
                                     or event
-                                    at gurukulam school.</p>
+                                    at {{schoolInfo?.schoolName | titlecase}}.</p>
                                   <p>2. Verify Details: Review the admit card for accuracy, including your name, exam
                                     details, and
                                     date. Report

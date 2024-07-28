@@ -22,10 +22,11 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
   errorMsg: String = '';
   errorCheck: Boolean = false;
   classSubject: any[] = [];
-  examAdmitCard: any[] = [];
+  examAdmitCard: any;
   admitCardInfo: any;
   processedData: any[] = [];
-  stream: string = '';
+  stream: any;
+  className: any;
   notApplicable: String = "stream";
   examTypes: any[] = ["quarterly", "half yearly", "final"];
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
@@ -34,7 +35,7 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
   adminId!: string;
   constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private adminAuthService: AdminAuthService, private classSubjectService: ClassSubjectService, private admitCardStructureService: AdmitCardStructureService) {
     this.admitcardForm = this.fb.group({
-      adminId:[''],
+      adminId: [''],
       class: [''],
       examType: ['', Validators.required],
       stream: [''],
@@ -49,8 +50,11 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
   ngOnInit(): void {
     let getAdmin = this.adminAuthService.getLoggedInAdminInfo();
     this.adminId = getAdmin?.id;
-    this.cls = this.activatedRoute.snapshot.paramMap.get('id');
-    this.getAdmitCardStructureByClass(this.cls);
+    this.cls = this.activatedRoute.snapshot.paramMap.get('class');
+    this.stream = this.activatedRoute.snapshot.paramMap.get('stream');
+    if (this.cls && this.stream) {
+      this.getAdmitCardStructureByClass();
+    }
   }
 
   falseFormValue() {
@@ -64,20 +68,19 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
   }
   falseAllValue() {
     this.falseFormValue();
-    this.stream = '';
     this.classSubject = [];
     this.admitcardForm.reset();
   }
-  chooseStream(stream: any) {
-    this.falseFormValue();
-    if (stream) {
-      this.stream = stream;
-      let params = {
-        cls: this.cls,
-        stream: stream,
-        adminId: this.adminId,
-      }
-      this.getSingleClassSubjectByStream(params)
+  classStreamFormValueSet() {
+    if (this.cls < 11 && this.cls !== 0 || this.cls == 200 || this.cls == 201 || this.cls == 202) {
+      this.admitcardForm.get('stream')?.setValue("N/A");
+      this.loader = false;
+      this.showModal = true;
+    }
+    if (this.cls == 12 || this.cls == 11) {
+      this.admitcardForm.get('stream')?.setValue(this.stream);
+      this.loader = false;
+      this.showModal = true;
     }
   }
 
@@ -96,18 +99,19 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
     })
   }
 
-  getAdmitCardStructureByClass(cls: any) {
+  getAdmitCardStructureByClass() {
     let params = {
-      class:cls,
-      adminId:this.adminId,
+      cls: this.cls,
+      adminId: this.adminId,
+      stream:this.stream,
     }
     this.admitCardStructureService.admitCardStructureByClass(params).subscribe((res: any) => {
       if (res) {
         this.examAdmitCard = res;
-        console.log(this.examAdmitCard)
-        setTimeout(() => {
-          this.loader = false;
-        }, 1000)
+        this.loader = false;
+        // setTimeout(() => {
+        //   this.loader = false;
+        // }, 1000)
         // let date = new Date();
         // let examDate: any = this.examAdmitCard[0]?.examDate;
 
@@ -165,6 +169,18 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
         // // console.log(timestamp);
 
       }
+    },err =>{
+      if(err.status==404){
+        if (this.cls && this.stream) {
+          this.classStreamFormValueSet();
+          let params = {
+            cls: this.cls,
+            stream: this.stream,
+            adminId: this.adminId,
+          }
+          this.getSingleClassSubjectByStream(params);
+        }
+      }
     })
   }
   processData(examAdmitCard: any) {
@@ -182,9 +198,9 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
     }
   }
 
-  addAdmitCardModel() {
-    this.showModal = true;
-  }
+  // addAdmitCardModel() {
+  //   this.showModal = true;
+  // }
   openAdmitCardStructureModal(examAdmitCard: any) {
     this.showAdmitCardStructureModal = true;
     this.admitCardInfo = examAdmitCard;
@@ -211,7 +227,7 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
     setTimeout(() => {
       this.closeModal();
       this.successMsg = '';
-      this.getAdmitCardStructureByClass(this.cls);
+      this.getAdmitCardStructureByClass();
     }, 1000)
   }
 
@@ -219,34 +235,31 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
     const controlOne = <FormArray>this.admitcardForm.get('type.examDate');
     this.classSubject.forEach((x: any) => {
       controlOne.push(this.patchExamDate(x.subject))
-      this.admitcardForm.reset();
     })
 
     const controlTwo = <FormArray>this.admitcardForm.get('type.startTime');
     this.classSubject.forEach((x: any) => {
       controlTwo.push(this.patchStartTime(x.subject))
-      this.admitcardForm.reset();
     })
     const controlThree = <FormArray>this.admitcardForm.get('type.endTime');
     this.classSubject.forEach((x: any) => {
       controlThree.push(this.patchEndTime(x.subject))
-      this.admitcardForm.reset();
     })
   }
   patchExamDate(examDate: any) {
     return this.fb.group({
-      [examDate]: [examDate],
+      [examDate]: ['', Validators.required,],
     })
   }
   patchStartTime(startTime: any) {
     return this.fb.group({
-      [startTime]: [startTime],
+      [startTime]: ['', Validators.required,],
     })
   }
 
   patchEndTime(endTime: any) {
     return this.fb.group({
-      [endTime]: [endTime],
+      [endTime]: ['', Validators.required,],
     })
   }
 
@@ -263,18 +276,19 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
     });
     this.admitcardForm.value.adminId = this.adminId;
     this.admitcardForm.value.class = this.cls;
-    this.admitcardForm.value.stream = this.stream;
-    let examDateObj = this.admitcardForm.value.type.examDate;
-    let startTimeObj = this.admitcardForm.value.type.startTime;
-    let endTimeObj = this.admitcardForm.value.type.endTime;
-    let containsExamDateNull = examDateObj.some((item: any) => Object.values(item).includes(null));
-    let containsStartTimeNull = startTimeObj.some((item: any) => Object.values(item).includes(null));
-    let containsEndTimeNull = endTimeObj.some((item: any) => Object.values(item).includes(null));
-    if (containsExamDateNull || containsStartTimeNull || containsEndTimeNull) {
-      this.errorCheck = true;
-      this.errorMsg = 'Please fill all fields';
-    }
-    if (!containsExamDateNull && !containsStartTimeNull && !containsEndTimeNull) {
+    // this.admitcardForm.value.stream = this.stream;
+
+    // let examDateObj = this.admitcardForm.value.type.examDate;
+    // let startTimeObj = this.admitcardForm.value.type.startTime;
+    // let endTimeObj = this.admitcardForm.value.type.endTime;
+    // let containsExamDateNull = examDateObj.some((item: any) => Object.values(item).includes(null));
+    // let containsStartTimeNull = startTimeObj.some((item: any) => Object.values(item).includes(null));
+    // let containsEndTimeNull = endTimeObj.some((item: any) => Object.values(item).includes(null));
+    // if (containsExamDateNull || containsStartTimeNull || containsEndTimeNull) {
+    //   this.errorCheck = true;
+    //   this.errorMsg = 'Please fill all fields';
+    // }
+    // if (!containsExamDateNull && !containsStartTimeNull && !containsEndTimeNull) {
       this.admitCardStructureService.addAdmitCardStructure(this.admitcardForm.value).subscribe((res: any) => {
         if (res) {
           this.successDone();
@@ -284,7 +298,7 @@ export class AdminStudentAdmitCardStructureComponent implements OnInit {
         this.errorCheck = true;
         this.errorMsg = err.error;
       })
-    }
+    // }
 
   }
 

@@ -122,6 +122,15 @@
                                                             <div class="container">
                                                                 <div class="row">
                                                                     <div class="col-6">
+                                                                        <ng-container *ngIf="selectedRollNumber">
+                                                                            <mat-form-field appearance="outline">
+                                                                                <mat-label>Roll Number </mat-label>
+                                                                                <input [value]="selectedRollNumber"
+                                                                                    matInput readonly>
+                                                                            </mat-form-field>
+                                                                        </ng-container>
+                                                                    </div>
+                                                                    <div class="col-6">
                                                                         <mat-form-field appearance="outline">
                                                                             <mat-label>Exam Type</mat-label>
                                                                             <mat-select #examSelect matInput
@@ -146,15 +155,6 @@
                                                                                 </div>
                                                                             </mat-select>
                                                                         </mat-form-field>
-                                                                    </div>
-                                                                    <div class="col-6">
-                                                                        <ng-container *ngIf="selectedRollNumber">
-                                                                            <mat-form-field appearance="outline">
-                                                                                <mat-label>Roll Number </mat-label>
-                                                                                <input [value]="selectedRollNumber"
-                                                                                    matInput readonly>
-                                                                            </mat-form-field>
-                                                                        </ng-container>
                                                                     </div>
                                                                     <ng-container *ngIf="theorySubjects.length>0">
                                                                         <h3>Theory Marks</h3>
