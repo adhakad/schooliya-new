@@ -116,7 +116,7 @@
                                             </td>
                                             <td class="mb-0">
                                                 <mat-icon
-                                                    routerLink="/admin/students/fees/class/statement/{{student.class}}/{{student.studentId}}"
+                                                    routerLink="/admin/fees/statement/{{student.class}}/{{stream}}/{{student.studentId}}"
                                                     style="cursor: pointer;">launch</mat-icon>
                                             </td>
                                             <td>
@@ -221,58 +221,35 @@
                                                         <div id="student">
                                                             <div class="col-lg-10 offset-lg-1 custom-container">
                                                                 <div class="table-container">
-                                                                    <div class="row">
-                                                                        <div class="col-2">
-                                                                            <img class="logo"
-                                                                                src="../../../../assets/school-logo.png"
-                                                                                alt="">
-                                                                        </div>
-                                                                        <div class="col-10" style="text-align: center;">
-                                                                            <!-- <div class="school-name">
-                                                                                <h3 class="text-bold">
-                                                                                    {{schoolInfo?.schoolName |
-                                                                                    uppercase}}</h3>
-                                                                            </div>
-                                                                            <div class="address"
-                                                                                style="text-align: center;">
-                                                                                <p>Affiliated to {{schoolInfo?.board |
-                                                                                    uppercase}}, Affliation No. -
-                                                                                    {{schoolInfo?.affiliationNumber}}
-                                                                                </p>
-                                                                                <p><span>Contact -
-                                                                                        {{schoolInfo?.phoneOne}} &nbsp;
-                                                                                        Email -
-                                                                                        {{schoolInfo?.email}}</span></p>
-                                                                                <p><span>{{schoolInfo?.street |
-                                                                                        titlecase}}, {{schoolInfo?.city
-                                                                                        | titlecase}},
-                                                                                        Dist.-
-                                                                                        {{schoolInfo?.district |
-                                                                                        titlecase}},
-                                                                                        {{schoolInfo?.state |
-                                                                                        titlecase}} -
-                                                                                        {{schoolInfo?.pinCode}}</span>
-                                                                                </p>
-                                                                            </div> -->
-                                                                        </div>
+                                                                  <div class="row">
+                                                                    <div class="col-2">
+                                                                      <img class="logo" src="../../../../assets/school-logo.png" alt="">
                                                                     </div>
+                                                                    <div class="col-10" style="text-align: center;">
+                                                                      <div class="school-name">
+                                                                        <h3 class="text-bold">{{schoolInfo?.schoolName | uppercase}}</h3>
+                                                                      </div>
+                                                                      <div class="address" style="text-align: center;">
+                                                                        <p>Affiliated to {{schoolInfo?.board | uppercase}}, Affliation No. -
+                                                                          {{schoolInfo?.affiliationNumber}}</p>
+                                                                        <p><span>Contact - {{schoolInfo?.phoneOne}} &nbsp; Email -
+                                                                            {{schoolInfo?.email}}</span></p>
+                                                                        <p><span>{{schoolInfo?.street | titlecase}}, {{schoolInfo?.city | titlecase}},
+                                                                            Dist.-
+                                                                            {{schoolInfo?.district | titlecase}},
+                                                                            {{schoolInfo?.state | titlecase}} - {{schoolInfo?.pinCode}}</span></p>
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
                                                                     <div class="row">
                                                                         <div class="col-12 title-lable">
-                                                                            <p>School Fee Receipt -
+                                                                            <p>Fees Receipt -
                                                                                 {{singleStudent.session}}</p>
 
                                                                         </div>
                                                                     </div>
-                                                                    <table class="custom-table"
-                                                                        style="margin-bottom: 0;">
-                                                                        <tr
-                                                                            style="height: 22px !important;background-color: rgba(61, 55, 109, 0.874);padding-bottom: 10px;">
-                                                                            <th class="text-bold"
-                                                                                style="height: 22px !important;color: #fff;font-size:12px;padding-left: 15px;border: none;">
-                                                                                STUDENT'S PROFILE</th>
-                                                                        </tr>
-                                                                    </table>
-                                                                    <table class="info-table">
+                                                                    <table class="info-table"
+                                                                        style="border-top: 1px solid #9e9e9e;">
                                                                         <tr>
                                                                             <td class="text-bold">RECEIPT NO.</td>
                                                                             <td colspan="2">
@@ -280,16 +257,18 @@
                                                                             </td>
                                                                             <td class="text-bold">ADMISSION NO.</td>
                                                                             <td colspan="2">
-                                                                                :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{singleStudent.admissionNo}}</td>
+                                                                                :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{singleStudent.admissionNo}}
+                                                                            </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td class="text-bold">STUDENT NAME</td>
                                                                             <td colspan="2">
-                                                                                :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{singleStudent.name | uppercase}}
+                                                                                :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{singleStudent.name
+                                                                                | uppercase}}
                                                                             </td>
-                                                                            <td class="text-bold">CLASS</td>
+                                                                            <td class="text-bold">DATE OF BIRTH</td>
                                                                             <td colspan="2">
-                                                                                :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{singleStudent.class | classSuffix | uppercase}}
+                                                                                :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{singleStudent.dob}}
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -304,69 +283,68 @@
                                                                                 | uppercase}}
                                                                             </td>
                                                                         </tr>
-                                                                    </table>
-                                                                    <table class="custom-table"
-                                                                        style="margin-bottom: 0;">
-                                                                        <tr
-                                                                            style="height: 22px !important;background-color: rgba(61, 55, 109, 0.874);padding-bottom: 10px;">
-                                                                            <th class="text-bold"
-                                                                                style="height: 22px !important;color:#fff;font-size: 12px;padding-left: 15px; border: none;">
-                                                                                EXAM TIME SCHEDULE <span
-                                                                                    *ngIf="cls==12 || cls==11">-
-                                                                                    {{stream |
-                                                                                    uppercase}}</span></th>
+                                                                        <tr>
+                                                                            <td class="text-bold">CLASS</td>
+                                                                            <td colspan="2">
+                                                                                :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{singleStudent.class
+                                                                                    | classSuffix | uppercase}}
+                                                                            </td>
+                                                                            <td class="text-bold">STREAM</td>
+                                                                            <td colspan="2">
+                                                                                :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{singleStudent.stream | uppercase}}
+                                                                            </td>
                                                                         </tr>
                                                                     </table>
                                                                     <table class="custom-table">
                                                                         <tr class="text-center">
-                                                                            <th class="border">S. No.</th>
+                                                                            <th class="border" style="border-left: none;">S. No.</th>
                                                                             <th class="border">Particulars</th>
-                                                                            <th class="border">Fee Amount</th>
+                                                                            <th class="border" style="border-right: none;">Fee Amount</th>
                                                                         </tr>
 
                                                                         <tr class="text-center"
                                                                             *ngFor="let item of clsFeesStructure?.feesType,let i = index">
-                                                                            <td class="border">{{i+1}}.</td>
+                                                                            <td class="border" style="border-left: none;">{{i+1}}.</td>
                                                                             <td class="border"
                                                                                 *ngFor="let fee of item | keyvalue">
                                                                                 {{ fee.key}} Fee</td>
-                                                                            <td class="border"
+                                                                            <td class="border" style="border-right: none;"
                                                                                 *ngFor="let fee of item | keyvalue">
                                                                                 &#8377; {{ fee.value}}</td>
                                                                         </tr>
                                                                         <tr class="text-center">
-                                                                            <td class="border"></td>
+                                                                            <td class="border" style="border-left: none;"></td>
                                                                             <td class="border">
                                                                                 Discount Amount</td>
-                                                                            <td class="border">
+                                                                            <td class="border" style="border-right: none;">
                                                                                 - &#8377;
                                                                                 {{receiptInstallment.discountAmountInFees}}
                                                                             </td>
                                                                         </tr>
-                                                                        <tr class="text-center receipt-row">
-                                                                            <td></td>
-                                                                            <td class="text-bold text-right">Total Fee
+                                                                        <tr class="text-center" style="height: 15px;">
+                                                                            <td style="border: none;padding-top: 5px;"></td>
+                                                                            <td class="text-bold" style="text-align: right;border: none;padding-top: 8px;">Total Fee
                                                                             </td>
-                                                                            <td class="text-bold">&#8377;
+                                                                            <td class="text-bold" style="border: none;padding-top: 5px;">&#8377;
                                                                                 {{receiptInstallment.totalFees}}</td>
                                                                         </tr>
-                                                                        <tr class="text-center receipt-row">
-                                                                            <td></td>
-                                                                            <td class="text-bold text-right">Paid Fee
+                                                                        <tr class="text-center" style="height: 15px;">
+                                                                            <td style="border: none;"></td>
+                                                                            <td class="text-bold" style="text-align: right;border: none;">Paid Fee
                                                                             </td>
-                                                                            <td class="text-bold">&#8377;
+                                                                            <td class="text-bold" style="border: none;">&#8377;
                                                                                 {{receiptInstallment.paidFees}}</td>
                                                                         </tr>
-                                                                        <tr class="text-center receipt-row">
-                                                                            <td></td>
-                                                                            <td class="text-bold text-right">Due Fee
+                                                                        <tr class="text-center" style="height: 15px;">
+                                                                            <td style="border: none;"></td>
+                                                                            <td class="text-bold" style="text-align: right;border: none;">Due Fee
                                                                             </td>
-                                                                            <td class="text-bold">&#8377;
+                                                                            <td class="text-bold" style="border: none;">&#8377;
                                                                                 {{receiptInstallment.dueFees}}</td>
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td></td>
-                                                                            <td>
+                                                                        <tr style="height: 15px;">
+                                                                            <td style="border: none;"></td>
+                                                                            <td style="border: none;padding-bottom: 2px;">
                                                                                 <p class="text-center"><span
                                                                                         class="text-bold">
                                                                                         {{receiptInstallment.feesInstallment}}</span>
@@ -376,171 +354,16 @@
                                                                                         /-</span>
                                                                                 </p>
                                                                             </td>
-                                                                            <td></td>
+                                                                            <td style="border: none;"></td>
                                                                         </tr>
                                                                     </table>
+                                                                    <p style="margin-left: 20px;right: 0;">Date : {{ receiptInstallment.paymentDate }}</p>
                                                                 </div>
+
                                                             </div>
                                                         </div>
                                                     </ng-container>
                                                 </ng-container>
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                <!-- <div class="modal-body print-model-body"
-                                                    *ngIf="receiptMode && receiptInstallment && singleStudent">
-                                                    <div class="row">
-                                                        <div #receipt class="custom-container">
-                                                            <div class="table-container">
-                                                                <table class="logo-table text-bold text-center">
-                                                                    <tr>
-                                                                        <td>
-                                                                        <td>
-                                                                            <img src="../../../../assets/logo.png"
-                                                                                alt="">
-                                                                                {{schoolInfo?.schoolName | uppercase}},
-                                                                            {{schoolInfo?.city | uppercase}}
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                <table class="info-table text-center">
-                                                                    <tr>
-                                                                        <td>
-                                                                            School Code : {{schoolInfo?.schoolCode}}
-                                                                        </td>
-                                                                        <td>
-                                                                            School Fee Receipt -
-                                                                            {{singleStudent.session}}
-                                                                        </td>
-                                                                        <td>
-                                                                            Affiliation No. :
-                                                                            {{schoolInfo?.affiliationNumber}}
-                                                                        </td>
-                                                                    </tr>
-                                                                </table>
-                                                                <table class="info-table text-center">
-                                                                    <tr>
-                                                                        <td class="text-bold">Receipt No. :</td>
-                                                                        <td>{{receiptInstallment.receiptNo}}</td>
-                                                                        <td class="text-bold">Admission No. :</td>
-                                                                        <td>{{singleStudent.admissionNo}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="text-bold">Class :</td>
-                                                                        <td>{{singleStudent.class | classSuffix}}</td>
-                                                                        <td class="text-bold">Date Of Birth :</td>
-                                                                        <td>{{singleStudent.dob}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="text-bold">Student Name :</td>
-                                                                        <td>{{singleStudent.name |
-                                                                            titlecase}}</td>
-                                                                        <td class="text-bold">Father Name :</td>
-                                                                        <td>{{singleStudent.fatherName}}</td>
-                                                                    </tr>
-                                                                </table>
-                                                                <table class="receipt-table">
-                                                                    <tr class="text-center">
-                                                                        <th class="border">S. No.</th>
-                                                                        <th class="border">Particulars</th>
-                                                                        <th class="border">Fee Amount</th>
-                                                                    </tr>
-
-                                                                    <tr class="text-center"
-                                                                        *ngFor="let item of clsFeesStructure?.feesType,let i = index">
-                                                                        <td class="border">{{i+1}}.</td>
-                                                                        <td class="border"
-                                                                            *ngFor="let fee of item | keyvalue">
-                                                                            {{ fee.key}} Fee</td>
-                                                                        <td class="border"
-                                                                            *ngFor="let fee of item | keyvalue">
-                                                                            &#8377; {{ fee.value}}</td>
-                                                                    </tr>
-                                                                    <tr class="text-center">
-                                                                        <td class="border"></td>
-                                                                        <td class="border">
-                                                                            Discount Amount</td>
-                                                                        <td class="border">
-                                                                            - &#8377;
-                                                                            {{receiptInstallment.discountAmountInFees}}
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr class="text-center receipt-row">
-                                                                        <td></td>
-                                                                        <td class="text-bold text-right">Total Fee</td>
-                                                                        <td class="text-bold">&#8377;
-                                                                            {{receiptInstallment.totalFees}}</td>
-                                                                    </tr>
-                                                                    <tr class="text-center receipt-row">
-                                                                        <td></td>
-                                                                        <td class="text-bold text-right">Paid Fee</td>
-                                                                        <td class="text-bold">&#8377;
-                                                                            {{receiptInstallment.paidFees}}</td>
-                                                                    </tr>
-                                                                    <tr class="text-center receipt-row">
-                                                                        <td></td>
-                                                                        <td class="text-bold text-right">Due Fee</td>
-                                                                        <td class="text-bold">&#8377;
-                                                                            {{receiptInstallment.dueFees}}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td></td>
-                                                                        <td>
-                                                                            <p class="text-center"><span
-                                                                                    class="text-bold">
-                                                                                    {{receiptInstallment.feesInstallment}}</span>
-                                                                                Fee amount deposited <span
-                                                                                    class="text-bold">&#8377;
-                                                                                    {{receiptInstallment.feesAmount}}
-                                                                                    /-</span>
-                                                                            </p>
-                                                                        </td>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                </table>
-
-                                                                <p>Date : {{ receiptInstallment.paymentDate }}</p>
-                                                                <div>
-                                                                    <h4 class="text-bold">Disclaimer:</h4>
-                                                                    <p>1. Payment Responsibility: Confirms your
-                                                                        obligation to
-                                                                        {{schoolInfo?.schoolName}} for listed fees.</p>
-                                                                    <p>2. Verification: Review receipt details for
-                                                                        accuracy,
-                                                                        including payment amount and purpose. Report
-                                                                        discrepancies to the School Office for
-                                                                        correction.</p>
-                                                                    <p>3. Non-Transferable: Intended for your use only;
-                                                                        do not
-                                                                        share it.</p>
-                                                                    <p>4. Record Keeping: Keep this receipt for future
-                                                                        reference, reimbursement, or tax purposes.</p>
-                                                                    <p>5. Lost Receipt: If lost or damaged, contact the
-                                                                        School
-                                                                        Office for a duplicate. A fee may apply.</p>
-                                                                    <p>6. Refund Policy: Refer to our institution's
-                                                                        refund
-                                                                        policy for fee refund information. Generally,
-                                                                        fees are
-                                                                        non-refundable. Exceptions may apply for
-                                                                        duplicate
-                                                                        payments or inadvertent overpayments with proper
-                                                                        documentation and school policy approval.</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
                                                 <div class="modal-footer" *ngIf="receiptMode">
                                                     <button class="submit-button print-pdf" mat-raised-button
                                                         (click)="printStudentData()">Print</button>

@@ -81,7 +81,7 @@
                                     <div class="modal-content" *ngIf="!successMsg">
                                         <div class="modal-header">
                                             <h5 class="modal-title" *ngIf="feesTypeMode || feesMode">Create Fee
-                                                Structure {{cls | classSuffix}}</h5>
+                                                Structure {{cls | classSuffix}} &nbsp;<span *ngIf="cls==12 || cls==11">{{stream}}</span></h5>
                                             <h5 class="modal-title" *ngIf="deleteMode">Delete Fee Structure {{cls |
                                                 classSuffix}}</h5>
                                             <mat-icon matRipple (click)="closeModal()">close</mat-icon>
@@ -91,6 +91,7 @@
                                                 <h3>Particular's</h3>
                                             </ng-container>
                                             <div class="col-10 mb-4 example-margin">
+                                                
                                                 <mat-form-field appearance="outline">
                                                     <mat-label>Perticular Total
                                                         Fee</mat-label>
@@ -110,7 +111,7 @@
                                         </div>
                                         <div class="modal-footer" *ngIf="feesTypeMode">
                                             <button class="submit-button" mat-raised-button
-                                                [disabled]="selectedFeesType.length==0 || totalFees<=0"
+                                                [disabled]="!feesForm || totalFees<=0"
                                                 (click)="selectFeesStructure()">Save</button>
                                         </div>
                                         <form [formGroup]="feesForm" (ngSubmit)="feesStructureAddUpdate()"

@@ -1,5 +1,5 @@
 @import'../../../../styles.css';
-/* .custom-container {
+.custom-container {
   font-family: Arial, sans-serif;
   overflow: auto;
 }
@@ -122,5 +122,5 @@ img{
   }
   .print-pdf {
     display: inline-block;
-  }
-} */
+  } 
+}

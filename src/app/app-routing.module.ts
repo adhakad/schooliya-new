@@ -25,7 +25,7 @@ const routes: Routes = [
 
   { path: 'student/dashboard', loadChildren: () => import('src/app/pages/student/student-dashboard/student-dashboard.module').then((module) => module.StudentDashboardModule), canActivate: [StudentAuthGuard] },
   { path: 'student/fees', loadChildren: () => import('src/app/pages/student/student-fees/student-fees.module').then((module) => module.StudentFeesModule), canActivate: [StudentAuthGuard] },
-  { path: 'student/fees/statement/:class/:id', loadChildren: () => import('src/app/pages/student/student-fees-statement/student-fees-statement.module').then((module) => module.StudentFeesStatementModule), canActivate: [StudentAuthGuard] },
+  { path: 'student/fees/statement/:class/:stream/:id', loadChildren: () => import('src/app/pages/student/student-fees-statement/student-fees-statement.module').then((module) => module.StudentFeesStatementModule), canActivate: [StudentAuthGuard] },
   { path: 'student/admit-card', loadChildren: () => import('src/app/pages/student/student-admit-card/student-admit-card.module').then((module) => module.StudentAdmitCardModule), canActivate: [StudentAuthGuard] },
   { path: 'student/result', loadChildren: () => import('src/app/pages/student/student-result/student-result.module').then((module) => module.StudentResultModule), canActivate: [StudentAuthGuard] },
   // Admin Routing Section
@@ -51,7 +51,7 @@ const routes: Routes = [
   { path: 'admin/fees', loadChildren: () => import('src/app/pages/admin/admin-student-fees/admin-student-fees.module').then((module) => module.AdminStudentFeesModule), canActivate: [AdminAuthGuard] },
   { path: 'admin/fees/structure/:class/:stream', loadChildren: () => import('src/app/pages/admin/admin-student-fees-structure/admin-student-fees-structure.module').then((module) => module.AdminStudentFeesStructureModule), canActivate: [AdminAuthGuard] },
 
-  { path: 'admin/students/fees/class/statement/:class/:id', loadChildren: () => import('src/app/pages/admin/admin-student-fees-statement/admin-student-fees-statement.module').then((module) => module.AdminStudentFeesStatementModule), canActivate: [AdminAuthGuard] },
+  { path: 'admin/fees/statement/:class/:stream/:id', loadChildren: () => import('src/app/pages/admin/admin-student-fees-statement/admin-student-fees-statement.module').then((module) => module.AdminStudentFeesStatementModule), canActivate: [AdminAuthGuard] },
   
   { path: 'admin/online-admission-forms', loadChildren: () => import('src/app/pages/admin/admin-online-admission/admin-online-admission.module').then((module) => module.AdminOnlineAdmissionModule), canActivate: [AdminAuthGuard] },
   { path: 'admin/admission', loadChildren: () => import('src/app/pages/admin/admission/admission.module').then((module) => module.AdmissionModule), canActivate: [AdminAuthGuard] },

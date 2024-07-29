@@ -42,6 +42,7 @@ export class AdminStudentFeesStructureComponent implements OnInit {
   constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute,private adminAuthService:AdminAuthService,private schoolService: SchoolService, private feesStructureService: FeesStructureService) {
     this.feesForm = this.fb.group({
       adminId:[''],
+      stream:[''],
       admissionFees: ['', Validators.required],
       type: this.fb.group({
         feesType: this.fb.array([], [Validators.required]),
@@ -99,7 +100,7 @@ export class AdminStudentFeesStructureComponent implements OnInit {
   addFeesModel() {
     this.showModal = true;
     this.feesTypeMode = true;
-    this.feesForm.reset();
+    // this.feesForm.reset();
   }
   openFeesStructureModal(){
     this.showFeesStructureModal = true;
@@ -165,19 +166,20 @@ export class AdminStudentFeesStructureComponent implements OnInit {
     const controlOne = <FormArray>this.feesForm.get('type.feesType');
     this.selectedFeesType.forEach((x: any) => {
       controlOne.push(this.patchFeesTypeValues(x))
-      this.feesForm.reset();
+      // this.feesForm.reset();
     })
   }
 
   patchFeesTypeValues(selectedFeesType: any) {
     return this.fb.group({
-      [selectedFeesType]: [selectedFeesType]
+      [selectedFeesType]: ['',Validators.required]
     })
   }
 
   feesStructureAddUpdate() {
     this.feesForm.value.adminId = this.adminId;
     this.feesForm.value.class = this.cls;
+    this.feesForm.value.stream = this.stream;
     this.feesForm.value.totalFees = this.totalFees;
     let feesTypeObj = this.feesForm.value.type.feesType;
   
