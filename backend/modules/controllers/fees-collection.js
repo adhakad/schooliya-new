@@ -23,7 +23,7 @@ let GetAllStudentFeesCollectionByClass = async (req, res, next) => {
     let adminId = req.params.id;
     let className = req.params.class;
     try {
-        const student = await StudentModel.find({ adminId: adminId, class: className }, '_id session admissionNo name rollNumber class fatherName dob');
+        const student = await StudentModel.find({ adminId: adminId, class: className }, '_id session admissionNo name rollNumber class fatherName motherName dob');
         if (!student) {
             return res.status(404).json('Student not found !')
         }

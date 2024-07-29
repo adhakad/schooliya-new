@@ -174,7 +174,7 @@
                             <p style="color: transparent;">{{i+1}}.</p>
                             <div id="student-{{result.studentId}}">
                               <div class="col-lg-10 offset-lg-1 custom-container">
-                                <div class="table-container">
+                                <div class="table-container" style="position: relative;height: 100%;">
                                   <div class="row">
                                     <div class="col-2">
                                       <img class="logo" src="../../../../assets/school-logo.png" alt="">
@@ -1005,12 +1005,14 @@
                                         <p style="margin-left: 30px;">Issued Date</p>
                                       </td>
                                       <td class="text-bold"
-                                        style="width:33.33%;font-size: 12px;text-align: center;border: none;">Signature
-                                        of
-                                        Class Teacher</td>
+                                        style="width:33.33%;font-size: 12px;text-align: center;border: none;">Signature of Class Teacher
+                                        </td>
                                       <td class="text-bold"
                                         style="width:33.33%;font-size: 12px;text-align: right;border: none;">
-                                        <p style="margin-right: 30px;">Signature of Principal</p>
+                                        <p style="margin-right: 30px;">
+                                          <span *ngIf="cls==9 || cls==10 || cls==11 || cls==12">Signature of Principal</span>
+                                          <span *ngIf="cls !==9 && cls !==10 && cls !==11 && cls !==12">Signature of Principal / Head Master</span>
+                                        </p>
                                       </td>
                                     </tr>
                                   </table>

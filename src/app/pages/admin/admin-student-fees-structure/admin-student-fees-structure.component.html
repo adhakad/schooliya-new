@@ -6,27 +6,25 @@
         </div>
         <div class="col-12 col-lg-10">
             <div class="row">
-                <div class="col-12 big-container">
-                    <div class="col-lg-12 offset-lg-0">
-                        <div class="main-card">
-                            <div class="row">
-                                <div class="col-12 col-lg-4 pt-2">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h3>Settings > Fee Payment > Structure</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-8 col-lg-5">
-                                    <button class="submit-button" mat-raised-button
+                <div class="col-12 main-container">
+                    <div class="row">
+                        <div class="col-3" style="text-align: left;">
+                            <button mat-button class="menu-button">
+                                <mat-icon>assistant_navigation</mat-icon>
+                                <span>Fee Payment > Structure</span>
+                            </button>
+                        </div>
+                        <div class="col-6 offset-2">
+                            <button class="submit-button" mat-raised-button
                                         (click)="addFeesModel()"><mat-icon>add</mat-icon>Create</button>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <table class="table table-hover mt-3 align-middle mb-0 bg-white">
+                        </div>
+                    </div>
+                </div>
+                <div class="row main-container">
+                    <div class="col-12 col-lg-12 big-container">
+                        <div class="col-12 col-lg-12 offset-lg-0">
+                            <div class="main-card">
+                                <table class="table align-middle mt-2 mb-1 bg-white">
                                     <thead class="bg-light">
                                         <tr class="text-muted">
                                             <th>S.No.</th>

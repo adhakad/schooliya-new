@@ -30,8 +30,6 @@ export class AdminStudentFeesStructureComponent implements OnInit {
   totalFees: number = 0;
 
   selectedFeesType: any[] = [];
-  // selectedFeesPayType: any[] = [];
-  // checkFeesPayType: boolean = false;
   feesTypeMode: boolean = false;
   feesMode: boolean = false;
   clsFeesStructure: any;
@@ -47,7 +45,6 @@ export class AdminStudentFeesStructureComponent implements OnInit {
       admissionFees: ['', Validators.required],
       type: this.fb.group({
         feesType: this.fb.array([], [Validators.required]),
-        // feesPayType: this.fb.array([], [Validators.required]),
       }),
     });
   }
