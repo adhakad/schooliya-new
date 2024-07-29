@@ -20,7 +20,7 @@ export class FeesService {
   //   return this.http.post(`${this.url}/bulk-fees`,feesBulkResult);
   // }
   getAllStudentFeesCollectionByClass(params:any){
-    return this.http.get(`${this.url}/admin/${params.adminId}/class/${params.class}`);
+    return this.http.get(`${this.url}/admin/${params.adminId}/class/${params.class}/stream/${params.stream}`);
   }
   singleStudentFeesCollectionById(studentId:any){
     return this.http.get(`${this.url}/student/${studentId}`);

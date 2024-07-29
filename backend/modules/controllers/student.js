@@ -182,9 +182,9 @@ let CreateStudent = async (req, res, next) => {
         session,medium, adminId, name, rollNumber, aadharNumber,udiseNumber, samagraId, admissionType, stream, admissionNo, class: className, admissionClass, dob: dob, doa: doa, gender, category, religion, nationality,bankAccountNo,bankIfscCode, address, lastSchool, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification, discountAmountInFees, createdBy
     }
     try {
-        const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className });
+        const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className,stream:stream });
         if (!checkFeesStr) {
-            return res.status(404).json(`Please create fees structure for this class !`);
+            return res.status(404).json(`Please create fees structure !`);
         }
         const checkClassSubject = await ClassSubjectModal.findOne({ adminId: adminId, class: className, stream: stream });
         if (!checkClassSubject) {
@@ -222,6 +222,7 @@ let CreateStudent = async (req, res, next) => {
         let studentFeesData = {
             adminId: adminId,
             class: parseInt(className),
+            stream:stream,
             admissionFees: admissionFees ? admissionFees : 0,
             admissionFeesPayable: admissionFeesPayable,
             discountAmountInFees:discountAmountInFees,
@@ -244,6 +245,7 @@ let CreateStudent = async (req, res, next) => {
                     session: createStudent.session,
                     name: createStudent.name,
                     class: createStudent.class,
+                    stream:stream,
                     admissionNo: createStudent.admissionNo,
                     rollNumber: createStudent.rollNumber,
                     dob: createStudent.dob,
@@ -298,9 +300,13 @@ let CreateStudent = async (req, res, next) => {
 let CreateBulkStudentRecord = async (req, res, next) => {
     let bulkStudentRecord = req.body.bulkStudentRecord;
     let className = req.body.class;
+    let stream = req.body.stream;
     let adminId = req.body.adminId;
     let createdBy = req.body.createdBy;
     className = parseInt(className);
+    if (stream === "stream") {
+        stream = "N/A";
+    }
     const classMappings = {
         "Nursery": 200,
         "LKG": 201,
@@ -328,6 +334,7 @@ let CreateBulkStudentRecord = async (req, res, next) => {
             session: student.session,
             medium:student.medium,
             adminId: adminId,
+            stream:stream,
             name: student.name,
             rollNumber: student.rollNumber,
             discountAmountInFees:student.discountAmountInFees,
@@ -426,9 +433,9 @@ let CreateBulkStudentRecord = async (req, res, next) => {
             const spreadRollNumber = duplicateRollNumber.join(', ');
             return res.status(400).json(`Roll number(s) ${spreadRollNumber} already exist for this class !`);
         }
-        const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className });
+        const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className,stream:stream });
         if (!checkFeesStr) {
-            return res.status(404).json(`Please create fees structure for class ${className} !`);
+            return res.status(404).json(`Please create fees structure !`);
         }
 
         const createStudent = await StudentModel.create(studentData, { session });
@@ -444,6 +451,7 @@ let CreateBulkStudentRecord = async (req, res, next) => {
                 adminId: adminId,
                 studentId: student._id,
                 class: student.class,
+                stream:stream,
                 admissionFeesPayable: false,
                 admissionFees: 0,
                 totalFees: totalFees,

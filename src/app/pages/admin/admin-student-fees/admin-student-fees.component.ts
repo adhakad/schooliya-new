@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { read, utils, writeFile } from 'xlsx';
+import { read,  utils, writeFile } from 'xlsx';
 import { FeesService } from 'src/app/services/fees.service';
 import { MatRadioChange } from '@angular/material/radio';
 import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
@@ -58,6 +58,7 @@ export class AdminStudentFeesComponent implements OnInit {
     this.feesForm = this.fb.group({
       adminId: [''],
       class: [''],
+      stream:[''],
       studentId: [''],
       feesAmount: [''],
       createdBy: [''],
@@ -166,13 +167,8 @@ export class AdminStudentFeesComponent implements OnInit {
   filterStream(stream: any) {
     this.stream = stream;
     if (stream && this.cls) {
-      let params = {
-        adminId: this.adminId,
-        cls: this.cls,
-        stream: stream,
-      }
-      this.feesStructureByClass(this.cls);
-      this.getAllStudentFeesCollectionByClass(this.cls);
+      this.feesStructureByClass();
+      this.getAllStudentFeesCollectionByClass();
     }
   }
   getSchool() {
@@ -184,10 +180,11 @@ export class AdminStudentFeesComponent implements OnInit {
     })
   }
 
-  getAllStudentFeesCollectionByClass(cls: any) {
+  getAllStudentFeesCollectionByClass() {
     let params = {
-      class: cls,
+      class: this.cls,
       adminId: this.adminId,
+      stream:this.stream
     }
     this.feesService.getAllStudentFeesCollectionByClass(params).subscribe((res: any) => {
       if (res) {
@@ -207,10 +204,11 @@ export class AdminStudentFeesComponent implements OnInit {
     })
   }
 
-  feesStructureByClass(cls: any) {
+  feesStructureByClass() {
     let params = {
-      class: cls,
+      class: this.cls,
       adminId: this.adminId,
+      stream:this.stream
     }
     this.feesStructureService.feesStructureByClass(params).subscribe((res: any) => {
       if (res) {
@@ -231,7 +229,7 @@ export class AdminStudentFeesComponent implements OnInit {
     this.paybleInstallment = [0, 0];
     this.receiptInstallment = {};
     this.receiptMode = false;
-    this.getAllStudentFeesCollectionByClass(this.cls)
+    this.getAllStudentFeesCollectionByClass()
   }
   feesPay(pay: boolean) {
     if (pay === false) {
@@ -290,6 +288,7 @@ export class AdminStudentFeesComponent implements OnInit {
   feesAddUpdate() {
     if (this.feesForm.valid) {
       this.feesForm.value.adminId = this.adminId;
+      this.feesForm.value.stream = this.stream;
       if (this.updateMode) {
         // this.feesService.updateFees(this.feesForm.value).subscribe((res: any) => {
         //   if (res) {

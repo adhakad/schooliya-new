@@ -14,7 +14,7 @@ export class FeesStructureService {
     return this.http.post(`${this.url}`,feesForm);
   }
   feesStructureByClass(params: any) {
-    return this.http.get(`${this.url}/admin/${params.adminId}/class/${params.class}`);
+    return this.http.get(`${this.url}/admin/${params.adminId}/class/${params.class}/stream/${params.stream}`);
   }
 
   // addBulkFees(feesBulkResult:any) {

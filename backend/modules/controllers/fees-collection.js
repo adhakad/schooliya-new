@@ -51,7 +51,6 @@ let CreateFeesCollection = async (req, res, next) => {
     const currentDateIst = DateTime.now().setZone('Asia/Kolkata');
     const istDateTimeString = currentDateIst.toFormat('dd-MM-yyyy hh:mm:ss a');
     try {
-
         const checkFeesStructure = await FeesStructureModel.findOne({ adminId: adminId, class: className,stream:stream });
         if (!checkFeesStructure) {
             return res.status(404).json(`Fees structure not found !`);

@@ -34,15 +34,15 @@ export class AdminStudentFeesStructureComponent implements OnInit {
   feesMode: boolean = false;
   clsFeesStructure: any;
   particularsAdmissionFees: any[] = [];
-  feePerticulars: any[] = ['Registration', 'Tution', 'Books', 'Uniform', 'Examination','Sports','Library','Transport'];
+  feePerticulars: any[] = ['Registration', 'Tution', 'Books', 'Uniform', 'Examination', 'Sports', 'Library', 'Transport'];
   stream: any;
   schoolInfo: any;
   loader: Boolean = true;
-  adminId!:string;
-  constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute,private adminAuthService:AdminAuthService,private schoolService: SchoolService, private feesStructureService: FeesStructureService) {
+  adminId!: string;
+  constructor(private fb: FormBuilder, public activatedRoute: ActivatedRoute, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private feesStructureService: FeesStructureService) {
     this.feesForm = this.fb.group({
-      adminId:[''],
-      stream:[''],
+      adminId: [''],
+      stream: [''],
       admissionFees: ['', Validators.required],
       type: this.fb.group({
         feesType: this.fb.array([], [Validators.required]),
@@ -56,10 +56,10 @@ export class AdminStudentFeesStructureComponent implements OnInit {
     this.adminId = getAdmin?.id;
     this.cls = this.activatedRoute.snapshot.paramMap.get('class');
     this.stream = this.activatedRoute.snapshot.paramMap.get('stream');
-    this.getFeesStructureByClass(this.cls);
-    setTimeout(() => {
-      this.loader = false;
-    }, 1000);
+    if (this.cls && this.stream) {
+      this.getFeesStructureByClass();
+    }
+    this.loader = false;
   }
   getSchool() {
     this.schoolService.getSchool(this.adminId).subscribe((res: any) => {
@@ -68,41 +68,28 @@ export class AdminStudentFeesStructureComponent implements OnInit {
       }
     })
   }
-  getFeesStructureByClass(cls: any) {
+  getFeesStructureByClass() {
     let params = {
-      class:cls,
-      adminId:this.adminId,
+      class: this.cls,
+      adminId: this.adminId,
+      stream:this.stream
     }
     this.feesStructureService.feesStructureByClass(params).subscribe((res: any) => {
       if (res) {
-        this.errorMsg='';
+        this.errorMsg = '';
         this.clsFeesStructure = res;
         this.particularsAdmissionFees = [{ Admission: res.admissionFees }, ...res.feesType];
       }
-    },err => {
+    }, err => {
       this.errorMsg = err.error;
     })
   }
-  // installmentPayment() {
-  //   this.checkFeesPayType = true;
-  //   this.monthly = false;
-  //   this.installment = true;
-  //   this.selectedFeesPayType = [];
-  //   this.selectedFeesPayType = ['First', 'Second', 'Third'];
-  // }
-  // monthlyPayment() {
-  //   this.checkFeesPayType = true;
-  //   this.installment = false;
-  //   this.monthly = true;
-  //   this.selectedFeesPayType = [];
-  //   this.selectedFeesPayType = ['July', 'August', 'September', 'October', 'November', 'December', 'January', 'Fabruary', 'March', 'April'];
-  // }
+  
   addFeesModel() {
     this.showModal = true;
     this.feesTypeMode = true;
-    // this.feesForm.reset();
   }
-  openFeesStructureModal(){
+  openFeesStructureModal() {
     this.showFeesStructureModal = true;
   }
   selectFeesStructure() {
@@ -112,17 +99,10 @@ export class AdminStudentFeesStructureComponent implements OnInit {
   }
 
   falseAllValue() {
-    // this.installment = false;
-    // this.monthly = false;
-
     this.totalFees = 0;
     this.selectedFeesType = [];
-    // this.selectedFeesPayType = [];
     const controlOne = <FormArray>this.feesForm.get('type.feesType');
-    // const controlSecond = <FormArray>this.feesForm.get('type.feesPayType');
     controlOne.clear();
-    // controlSecond.clear();
-    // this.checkFeesPayType = false;
     this.feesTypeMode = false;
     this.feesMode = false;
 
@@ -147,7 +127,7 @@ export class AdminStudentFeesStructureComponent implements OnInit {
     setTimeout(() => {
       this.closeModal();
       this.successMsg = '';
-      this.getFeesStructureByClass(this.cls);
+      this.getFeesStructureByClass();
       console.log(this.cls)
     }, 1000)
   }
@@ -166,13 +146,12 @@ export class AdminStudentFeesStructureComponent implements OnInit {
     const controlOne = <FormArray>this.feesForm.get('type.feesType');
     this.selectedFeesType.forEach((x: any) => {
       controlOne.push(this.patchFeesTypeValues(x))
-      // this.feesForm.reset();
     })
   }
 
   patchFeesTypeValues(selectedFeesType: any) {
     return this.fb.group({
-      [selectedFeesType]: ['',Validators.required]
+      [selectedFeesType]: ['', Validators.required]
     })
   }
 
@@ -182,7 +161,7 @@ export class AdminStudentFeesStructureComponent implements OnInit {
     this.feesForm.value.stream = this.stream;
     this.feesForm.value.totalFees = this.totalFees;
     let feesTypeObj = this.feesForm.value.type.feesType;
-  
+
     let containsFeesTypeNull = feesTypeObj.some((item: any) => Object.values(item).includes(null));
     if (containsFeesTypeNull) {
       this.errorCheck = true;
@@ -205,7 +184,7 @@ export class AdminStudentFeesStructureComponent implements OnInit {
     this.feesStructureService.deleteFeesStructure(id).subscribe((res: any) => {
       if (res) {
         this.successDone();
-        this.getFeesStructureByClass(this.cls);
+        this.getFeesStructureByClass();
         this.successMsg = res;
         this.deleteById = '';
       }

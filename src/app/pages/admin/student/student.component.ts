@@ -112,7 +112,7 @@ export class StudentComponent implements OnInit {
     })
 
     this.excelForm = this.fb.group({
-      excelData: [null]
+      excelData: [null],
     });
 
     this.studentClassPromoteForm = this.fb.group({
