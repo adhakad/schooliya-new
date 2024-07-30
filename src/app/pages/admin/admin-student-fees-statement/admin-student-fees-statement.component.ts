@@ -124,16 +124,17 @@ export class AdminStudentFeesStatementComponent implements OnInit {
       if (res) {
         this.studentFeesCollection = res.studentFeesCollection;
         this.studentInfo = res.studentInfo;
-        this.feesStructureByClass(this.cls);
+        this.feesStructureByClass();
         this.processData();
       }
     })
   }
 
-  feesStructureByClass(cls: any) {
+  feesStructureByClass() {
     let params = {
-      class: cls,
+      class: this.cls,
       adminId: this.adminId,
+      stream:this.stream
     }
     this.feesStructureService.feesStructureByClass(params).subscribe((res: any) => {
       if (res) {

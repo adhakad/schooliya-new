@@ -14,9 +14,9 @@
                                 <span>Fee Payment > Structure</span>
                             </button>
                         </div>
-                        <div class="col-6 offset-2">
+                        <div class="col-9" style="text-align: right;">
                             <button class="submit-button" mat-raised-button
-                                        (click)="addFeesModel()"><mat-icon>add</mat-icon>Create</button>
+                                (click)="addFeesModel()"><mat-icon>add</mat-icon>Create</button>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,8 @@
                                     <div class="modal-content" *ngIf="!successMsg">
                                         <div class="modal-header">
                                             <h5 class="modal-title" *ngIf="feesTypeMode || feesMode">Create Fee
-                                                Structure {{cls | classSuffix}} &nbsp;<span *ngIf="cls==12 || cls==11">{{stream}}</span></h5>
+                                                Structure {{cls | classSuffix}} &nbsp;<span
+                                                    *ngIf="cls==12 || cls==11">{{stream}}</span></h5>
                                             <h5 class="modal-title" *ngIf="deleteMode">Delete Fee Structure {{cls |
                                                 classSuffix}}</h5>
                                             <mat-icon matRipple (click)="closeModal()">close</mat-icon>
@@ -91,7 +92,7 @@
                                                 <h3>Particular's</h3>
                                             </ng-container>
                                             <div class="col-10 mb-4 example-margin">
-                                                
+
                                                 <mat-form-field appearance="outline">
                                                     <mat-label>Perticular Total
                                                         Fee</mat-label>
@@ -255,8 +256,8 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button style="background-color: transparent;" class="submit-button" mat-raised-button
-                                                 type="submit"></button>
+                                            <button style="background-color: transparent;" class="submit-button"
+                                                mat-raised-button type="submit"></button>
                                         </div>
                                     </div>
                                 </div>
@@ -268,8 +269,8 @@
         </div>
     </div>
 </div>
-<div class="spinner-container" *ngIf="loader">
+<!-- <div class="spinner-container" *ngIf="loader">
     <div class="spinner-overlay" *ngIf="loader">
         <mat-progress-spinner *ngIf="loader" diameter="65" mode="indeterminate" strokeWidth="3"></mat-progress-spinner>
     </div>
-</div>
+</div> -->
