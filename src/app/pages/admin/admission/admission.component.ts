@@ -40,6 +40,7 @@ export class AdmissionComponent implements OnInit {
   qualifications: any;
   occupations: any;
   stream: string = '';
+  mediums: any;
   // notApplicable: String = "stream";
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
   cls: number = 0;
@@ -58,6 +59,7 @@ export class AdmissionComponent implements OnInit {
       _id: [''],
       adminId: [''],
       session: ['', Validators.required],
+      medium: ['', Validators.required],
       admissionNo: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       admissionFees: ['', Validators.required],
       rollNumberType: ['', Validators.required],
@@ -66,26 +68,25 @@ export class AdmissionComponent implements OnInit {
       stream: ['', Validators.required],
       name: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
       dob: ['', Validators.required],
-      aadharNumber: ['', [Validators.required, Validators.pattern('^\\d{12}$')]],
-      samagraId: ['', [Validators.required, Validators.pattern('^\\d{9}$')]],
+      aadharNumber: ['', [Validators.pattern('^\\d{12}$')]],
+      samagraId: ['', [Validators.pattern('^\\d{9}$')]],
+      udiseNumber: ['', [Validators.pattern('^\\d{11}$')]],
+      bankAccountNo: ['', [Validators.minLength(9), Validators.maxLength(18), Validators.pattern('^[0-9]+$')]],
+      bankIfscCode: ['', [Validators.minLength(11), Validators.maxLength(11)]],
       gender: ['', Validators.required],
       category: ['', Validators.required],
       religion: ['', Validators.required],
       nationality: ['', Validators.required],
-      contact: ['', [Validators.required, Validators.pattern('^[6789]\\d{9}$')]],
       address: ['', [Validators.required, Validators.maxLength(50)]],
-      lastSchool: ['', [ Validators.maxLength(50)]],
+      lastSchool: ['', [Validators.maxLength(50)]],
       fatherName: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
       fatherQualification: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
-      fatherOccupation: ['', Validators.required],
-      fatherContact: ['', [Validators.required, Validators.pattern('^[6789]\\d{9}$')]],
-      fatherAnnualIncome: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       motherName: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
       motherQualification: ['', Validators.required],
-      motherOccupation: ['', Validators.required],
-      motherContact: ['', [Validators.required, Validators.pattern('^[6789]\\d{9}$')]],
-      motherAnnualIncome: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      discountAmountInFees: [''],
+      parentsOccupation: ['', Validators.required],
+      parentsContact: ['', [Validators.pattern('^[6789]\\d{9}$')]],
+      parentsAnnualIncome: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      discountAmountInFees: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       createdBy: [''],
 
     })
@@ -194,16 +195,30 @@ export class AdmissionComponent implements OnInit {
     this.cls = cls;
     if (cls < 11 && cls !== 0 || cls == 200 || cls == 201 || cls == 202) {
       this.studentForm.get('stream')?.setValue("N/A");
+      this.stream = '';
+      this.stream = 'stream';
+      if (this.stream) {
+        this.feesStructureByClass();
+      }
     }
-    this.feesStructureByClass(cls);
   }
-  feesStructureByClass(cls: any) {
+  chooseStream(stream: any) {
+    this.stream = '';
+    this.stream = stream;
+    if (this.stream) {
+      this.feesStructureByClass();
+    }
+  }
+  feesStructureByClass() {
     let params = {
-      class: cls,
+      class: this.cls,
       adminId: this.adminId,
+      stream: this.stream
     }
     this.feesStructureService.feesStructureByClass(params).subscribe((res: any) => {
       if (res) {
+        this.errorCheck = true;
+        this.errorMsg = '';
         res.feesType = [{ Admission: res.admissionFees }, ...res.feesType];
         this.clsFeesStructure = res;
         const admissionFees = this.clsFeesStructure?.admissionFees;
@@ -212,6 +227,7 @@ export class AdmissionComponent implements OnInit {
     }, err => {
       this.errorCheck = true;
       this.errorMsg = err.error;
+      this.studentForm.get('admissionFees')?.setValue('');
     })
   }
   chooseRollNumberType(event: any) {
@@ -338,5 +354,6 @@ export class AdmissionComponent implements OnInit {
     this.religions = [{ religion: 'Hinduism' }, { religion: 'Buddhism' }, { religion: 'Christanity' }, { religion: 'Jainism' }, { religion: 'Sikhism' }, { religion: 'Muslim' }, { religion: 'Other' }]
     this.qualifications = [{ qualification: 'Doctoral Degree' }, { qualification: 'Masters Degree' }, { qualification: 'Graduate Diploma' }, { qualification: 'Graduate Certificate' }, { qualification: 'Graduate Certificate' }, { qualification: 'Bachelor Degree' }, { qualification: 'Advanced Diploma' }, { qualification: 'Primary School' }, { qualification: 'High School' }, { qualification: 'Higher Secondary School' }, { qualification: 'Illiterate' }, { qualification: 'Other' }]
     this.occupations = [{ occupation: 'Agriculture(Farmer)' }, { occupation: 'Laborer' }, { occupation: 'Self Employed' }, { occupation: 'Private Job' }, { occupation: 'State Govt. Employee' }, { occupation: 'Central Govt. Employee' }, { occupation: 'Military Job' }, { occupation: 'Para-Military Job' }, { occupation: 'PSU Employee' }, { occupation: 'Other' }]
+    this.mediums = [{ medium: 'Hindi' }, { medium: 'English' }]
   }
 }

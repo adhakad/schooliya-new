@@ -300,10 +300,6 @@
                                   <mat-label>Last School Optional</mat-label>
                                   <input matInput type="text" formControlName="lastSchool">
                                   <mat-error
-                                    *ngIf="studentForm.get('lastSchool')?.hasError('pattern') && studentForm.get('lastSchool')?.touched">
-                                    Please enter a valid Last School (only letters and spaces are allowed)
-                                  </mat-error>
-                                  <mat-error
                                     *ngIf="studentForm.get('lastSchool')?.hasError('maxlength') && studentForm.get('lastSchool')?.touched">
                                     Maximum length exceeded (maximum 50 characters allowed)
                                   </mat-error>
@@ -360,12 +356,8 @@
                               </div>
                               <div class="col-12 col-lg-6">
                                 <mat-form-field appearance="outline">
-                                  <mat-label>Aadhar Card Number</mat-label>
+                                  <mat-label>Aadhar Card Number (Optional)</mat-label>
                                   <input matInput type="number" formControlName="aadharNumber">
-                                  <mat-error
-                                    *ngIf="studentForm.get('aadharNumber')?.hasError('required') && studentForm.get('aadharNumber')?.touched">
-                                    Aadhar card number is required
-                                  </mat-error>
                                   <mat-error
                                     *ngIf="studentForm.get('aadharNumber')?.hasError('pattern') && studentForm.get('aadharNumber')?.touched">
                                     Aadhar number must be a 12-digit number
@@ -374,12 +366,8 @@
                               </div>
                               <div class="col-12 col-lg-6">
                                 <mat-form-field appearance="outline">
-                                  <mat-label>Samagra Id</mat-label>
+                                  <mat-label>Samagra Id (Optional)</mat-label>
                                   <input matInput type="number" formControlName="samagraId">
-                                  <mat-error
-                                    *ngIf="studentForm.get('samagraId')?.hasError('required') && studentForm.get('samagraId')?.touched">
-                                    Samagra id is required
-                                  </mat-error>
                                   <mat-error
                                     *ngIf="studentForm.get('samagraId')?.hasError('pattern') && studentForm.get('samagraId')?.touched">
                                     Samagra id must be a 9-digit number
@@ -464,10 +452,6 @@
                                   <mat-error
                                     *ngIf="studentForm.get('address')?.hasError('required') && studentForm.get('address')?.touched">
                                     Address is required
-                                  </mat-error>
-                                  <mat-error
-                                    *ngIf="studentForm.get('address')?.hasError('pattern') && studentForm.get('address')?.touched">
-                                    Please enter a valid Address (only letters and spaces are allowed)
                                   </mat-error>
                                   <mat-error
                                     *ngIf="studentForm.get('address')?.hasError('maxlength') && studentForm.get('address')?.touched">

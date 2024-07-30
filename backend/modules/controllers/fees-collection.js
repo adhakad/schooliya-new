@@ -4,20 +4,20 @@ const FeesStructureModel = require('../models/fees-structure');
 const StudentModel = require('../models/student');
 const { DateTime } = require('luxon');
 
-// let GetSingleStudentFeesCollectionById = async (req, res, next) => {
-//     let studentId = req.params.studentId;
+let GetSingleStudentFeesCollectionById = async (req, res, next) => {
+    let studentId = req.params.studentId;
 
-//     try {
-//         const student = await StudentModel.find({ _id: studentId }, '_id session admissionNo name rollNumber class fatherName motherName dob');
-//         if (!student) {
-//             return res.status(404).json('Student not found !')
-//         }
-//         const studentFeesCollection = await FeesCollectionModel.findOne({ studentId: studentId });
-//         return res.status(200).json({ studentInfo: student, studentFeesCollection: studentFeesCollection });
-//     } catch (error) {
-//         return res.status(500).json('Internal Server Error !');
-//     }
-// }
+    try {
+        const student = await StudentModel.find({ _id: studentId }, '_id session admissionNo name rollNumber class fatherName motherName dob');
+        if (!student) {
+            return res.status(404).json('Student not found !')
+        }
+        const studentFeesCollection = await FeesCollectionModel.findOne({ studentId: studentId });
+        return res.status(200).json({ studentInfo: student, studentFeesCollection: studentFeesCollection });
+    } catch (error) {
+        return res.status(500).json('Internal Server Error !');
+    }
+}
 
 let GetAllStudentFeesCollectionByClass = async (req, res, next) => {
     let adminId = req.params.id;
@@ -148,7 +148,7 @@ let CreateFeesCollection = async (req, res, next) => {
 
 module.exports = {
     GetAllStudentFeesCollectionByClass,
-    // GetSingleStudentFeesCollectionById,
+    GetSingleStudentFeesCollectionById,
     CreateFeesCollection,
     // CreateAdmissionFeesCollection
 
