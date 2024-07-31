@@ -21,7 +21,6 @@ const StudentModel = mongoose.model('student', {
         type: Number,
         required: true,
         trim: true,
-        unique: true,
     },
     name: {
         type: String,
@@ -91,14 +90,10 @@ const StudentModel = mongoose.model('student', {
     aadharNumber: {
         type: Number,
         trim: true,
-        unique: true,
-
     },
     samagraId: {
         type: Number,
         trim: true,
-        unique: true,
-
     },
     bankAccountNo: {
         type: Number,

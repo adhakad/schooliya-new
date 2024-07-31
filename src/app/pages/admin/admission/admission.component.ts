@@ -44,7 +44,6 @@ export class AdmissionComponent implements OnInit {
   // notApplicable: String = "stream";
   streamMainSubject: any[] = ['Mathematics(Science)', 'Biology(Science)', 'History(Arts)', 'Sociology(Arts)', 'Political Science(Arts)', 'Accountancy(Commerce)', 'Economics(Commerce)', 'Agriculture', 'Home Science'];
   cls: number = 0;
-  rollNumberType: string = '';
   clsFeesStructure: any;
   schoolInfo: any;
   admissionrReceiptInfo: any;
@@ -62,7 +61,6 @@ export class AdmissionComponent implements OnInit {
       medium: ['', Validators.required],
       admissionNo: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       admissionFees: ['', Validators.required],
-      rollNumberType: ['', Validators.required],
       rollNumber: ['', [Validators.required, Validators.maxLength(8), Validators.pattern('^[0-9]+$')]],
       class: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       stream: ['', Validators.required],
@@ -230,20 +228,6 @@ export class AdmissionComponent implements OnInit {
       this.studentForm.get('admissionFees')?.setValue('');
     })
   }
-  chooseRollNumberType(event: any) {
-    if (event) {
-      if (event.value == 'generate') {
-        this.rollNumberType = event.value;
-        const rollNumber = Math.floor(Math.random() * 89999999 + 10000000);
-        this.studentForm.get('rollNumber')?.setValue(rollNumber);
-
-      }
-      if (event.value == 'manualFill') {
-        this.rollNumberType = event.value;
-        this.studentForm.get('rollNumber')?.setValue(null);
-      }
-    }
-  }
 
   date(e: any) {
     var convertDate = new Date(e.target.value).toISOString().substring(0, 10);
@@ -261,7 +245,6 @@ export class AdmissionComponent implements OnInit {
     this.errorMsg = '';
     this.stream = '';
     this.cls = 0;
-    this.rollNumberType = '';
     this.receiptMode = false;
     this.admissionrReceiptInfo = null;
     this.studentForm.reset();
@@ -273,6 +256,8 @@ export class AdmissionComponent implements OnInit {
     this.studentForm.reset();
     const admissionNo = Math.floor(Math.random() * 89999999 + 10000000);
     this.studentForm.get('admissionNo')?.setValue(admissionNo);
+    const rollNumber = Math.floor(Math.random() * 89999999 + 10000000);
+    this.studentForm.get('rollNumber')?.setValue(rollNumber);
   }
   updateStudentModel(student: any) {
     this.showModal = true;
@@ -331,15 +316,11 @@ export class AdmissionComponent implements OnInit {
     if (this.studentForm.valid) {
       this.studentForm.value.adminId = this.adminId;
       this.studentForm.value.admissionType = 'New';
-      this.studentForm.value.discountAmountInFees = 500;
       this.studentForm.value.createdBy = 'Admin';
       this.studentService.addStudent(this.studentForm.value).subscribe((res: any) => {
         if (res) {
-          if (res.studentAdmissionData.admissionType == "New") {
-            this.receiptMode = true;
-            this.admissionrReceiptInfo = res.studentAdmissionData;
-            this.getStudentsByAdmission({ page: this.page });
-          }
+          this.successDone();
+          this.successMsg = res;
         }
       }, err => {
         this.errorCheck = true;

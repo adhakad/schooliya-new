@@ -114,15 +114,15 @@ let GetStudentPaginationByClass = async (req, res, next) => {
         }
         let limit = (req.body.limit) ? parseInt(req.body.limit) : 10;
         let page = req.body.page || 1;
-        const isStudent = await StudentModel.findOne({ adminId: adminId, class: className,stream:stream});
+        const isStudent = await StudentModel.findOne({ adminId: adminId, class: className, stream: stream });
         if (!isStudent) {
             return res.status(404).json(`Student Not Found !`);
         }
-        const studentList = await StudentModel.find({ adminId: adminId, class: className,stream:stream }).find(searchObj).sort({ _id: -1 })
+        const studentList = await StudentModel.find({ adminId: adminId, class: className, stream: stream }).find(searchObj).sort({ _id: -1 })
             .limit(limit * 1)
             .skip((page - 1) * limit)
             .exec();
-        const countStudent = await StudentModel.count({ adminId: adminId, class: className,stream:stream });
+        const countStudent = await StudentModel.count({ adminId: adminId, class: className, stream: stream });
         let studentData = { countStudent: 0 };
         studentData.studentList = studentList;
         studentData.countStudent = countStudent;
@@ -140,7 +140,7 @@ let GetAllStudentByClass = async (req, res, next) => {
         stream = "N/A";
     }
     try {
-        let singleStudent = await StudentModel.find({ adminId: req.params.id, class: req.params.class,stream:stream }, '-status -__v').sort({ _id: -1 });
+        let singleStudent = await StudentModel.find({ adminId: req.params.id, class: req.params.class, stream: stream }, '-status -__v').sort({ _id: -1 });
         return res.status(200).json(singleStudent);
     } catch (error) {
         return res.status(500).json('Internal Server Error !');
@@ -160,7 +160,7 @@ let CreateStudent = async (req, res, next) => {
     let receiptNo = Math.floor(Math.random() * 899999 + 100000);
     const currentDateIst = DateTime.now().setZone('Asia/Kolkata');
     const istDateTimeString = currentDateIst.toFormat('dd-MM-yyyy hh:mm:ss a');
-    let { session,medium,adminId, name, rollNumber, admissionClass, aadharNumber,udiseNumber, samagraId, admissionFees, admissionFeesPaymentType, admissionType, stream, admissionNo, dob, doa, gender, category, religion, nationality,bankAccountNo,bankIfscCode, address, lastSchool, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification, discountAmountInFees, createdBy } = req.body;
+    let { session, medium, adminId, name, rollNumber, admissionClass, aadharNumber, udiseNumber, samagraId, admissionFees, admissionType, stream, admissionNo, dob, doa, gender, category, religion, nationality, bankAccountNo, bankIfscCode, address, lastSchool, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification, discountAmountInFees, createdBy } = req.body;
     let className = req.body.class;
     if (stream === "stream") {
         stream = "N/A";
@@ -178,11 +178,11 @@ let CreateStudent = async (req, res, next) => {
     if (!parsedDate.isValid) {
         dob = DateTime.fromISO(dob).toFormat("dd-MM-yyyy");
     }
-    const studentData = {
-        session,medium, adminId, name, rollNumber, aadharNumber,udiseNumber, samagraId, admissionType, stream, admissionNo, class: className, admissionClass, dob: dob, doa: doa, gender, category, religion, nationality,bankAccountNo,bankIfscCode, address, lastSchool, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification, discountAmountInFees, createdBy
+    let studentData = {
+        session, medium, adminId, name, rollNumber, admissionType, stream, admissionNo, class: className, admissionClass, dob: dob, doa: doa, gender, category, religion, nationality, bankAccountNo, bankIfscCode, address, lastSchool, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification, discountAmountInFees, createdBy
     }
     try {
-        const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className,stream:stream });
+        const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className, stream: stream });
         if (!checkFeesStr) {
             return res.status(404).json(`Please create fees structure !`);
         }
@@ -190,18 +190,33 @@ let CreateStudent = async (req, res, next) => {
         if (!checkClassSubject) {
             return res.status(404).json(`Please group subjects according to class and stream !`);
         }
-        const checkAadharNumber = await StudentModel.findOne({ aadharNumber: aadharNumber });
-        if (checkAadharNumber) {
-            return res.status(400).json(`Aadhar card number already exist !`);
+        if (aadharNumber !== null && aadharNumber !== undefined) {
+            const checkAadharNumber = await StudentModel.findOne({aadharNumber: aadharNumber });
+            if (checkAadharNumber) {
+                return res.status(400).json(`Aadhar card number already exist !`);
+            }
+            studentData.aadharNumber = aadharNumber;
         }
-        const checkSamagraId = await StudentModel.findOne({ adminId: adminId, samagraId: samagraId });
-        if (checkSamagraId) {
-            return res.status(400).json(`Samagra id already exist !`);
+
+        if (samagraId !== null && samagraId !== undefined) {
+            const checkSamagraId = await StudentModel.findOne({samagraId: samagraId });
+            if (checkSamagraId) {
+                return res.status(400).json(`Samagra id already exist !`);
+            }
+            studentData.samagraId = samagraId;
         }
+        if (udiseNumber !== null && udiseNumber !== undefined) {
+            const checkUdiseNumber = await StudentModel.findOne({udiseNumber: udiseNumber });
+            if (checkUdiseNumber) {
+                return res.status(400).json(`UDISE Number already exist !`);
+            }
+        }
+
         const checkAdmissionNo = await StudentModel.findOne({ adminId: adminId, admissionNo: admissionNo });
         if (checkAdmissionNo) {
             return res.status(400).json(`Admission no already exist !`);
         }
+
         const checkRollNumber = await StudentModel.findOne({ adminId: adminId, rollNumber: rollNumber, class: className });
         if (checkRollNumber) {
             return res.status(400).json(`Roll number already exist for this class !`);
@@ -211,7 +226,6 @@ let CreateStudent = async (req, res, next) => {
         let admissionFeesPayable = false;
         let paidFees = 0;
         let dueFees = totalFees - paidFees;
-
         if (admissionType == 'New') {
             admissionFeesPayable = true;
             admissionFees = admissionFees;
@@ -222,16 +236,16 @@ let CreateStudent = async (req, res, next) => {
         let studentFeesData = {
             adminId: adminId,
             class: parseInt(className),
-            stream:stream,
+            stream: stream,
             admissionFees: admissionFees ? admissionFees : 0,
             admissionFeesPayable: admissionFeesPayable,
-            discountAmountInFees:discountAmountInFees,
+            discountAmountInFees: discountAmountInFees,
             totalFees: totalFees,
             paidFees: paidFees,
             dueFees: dueFees,
         }
-        if (admissionType == 'New' && admissionFeesPaymentType == 'Immediate') {
-            studentFeesData.admissionFeesReceiptNo = receiptNo;
+        if (admissionType == 'New') {
+            studentFeesData.admissionFeesReceiptNo = receiptNo;  
             studentFeesData.admissionFeesPaymentDate = istDateTimeString;
         }
         let createStudent = await StudentModel.create(studentData);
@@ -245,23 +259,19 @@ let CreateStudent = async (req, res, next) => {
                     session: createStudent.session,
                     name: createStudent.name,
                     class: createStudent.class,
-                    stream:stream,
+                    stream: stream,
                     admissionNo: createStudent.admissionNo,
                     rollNumber: createStudent.rollNumber,
                     dob: createStudent.dob,
                     fatherName: createStudent.fatherName,
                     motherName: createStudent.motherName,
                     admissionType: admissionType,
-                    admissionFeesPaymentType: admissionFeesPaymentType,
                     admissionFees: createStudentFeesData.admissionFees,
                     admissionFeesReceiptNo: createStudentFeesData.admissionFeesReceiptNo,
                     admissionFeesPaymentDate: createStudentFeesData.admissionFeesPaymentDate,
                     totalFees: createStudentFeesData.totalFees,
                     paidFees: createStudentFeesData.paidFees,
                     dueFees: createStudentFeesData.dueFees
-                }
-                if (admissionType == 'New') {
-                    return res.status(200).json({ studentAdmissionData: studentAdmissionData, successMsg: 'Student created successfully.' });
                 }
                 return res.status(200).json('Student created successfully.');
             }
@@ -332,13 +342,13 @@ let CreateBulkStudentRecord = async (req, res, next) => {
     for (const student of bulkStudentRecord) {
         studentData.push({
             session: student.session,
-            medium:student.medium,
+            medium: student.medium,
             adminId: adminId,
-            stream:stream,
+            stream: stream,
             name: student.name,
             rollNumber: student.rollNumber,
-            discountAmountInFees:student.discountAmountInFees,
-            udiseNumber:student.udiseNumber,
+            discountAmountInFees: student.discountAmountInFees,
+            udiseNumber: student.udiseNumber,
             aadharNumber: student.aadharNumber,
             samagraId: student.samagraId,
             admissionType: student.admissionType,
@@ -352,8 +362,8 @@ let CreateBulkStudentRecord = async (req, res, next) => {
             category: student.category,
             religion: student.religion,
             nationality: student.nationality,
-            bankAccountNo:student.bankAccountNo,
-            bankIfscCode:student.bankIfscCode,
+            bankAccountNo: student.bankAccountNo,
+            bankIfscCode: student.bankIfscCode,
             address: student.address,
             fatherName: student.fatherName,
             fatherQualification: student.fatherQualification,
@@ -433,7 +443,7 @@ let CreateBulkStudentRecord = async (req, res, next) => {
             const spreadRollNumber = duplicateRollNumber.join(', ');
             return res.status(400).json(`Roll number(s) ${spreadRollNumber} already exist for this class !`);
         }
-        const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className,stream:stream });
+        const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className, stream: stream });
         if (!checkFeesStr) {
             return res.status(404).json(`Please create fees structure !`);
         }
@@ -442,20 +452,20 @@ let CreateBulkStudentRecord = async (req, res, next) => {
 
         let admissionFees = checkFeesStr.admissionFees;
         let studentFeesData = [];
-        let totalFeesInStr =  checkFeesStr.totalFees;
+        let totalFeesInStr = checkFeesStr.totalFees;
         for (let i = 0; i < createStudent.length; i++) {
-            let totalFees =  0;
+            let totalFees = 0;
             let student = createStudent[i];
             totalFees = totalFeesInStr - student.discountAmountInFees;
             let feesObject = {
                 adminId: adminId,
                 studentId: student._id,
                 class: student.class,
-                stream:stream,
+                stream: stream,
                 admissionFeesPayable: false,
                 admissionFees: 0,
                 totalFees: totalFees,
-                discountAmountInFees : student.discountAmountInFees,
+                discountAmountInFees: student.discountAmountInFees,
                 paidFees: 0,
                 dueFees: totalFees,
             };
@@ -487,7 +497,6 @@ let CreateBulkStudentRecord = async (req, res, next) => {
         // Handle any errors that occurred during the transaction
         await session.abortTransaction();
         session.endSession();
-        console.error(error);
         return res.status(500).json('Internal Server Error!');
     }
 }
@@ -589,7 +598,7 @@ let DeleteStudent = async (req, res, next) => {
         const id = req.params.id;
         const deleteStudent = await StudentModel.findByIdAndRemove(id);
         if (deleteStudent) {
-            const [ deleteAdmitCard, deleteExamResult, deleteFeesCollection] = await Promise.all([
+            const [deleteAdmitCard, deleteExamResult, deleteFeesCollection] = await Promise.all([
                 AdmitCardModel.deleteOne({ studentId: id }),
                 ExamResultModel.deleteOne({ studentId: id }),
                 FeesCollectionModel.deleteOne({ studentId: id }),
