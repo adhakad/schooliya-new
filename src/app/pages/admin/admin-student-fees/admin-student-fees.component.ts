@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { read,  utils, writeFile } from 'xlsx';
+import { read, utils, writeFile } from 'xlsx';
 import { FeesService } from 'src/app/services/fees.service';
 import { MatRadioChange } from '@angular/material/radio';
 import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
@@ -20,6 +20,7 @@ export class AdminStudentFeesComponent implements OnInit {
   @ViewChild('receipt') receipt!: ElementRef;
   feesForm: FormGroup;
   showModal: boolean = false;
+  showPrintModal: boolean = false;
   updateMode: boolean = false;
   deleteMode: boolean = false;
   deleteById: String = '';
@@ -58,7 +59,7 @@ export class AdminStudentFeesComponent implements OnInit {
     this.feesForm = this.fb.group({
       adminId: [''],
       class: [''],
-      stream:[''],
+      stream: [''],
       studentId: [''],
       feesAmount: [''],
       createdBy: [''],
@@ -184,7 +185,7 @@ export class AdminStudentFeesComponent implements OnInit {
     let params = {
       class: this.cls,
       adminId: this.adminId,
-      stream:this.stream
+      stream: this.stream
     }
     this.feesService.getAllStudentFeesCollectionByClass(params).subscribe((res: any) => {
       if (res) {
@@ -208,7 +209,7 @@ export class AdminStudentFeesComponent implements OnInit {
     let params = {
       class: this.cls,
       adminId: this.adminId,
-      stream:this.stream
+      stream: this.stream
     }
     this.feesStructureService.feesStructureByClass(params).subscribe((res: any) => {
       if (res) {
@@ -220,6 +221,7 @@ export class AdminStudentFeesComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
+    this.showPrintModal = false;
     this.showBulkFeesModal = false;
     this.updateMode = false;
     this.successMsg = '';
@@ -313,9 +315,13 @@ export class AdminStudentFeesComponent implements OnInit {
             this.receiptInstallment = res;
             if (res.admissionFeesPayable == true) {
               this.clsFeesStructure.feesType = [{ Admission: res.admissionFees }, ...this.clsFeesStructure.feesType];
+              this.showModal = false;
+              this.showPrintModal = true;
             }
             if (res.admissionFeesPayable == false) {
               this.clsFeesStructure = this.clsFeesStructure;
+              this.showModal = false;
+              this.showPrintModal = true;
             }
           }
         }, err => {

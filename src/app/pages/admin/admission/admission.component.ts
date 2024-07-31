@@ -176,11 +176,11 @@ export class AdmissionComponent implements OnInit {
     })
   }
   addPrintModal(student: any) {
+    this.showAdmissionPrintModal = true;
     this.feesService.singleStudentFeesCollectionById(student._id).subscribe((res: any) => {
       if (res) {
         this.singleStudentInfo = student;
         this.singleStudentInfo.admissionFees = res.studentFeesCollection.admissionFees;
-        this.showAdmissionPrintModal = true;
       }
     })
   }
