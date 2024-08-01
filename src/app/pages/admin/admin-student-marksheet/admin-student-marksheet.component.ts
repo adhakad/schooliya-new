@@ -191,8 +191,8 @@ export class AdminStudentMarksheetComponent implements OnInit {
             };
           });
         };
-
-        this.mappedResults = mapExamResultsToStudents(this.examResultInfo, this.studentInfo);
+        let mappedResults = mapExamResultsToStudents(this.examResultInfo, this.studentInfo);
+        this.mappedResults = mappedResults.sort((a: any, b: any) => a.name.localeCompare(b.name));
       }
     }, err => {
       this.errorCheck = true;

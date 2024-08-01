@@ -197,7 +197,7 @@ export class AdminStudentFeesComponent implements OnInit {
           ...feeCollection
         }));
 
-        this.studentList = combinedData;
+         this.studentList = combinedData.sort((a: any, b: any) => a.name.localeCompare(b.name));
         setTimeout(() => {
           this.loader = false;
         }, 1000)

@@ -307,7 +307,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
           return result;
         }, []);
         if (combinedData) {
-          this.allAdmitCards = combinedData;
+        this.allAdmitCards = combinedData.sort((a: any, b: any) => a.name.localeCompare(b.name));
         }
       }
     },err => {

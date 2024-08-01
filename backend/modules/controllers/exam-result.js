@@ -78,7 +78,7 @@ let GetAllStudentResultByClassStream = async (req, res, next) => {
     }
     let streamMsg = `${stream} stream`;
     try {
-        const student = await StudentModel.find({ adminId: adminId, class: className, stream: stream },'adminId session admissionNo name dob rollNumber class fatherName motherName stream');
+        const student = await StudentModel.find({ adminId: adminId, class: className, stream: stream },'adminId session admissionNo name dob rollNumber class fatherName motherName stream').sort({name:1});
         if (student.length <= 0) {
             return res.status(404).json({ statusCode: 404, errorMsg: 'Not Found !' });
         }
