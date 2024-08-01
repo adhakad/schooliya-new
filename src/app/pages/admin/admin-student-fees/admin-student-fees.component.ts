@@ -10,6 +10,7 @@ import { FeesStructureService } from 'src/app/services/fees-structure.service';
 import { PrintPdfService } from 'src/app/services/print-pdf/print-pdf.service';
 import { SchoolService } from 'src/app/services/school.service';
 import { ClassService } from 'src/app/services/class.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-admin-student-fees',
@@ -18,6 +19,7 @@ import { ClassService } from 'src/app/services/class.service';
 })
 export class AdminStudentFeesComponent implements OnInit {
   @ViewChild('receipt') receipt!: ElementRef;
+  public baseUrl = environment.API_URL;
   feesForm: FormGroup;
   showModal: boolean = false;
   showPrintModal: boolean = false;

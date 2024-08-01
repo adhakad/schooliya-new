@@ -95,7 +95,7 @@ let DeleteTopper = async(req,res,next) => {
     try{
         const id = req.params.id;
         const singleTopper = await TopperModel.findOne({_id:id});
-        const singleImage = await singleTopper.image;
+        const singleImage = singleTopper.image;
         await fs.unlinkSync('./public/topper-image/'+singleImage);
         const deleteTopper = await TopperModel.findByIdAndRemove(id);
         return res.status(200).json('Topper delete successfully.');

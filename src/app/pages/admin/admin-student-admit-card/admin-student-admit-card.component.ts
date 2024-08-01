@@ -7,6 +7,7 @@ import { PrintPdfService } from 'src/app/services/print-pdf/print-pdf.service';
 import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
 import { SchoolService } from 'src/app/services/school.service';
 import { ClassService } from 'src/app/services/class.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-admin-student-admit-card',
@@ -14,7 +15,7 @@ import { ClassService } from 'src/app/services/class.service';
   styleUrls: ['./admin-student-admit-card.component.css']
 })
 export class AdminStudentAdmitCardComponent implements OnInit {
-
+  public baseUrl = environment.API_URL;
   allAdmitCards: any[] = [];
   cls: any;
   classInfo: any[] = [];

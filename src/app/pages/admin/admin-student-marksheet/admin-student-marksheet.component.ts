@@ -6,6 +6,7 @@ import { read, utils, writeFile } from 'xlsx';
 import { ExamResultService } from 'src/app/services/exam-result.service';
 import { MatRadioChange } from '@angular/material/radio';
 import { PrintPdfService } from 'src/app/services/print-pdf/print-pdf.service';
+import { environment } from 'src/environments/environment';
 import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
 import { ExamResultStructureService } from 'src/app/services/exam-result-structure.service';
 import { SchoolService } from 'src/app/services/school.service';
@@ -16,6 +17,7 @@ import { ClassService } from 'src/app/services/class.service';
   styleUrls: ['./admin-student-marksheet.component.css']
 })
 export class AdminStudentMarksheetComponent implements OnInit {
+  public baseUrl = environment.API_URL;
   showModal: boolean = false;
   showBulkResultPrintModal: boolean = false;
   deleteMode: boolean = false;

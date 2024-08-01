@@ -12,6 +12,11 @@ const schoolSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  schoolLogo: {
+    type: String,
+    required: true,
+    trim: true,
+},
   affiliationNumber: {
     type: String,
     required: true,
@@ -83,22 +88,6 @@ const schoolSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  facebookLink:{
-    type: String,
-    trim: true,
-  },
-  linkedinLink:{
-    type: String,
-    trim: true,
-  },
-  instagramLink:{
-    type: String,
-    trim: true,
-  },
-  youtubeLink:{
-    type: String,
-    trim: true,
-  }
 
 });
 

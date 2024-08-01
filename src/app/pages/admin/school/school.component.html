@@ -152,6 +152,14 @@
                             </div>
                             <div class="col-12 col-lg-6">
                               <mat-form-field appearance="outline">
+                                <mat-label>Choose School Logo</mat-label>
+                                <ngx-mat-file-input formControlName="schoolLogo">
+                                  <mat-icon ngxMatFileInputIcon style="color: #8d6dff;">cloud_upload</mat-icon>
+                                </ngx-mat-file-input>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                              <mat-form-field appearance="outline">
                                 <mat-label>Affiliation Number</mat-label>
                                 <input matInput type="text" formControlName="affiliationNumber">
                                 <mat-error
@@ -334,45 +342,6 @@
                                 </mat-error>
                                 <mat-error *ngIf="schoolForm.get('email')?.hasError('email')">
                                   Invalid email format
-                                </mat-error>
-                              </mat-form-field>
-                            </div>
-                            <ng-container>
-                              <h3>Social Media Account</h3>
-                            </ng-container>
-                            <div class="col-12 col-lg-6">
-                              <mat-form-field appearance="outline">
-                                <mat-label>Facebook Link</mat-label>
-                                <input matInput type="text" formControlName="facebookLink">
-                                <mat-error *ngIf="schoolForm.get('facebookLink')?.hasError('pattern')">
-                                  Invalid Facebook link format
-                                </mat-error>
-                              </mat-form-field>
-                            </div>
-                            <div class="col-12 col-lg-6">
-                              <mat-form-field appearance="outline">
-                                <mat-label>LinkedIn Link</mat-label>
-                                <input matInput type="text" formControlName="linkedinLink">
-                                <mat-error *ngIf="schoolForm.get('linkedinLink')?.hasError('pattern')">
-                                  Invalid LinkedIn link format
-                                </mat-error>
-                              </mat-form-field>
-                            </div>
-                            <div class="col-12 col-lg-6">
-                              <mat-form-field appearance="outline">
-                                <mat-label>Instagram Link</mat-label>
-                                <input matInput type="text" formControlName="instagramLink">
-                                <mat-error *ngIf="schoolForm.get('instagramLink')?.hasError('pattern')">
-                                  Invalid Instagram link format
-                                </mat-error>
-                              </mat-form-field>
-                            </div>
-                            <div class="col-12 col-lg-6">
-                              <mat-form-field appearance="outline">
-                                <mat-label>YouTube Link</mat-label>
-                                <input matInput type="text" formControlName="youtubeLink">
-                                <mat-error *ngIf="schoolForm.get('youtubeLink')?.hasError('pattern')">
-                                  Invalid YouTube link format
                                 </mat-error>
                               </mat-form-field>
                             </div>

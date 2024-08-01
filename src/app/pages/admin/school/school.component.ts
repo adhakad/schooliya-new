@@ -26,6 +26,7 @@ export class SchoolComponent implements OnInit {
       _id: [''],
       adminId:[''],
       schoolName: ['', [Validators.required, Validators.maxLength(50)]],
+      schoolLogo: [''],
       affiliationNumber: ['', [Validators.required, Validators.maxLength(15)]],
       schoolCode: ['', [Validators.required, Validators.maxLength(15)]],
       foundedYear: ['', [Validators.required, Validators.pattern(/^(19|20)\d{2}$/)]],
@@ -39,10 +40,6 @@ export class SchoolComponent implements OnInit {
       phoneOne: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^\d+$/)]],
       phoneSecond: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern(/^\d+$/)]],
       email: ['', [Validators.required, Validators.email]],
-      facebookLink: ['', [Validators.pattern(/^(https?:\/\/)?(www\.)?facebook.com\/[a-zA-Z0-9(\.\?)?]/)]],
-      linkedinLink: ['', [Validators.pattern(/^(https?:\/\/)?(www\.)?linkedin.com\/[a-zA-Z0-9(\.\?)?]/)]],
-      instagramLink: ['', [Validators.pattern(/^(https?:\/\/)?(www\.)?instagram.com\/[a-zA-Z0-9(\.\?)?]/)]],
-      youtubeLink: ['', [Validators.pattern(/^(https?:\/\/)?(www\.)?youtube.com\/[a-zA-Z0-9(\.\?)?]/)]],
     })
   }
   ngOnInit(): void {

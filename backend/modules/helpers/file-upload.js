@@ -21,18 +21,18 @@ let filename = (req, file, cb) => {
   cb(null, fileName)
 };
 
-// let teacherImage = multer({
-//   storage: multer.diskStorage({
-//     destination: (req, file, cb) => {
-//       cb(null, `${DIR}/teacher-image/`)
-//     },
-//     filename: filename
-//   }),
-//   limits: {
-//     fileSize: 1024 * 1024 * 5,
-//   },
-//   fileFilter:filter
-// })
+let schoolLogo = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, `${DIR}/school-logo/`)
+    },
+    filename: filename
+  }),
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
+  fileFilter:filter
+})
 let bannerImage = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
@@ -95,10 +95,10 @@ let testimonialImage = multer({
 })
 
 module.exports = {
-  // teacherImage:teacherImage,
   bannerImage:bannerImage,
   subjectImage:subjectImage,
   adsImage:adsImage,
   topperImage:topperImage,
-  testimonialImage:testimonialImage
+  testimonialImage:testimonialImage,
+  schoolLogo
 }

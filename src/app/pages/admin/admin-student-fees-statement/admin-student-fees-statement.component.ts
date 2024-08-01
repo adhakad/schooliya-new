@@ -5,6 +5,7 @@ import { FeesService } from 'src/app/services/fees.service';
 import { PrintPdfService } from 'src/app/services/print-pdf/print-pdf.service';
 import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
 import { SchoolService } from 'src/app/services/school.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-admin-student-fees-statement',
@@ -14,6 +15,7 @@ import { SchoolService } from 'src/app/services/school.service';
 export class AdminStudentFeesStatementComponent implements OnInit {
   @ViewChild('content') content!: ElementRef;
   @ViewChild('receipt') receipt!: ElementRef;
+  public baseUrl = environment.API_URL;
   cls: any;
   showModal: boolean = false;
   clsFeesStructure: any;
