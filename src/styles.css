@@ -318,8 +318,6 @@ table mat-icon {
   font-size: 20px;
 }
 
-
-
 .delete-button {
   background: #eeecf5;
   color: #4a4a71;
@@ -598,7 +596,7 @@ Side navigation section
     padding-bottom: 1.5vh;
   }
   .main-container{
-    padding: 20px 2% 20px 2%;
+    padding: 20px 2% 20px 0;
   }
   .main-container .submit-button{
     margin-right: 15px;

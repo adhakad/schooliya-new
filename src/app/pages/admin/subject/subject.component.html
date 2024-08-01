@@ -22,82 +22,80 @@
             </div>
           </div>
         </div>
-        <div class="row main-container">
+        <div class="main-container">
           <div class="col-12 col-lg-12 big-container">
-            <div class="col-12 col-lg-12 offset-lg-0">
-              <div class="main-card">
-                <table class="table table-hover align-middle mb-1 bg-white mt-3">
-                  <thead class="bg-light">
-                    <tr class="text-muted">
-                      <th>No.</th>
-                      <th>Subject</th>
-                      <th>Edit</th>
-                      <th>Remove</th>
-                    </tr>
-                  </thead>
-                  <tbody *ngIf="subjectInfo && subjectInfo.length>0">
-                    <tr *ngFor="let subject of subjectInfo,let i=index">
-                      <td>
-                        <p class="mb-0">{{number*10+i+1-10}}</p>
-                      </td>
-                      <td>
-                        <p class="mb-0">{{subject.subject}}</p>
-                      </td>
-                      <td class="mb-0">
-                        <mat-icon (click)="updateSubjectModel(subject)">edit</mat-icon>
-                      </td>
-                      <td class="mb-0">
-                        <mat-icon (click)="deleteSubjectModel(subject._id)">delete</mat-icon>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div class="pagination">
-                  <app-pagination [paginationValues]="paginationValues" (onChange)="getSubject($event)">
-                  </app-pagination>
-                </div>
-                <div class="modal fade show" [class.show]="showModal">
-                  <div class="modal-dialog modal-dialog-top" role="document">
-                    <div class="modal-content" *ngIf="successMsg">
-                      <div class="modal-header">
-                        <h5 class="modal-title" style="color: transparent;">Class</h5>
-                      </div>
+            <div class="main-card">
+              <table class="table table-hover align-middle mb-1 bg-white mt-3">
+                <thead class="bg-light">
+                  <tr class="text-muted">
+                    <th>No.</th>
+                    <th>Subject</th>
+                    <th>Edit</th>
+                    <th>Remove</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="subjectInfo && subjectInfo.length>0">
+                  <tr *ngFor="let subject of subjectInfo,let i=index">
+                    <td>
+                      <p class="mb-0">{{number*10+i+1-10}}</p>
+                    </td>
+                    <td>
+                      <p class="mb-0">{{subject.subject}}</p>
+                    </td>
+                    <td class="mb-0">
+                      <mat-icon (click)="updateSubjectModel(subject)">edit</mat-icon>
+                    </td>
+                    <td class="mb-0">
+                      <mat-icon (click)="deleteSubjectModel(subject._id)">delete</mat-icon>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pagination">
+                <app-pagination [paginationValues]="paginationValues" (onChange)="getSubject($event)">
+                </app-pagination>
+              </div>
+              <div class="modal fade show" [class.show]="showModal">
+                <div class="modal-dialog modal-dialog-top" role="document">
+                  <div class="modal-content" *ngIf="successMsg">
+                    <div class="modal-header">
+                      <h5 class="modal-title" style="color: transparent;">Class</h5>
+                    </div>
+                    <div class="modal-body">
+                      <p class="success-message">{{successMsg}}</p>
+                    </div>
+                    <div class="modal-footer">
+                      <mat-icon></mat-icon>
+                    </div>
+                  </div>
+                  <div class="modal-content" *ngIf="!successMsg">
+                    <div class="modal-header">
+                      <h5 class="modal-title">{{updateMode?'Update': deleteMode ? 'Delete':'Create New'}} Subject</h5>
+                      <mat-icon matRipple (click)="closeModal()">close</mat-icon>
+                    </div>
+
+                    <form [formGroup]="subjectForm" (ngSubmit)="subjectAddUpdate()" *ngIf="!deleteMode">
                       <div class="modal-body">
-                        <p class="success-message">{{successMsg}}</p>
+                        <div *ngIf="errorCheck">
+                          <p class="error-message">{{errorMsg}}</p>
+                        </div>
+                        <mat-form-field appearance="outline">
+                          <mat-label>Subject</mat-label>
+                          <input matInput type="text" formControlName="subject">
+                          <mat-hint *ngIf="!subjectForm.get('subject')?.valid && subjectForm.get('subject')?.touched"
+                            class="form-text text-danger">Subject is required</mat-hint>
+                        </mat-form-field>
                       </div>
                       <div class="modal-footer">
-                        <mat-icon></mat-icon>
+                        <button type="submit" mat-raised-button [disabled]="!subjectForm.valid"
+                          class="submit-button">Submit</button>
                       </div>
-                    </div>
-                    <div class="modal-content" *ngIf="!successMsg">
-                      <div class="modal-header">
-                        <h5 class="modal-title">{{updateMode?'Update': deleteMode ? 'Delete':'Create New'}} Subject</h5>
-                        <mat-icon matRipple (click)="closeModal()">close</mat-icon>
-                      </div>
-
-                      <form [formGroup]="subjectForm" (ngSubmit)="subjectAddUpdate()" *ngIf="!deleteMode">
-                        <div class="modal-body">
-                          <div *ngIf="errorCheck">
-                            <p class="error-message">{{errorMsg}}</p>
-                          </div>
-                          <mat-form-field appearance="outline">
-                            <mat-label>Subject</mat-label>
-                            <input matInput type="text" formControlName="subject">
-                            <mat-hint *ngIf="!subjectForm.get('subject')?.valid && subjectForm.get('subject')?.touched"
-                              class="form-text text-danger">Subject is required</mat-hint>
-                          </mat-form-field>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="submit" mat-raised-button [disabled]="!subjectForm.valid"
-                            class="submit-button">Submit</button>
-                        </div>
-                      </form>
-                      <div *ngIf="deleteMode">
-                        <h4>To delete class, click ok to confirm.</h4>
-                        <div class="modal-footer">
-                          <button class="delete-button" mat-raised-button type="button"
-                            (click)="subjectDelete(deleteById)">Ok</button>
-                        </div>
+                    </form>
+                    <div *ngIf="deleteMode">
+                      <h4>To delete class, click ok to confirm.</h4>
+                      <div class="modal-footer">
+                        <button class="delete-button" mat-raised-button type="button"
+                          (click)="subjectDelete(deleteById)">Ok</button>
                       </div>
                     </div>
                   </div>
