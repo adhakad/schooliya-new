@@ -1,10 +1,7 @@
 'use strict';
-const ExamResultStructureModel = require('../models/exam-result-structure');
 const MarksheetTemplateStructureModel = require('../models/marksheet-template-structure');
 const MarksheetTemplateModel = require('../models/marksheet-template');
 const ExamResultModel = require('../models/exam-result');
-const NotificationModel = require('../models/notification');
-const classModel = require('../models/class');
 const ClassSubjectModel = require('../models/class-subject');
 const StudentModel = require('../models/student');
 
@@ -250,84 +247,11 @@ let DeleteResultStructure = async (req, res, next) => {
         return res.status(500).json('Internal Server Error !');;
     }
 }
-let ChangeResultPublishStatus = async (req, res, next) => {
-    try {
-        const id = req.params.id;
-        const examResultStr = await ExamResultStructureModel.findOne({ _id: id });
-        if (!examResultStr) {
-            return res.status(200).json('Exam result structure not found !');
-        }
-        const findResultPublishStatus = examResultStr.resultPublishStatus;
-        const adminId = examResultStr.adminId;
-        const cls = examResultStr.class;
-        const stream = examResultStr.stream;
-        const examType = examResultStr.examType;
-
-        const isExamResultExist = await ExamResultModel.findOne({ adminId: adminId, class: cls, stream: stream, examType: examType });
-        if (!isExamResultExist && findResultPublishStatus == false) {
-            return res.status(404).json('Exam result not found !');
-        }
-        let title = '';
-        let message = '';
-        if (findResultPublishStatus == false) {
-            let className;
-            if (cls == 1) {
-                className = `${cls}st`
-            }
-            if (cls == 2) {
-                className = `${cls}nd`
-            }
-            if (cls == 3) {
-                className = `${cls}rd`
-            }
-            if (cls >= 4 && cls <= 12) {
-                className = `${cls}th`
-            }
-            if (cls == 200) {
-                className = `Nursery`;
-            }
-            if (cls == 201) {
-                className = `LKG`;
-            }
-            if (cls == 202) {
-                className = `UKG`;
-            }
-            title = `Class ${className} ${examType} exam results announcement : Check Online and Download Your Results`;
-            message = `All class ${className} students are informed that the online results for their ${examType} exams are being announced. You can check your results by visiting the school's website and download them online using the credentials provided by your school. We wish you the best of luck in achieving good results.`
-        }
-        const { resultPublishStatus } = req.body;
-        const resultPublishData = {
-            resultPublishStatus: resultPublishStatus
-        }
-        const updateStatus = await ExamResultStructureModel.findByIdAndUpdate(id, { $set: resultPublishData }, { new: true });
-        if (updateStatus) {
-            const notification = await NotificationModel.findOne({ class: cls, title: title });
-            if (!notification && title !== '') {
-                const notificationData = {
-                    title: title,
-                    message: message,
-                    role: 'Student',
-                    class: cls,
-                    date: Date.now(),
-                }
-                let createNotification = await NotificationModel.create(notificationData);
-                if (createNotification) {
-                    return res.status(200).json('Exam result publish status update successfully.');
-                }
-            }
-            return res.status(200).json('Exam result publish status update successfully.');
-        }
-
-    } catch (error) {
-        return res.status(500).json('Internal Server Error !');
-    }
-}
 
 module.exports = {
     GetSingleClassMarksheetTemplateByStream,
     GetSingleClassMarksheetTemplateStructureByStream,
     CreateExamResultStructure,
-    ChangeResultPublishStatus,
     DeleteResultStructure
 
 }

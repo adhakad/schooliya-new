@@ -4,7 +4,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdminAuthInterceptor } from './interceptors/admin-auth.interceptor';
 import { TeacherAuthInterceptor } from './interceptors/teacher-auth.interceptor';
-import { StudentAuthInterceptor } from './interceptors/student-auth.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PortalModule } from '@angular/cdk/portal';
 // import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -19,7 +18,6 @@ import { MatDatetimepickerModule, MAT_DATETIME_FORMATS } from '@mat-datetimepick
 import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 import { AdminSharedModule } from './pages/admin/admin-shared/admin-shared.module';
 import { TeacherSharedModule } from './pages/teacher/teacher-shared/teacher-shared.module';
-import { StudentSharedModule } from './pages/student/student-shared/student-shared.module';
 import { MainSharedModule } from './pages/main/main-shared/main-shared.module';
 
 
@@ -43,12 +41,10 @@ import { MainSharedModule } from './pages/main/main-shared/main-shared.module';
     MainSharedModule,
     AdminSharedModule,
     TeacherSharedModule,
-    StudentSharedModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS,useClass:AdminAuthInterceptor,multi:true},
     {provide:HTTP_INTERCEPTORS,useClass:TeacherAuthInterceptor,multi:true},
-    {provide:HTTP_INTERCEPTORS,useClass:StudentAuthInterceptor,multi:true},
     {
       provide: MAT_DATETIME_FORMATS,
       useValue: {

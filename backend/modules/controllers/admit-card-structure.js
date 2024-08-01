@@ -2,7 +2,6 @@
 const AdmitCardStructureModel = require('../models/admit-card-structure');
 const AdmitCardModel = require("../models/admit-card");
 const StudentModel = require('../models/student');
-const NotificationModel = require('../models/notification');
 
 let GetSingleClassAdmitCardStructure = async (req, res, next) => {
     let adminId = req.params.id;
@@ -89,77 +88,8 @@ let DeleteAdmitCardStructure = async (req, res, next) => {
         return res.status(500).json('Internal Server Error !');
     }
 }
-
-let ChangeAdmitCardPublishStatus = async (req, res, next) => {
-    try {
-        const id = req.params.id;
-        const admitCardStr = await AdmitCardStructureModel.findOne({ _id: id });
-        if (!admitCardStr) {
-            return res.status(200).json('Admit card structure not found !');
-        }
-        const findAdmitCardPublishStatus = admitCardStr.admitCardPublishStatus;
-        const cls = admitCardStr.class;
-        const stream = admitCardStr.stream;
-        const examType = admitCardStr.examType;
-        let title = '';
-        let message = '';
-        if (findAdmitCardPublishStatus == false) {
-            let className;
-            if (cls == 1) {
-                className = `${cls}st`
-            }
-            if (cls == 2) {
-                className = `${cls}nd`
-            }
-            if (cls == 3) {
-                className = `${cls}rd`
-            }
-            if (cls >= 4 && cls <= 12) {
-                className = `${cls}th`
-            }
-            if (cls == 200) {
-                className = `Nursery`;
-            }
-            if (cls == 201) {
-                className = `LKG`;
-            }
-            if (cls == 202) {
-                className = `UKG`;
-            }
-            title = `Class ${className} ${examType} exam online admit cards released - Download Now`;
-            message = `All class ${className} students are informed that the online admit cards for your ${examType} exams have been issued on the school's website. You can download them online using the credentials provided by your school. Best of luck for your upcoming exams.`
-        }
-        const { admitCardPublishStatus } = req.body;
-        const admitCardPublishData = {
-            admitCardPublishStatus: admitCardPublishStatus
-        }
-        const updateStatus = await AdmitCardStructureModel.findByIdAndUpdate(id, { $set: admitCardPublishData }, { new: true });
-        if (updateStatus) {
-            const notification = await NotificationModel.findOne({ class: cls, title: title });
-            if (!notification && title !== '') {
-                const notificationData = {
-                    title: title,
-                    message: message,
-                    role: 'Student',
-                    class: cls,
-                    date: Date.now(),
-                }
-                let createNotification = await NotificationModel.create(notificationData);
-                if (createNotification) {
-                    return res.status(200).json('Admit card publish status update successfully.');
-                }
-            }
-            return res.status(200).json('Admit card publish status update successfully.');
-        }
-
-    } catch (error) {
-        return res.status(500).json('Internal Server Error !');
-    }
-}
-
 module.exports = {
     GetSingleClassAdmitCardStructure,
     CreateAdmitCardStructure,
     DeleteAdmitCardStructure,
-    ChangeAdmitCardPublishStatus
 }

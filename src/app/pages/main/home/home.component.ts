@@ -14,7 +14,6 @@ import { AdsService } from 'src/app/services/ads.service';
 import { TopperService } from 'src/app/services/topper.service';
 import { PlansService } from 'src/app/services/plans.service';
 import { TestimonialService } from 'src/app/services/testimonial.service';
-import { StudentAuthService } from 'src/app/services/auth/student-auth.service';
 import { PrintPdfService } from 'src/app/services/print-pdf/print-pdf.service';
 import { SchoolService } from 'src/app/services/school.service';
 
@@ -46,12 +45,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ];
 
   adminId!: any;
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private el: ElementRef, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private printPdfService: PrintPdfService, private plansService: PlansService, private bannerService: BannerService, private topperService: TopperService, private testimonialService: TestimonialService, private adsService: AdsService, private studentAuthService: StudentAuthService) { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private el: ElementRef, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private printPdfService: PrintPdfService, private plansService: PlansService, private bannerService: BannerService, private topperService: TopperService, private testimonialService: TestimonialService, private adsService: AdsService) { }
 
   async ngOnInit() {
     let getAdmin = this.adminAuthService.getLoggedInAdminInfo();
     this.adminId = getAdmin?.id;
-    this.getLoggedInStudentInfo();
     this.getPlans();
     this.getBanner();
     this.getAds()
@@ -59,12 +57,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.getTopper();
   }
 
-  getLoggedInStudentInfo() {
-    this.loggedInStudentInfo = this.studentAuthService.getLoggedInStudentInfo();
-    if (this.loggedInStudentInfo) {
-      this.cls = this.loggedInStudentInfo?.class;
-    }
-  }
+  
   ngAfterViewInit() {
     if (this.isBrowser) {
 

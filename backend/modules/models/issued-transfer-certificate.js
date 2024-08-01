@@ -2,6 +2,11 @@
 const mongoose = require('mongoose');
 
 const IssuedTransferCertificateModel = mongoose.model('issued-transfer-certificate', {
+    session: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     adminId: {
         type: String,
         required: true,
@@ -13,11 +18,6 @@ const IssuedTransferCertificateModel = mongoose.model('issued-transfer-certifica
         trim: true,
         unique: true
     },
-    session: {
-        type: String,
-        required: true,
-        trim: true,
-    },
     name: {
         type: String,
         required: true,
@@ -25,6 +25,11 @@ const IssuedTransferCertificateModel = mongoose.model('issued-transfer-certifica
     },
     class: {
         type: Number,
+        required: true,
+        trim: true
+    },
+    stream: {
+        type: String,
         required: true,
         trim: true
     },
@@ -44,11 +49,6 @@ const IssuedTransferCertificateModel = mongoose.model('issued-transfer-certifica
         required: true,
         trim: true,
         unique: true,
-    },
-    stream: {
-        type: String,
-        required: true,
-        trim: true
     },
     dob: {
         type: String,
@@ -83,16 +83,10 @@ const IssuedTransferCertificateModel = mongoose.model('issued-transfer-certifica
     aadharNumber: {
         type: Number,
         trim: true,
-        required: true,
-        unique: true,
-
     },
     samagraId: {
         type: Number,
         trim: true,
-        required: true,
-        unique: true,
-
     },
     contact: {
         type: Number,

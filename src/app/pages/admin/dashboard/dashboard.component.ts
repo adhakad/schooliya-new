@@ -5,7 +5,6 @@ import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
 import { BannerService } from 'src/app/services/banner.service';
 import { ClassSubjectService } from 'src/app/services/class-subject.service';
 import { ClassService } from 'src/app/services/class.service';
-import { NotificationService } from 'src/app/services/notification.service';
 import { StudentService } from 'src/app/services/student.service';
 import { SubjectService } from 'src/app/services/subject.service';
 import { TeacherService } from 'src/app/services/teacher.service';
@@ -24,7 +23,6 @@ export class DashboardComponent implements OnInit {
   bannerCountInfo: any;
   classSubjectCountInfo: any;
   classCountInfo: any;
-  notificationCountInfo: any;
   studentCountInfo: any;
   studyMaterialCountInfo: any;
   subjectCountInfo: any;
@@ -33,14 +31,13 @@ export class DashboardComponent implements OnInit {
   testimonialCountInfo: any;
   topperCountInfo: any;
   loader: Boolean = true;
-  constructor(private adminAuthService: AdminAuthService, private adsService: AdsService, private bannerService: BannerService, private classSubjectService: ClassSubjectService, private classService: ClassService, private notificationService: NotificationService, private studentService: StudentService, private subjectService: SubjectService, private teacherService: TeacherService, private testimonialService: TestimonialService, private topperService: TopperService) { }
+  constructor(private adminAuthService: AdminAuthService, private adsService: AdsService, private bannerService: BannerService, private classSubjectService: ClassSubjectService, private classService: ClassService,private studentService: StudentService, private subjectService: SubjectService, private teacherService: TeacherService, private testimonialService: TestimonialService, private topperService: TopperService) { }
 
   ngOnInit(): void {
     this.adsCount();
     this.bannerCount();
     this.classSubjectCount();
     this.classCount();
-    this.notificationCount();
     this.studentCount();
     this.subjectCount();
     this.teacherCount();
@@ -72,11 +69,6 @@ export class DashboardComponent implements OnInit {
   studentCount() {
     this.studentService.getStudentCount().subscribe((res: any) => {
       this.studentCountInfo = res.countStudent;
-    })
-  }
-  notificationCount() {
-    this.notificationService.getNotificationCount().subscribe((res: any) => {
-      this.notificationCountInfo = res.countNotification;
     })
   }
   subjectCount() {

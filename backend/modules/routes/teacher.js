@@ -1,13 +1,12 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const fileUpload = require('../helpers/file-upload');
 const { countTeacher, CreateTeacher, UpdateTeacher, ChangeStatus, DeleteTeacher, GetTeacherPagination, TeacherPermission } = require('../controllers/teacher');
 const { isAdminAuth } = require('../middleware/admin-auth');
 
 router.get('/teacher-count',countTeacher);
 router.post('/teacher-pagination', GetTeacherPagination);
-router.post('/', isAdminAuth, fileUpload.teacherImage.single('image'), CreateTeacher);
+router.post('/', isAdminAuth, CreateTeacher);
 router.put('/permission/admin/:id/teacher/:teacherId', TeacherPermission);
 router.put('/:id', isAdminAuth, UpdateTeacher);
 router.put('/status/:id', ChangeStatus);

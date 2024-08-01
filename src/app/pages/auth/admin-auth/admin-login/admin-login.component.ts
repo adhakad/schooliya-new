@@ -2,7 +2,6 @@ import { Component,OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
-import { StudentAuthService } from 'src/app/services/auth/student-auth.service';
 import { TeacherAuthService } from 'src/app/services/auth/teacher-auth.service';
 @Component({
   selector: 'app-admin-login',
@@ -12,7 +11,7 @@ import { TeacherAuthService } from 'src/app/services/auth/teacher-auth.service';
 export class AdminLoginComponent implements OnInit{
   errorMsg:string ='';
   loginForm: FormGroup;
-  constructor(private fb: FormBuilder,private router:Router,private studentAuthService: StudentAuthService,private adminAuthService: AdminAuthService,private teacherAuthService: TeacherAuthService) {
+  constructor(private fb: FormBuilder,private router:Router,private adminAuthService: AdminAuthService,private teacherAuthService: TeacherAuthService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
@@ -23,7 +22,7 @@ export class AdminLoginComponent implements OnInit{
 
   login() {
     if (this.loginForm.valid) {
-      if(this.studentAuthService.getAccessToken() || this.teacherAuthService.getAccessToken()){
+      if(this.teacherAuthService.getAccessToken()){
         this.errorMsg = "Login not valid,you are already logged in another account !";
         return
       }
