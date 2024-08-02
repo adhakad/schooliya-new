@@ -37,12 +37,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   loadTitle = false;
   loader: Boolean = true;
   schoolInfo: any;
-  showModal: Boolean = false;
-  students = [
-    { id: 1, name: 'Student 1' },
-    { id: 2, name: 'Student 2' },
-    // Add more students as needed
-  ];
 
   adminId!: any;
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private el: ElementRef, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private printPdfService: PrintPdfService, private plansService: PlansService, private bannerService: BannerService, private topperService: TopperService, private testimonialService: TestimonialService, private adsService: AdsService) { }
@@ -196,85 +190,5 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.testimonialInfo = res;
       }
     })
-  }
-
-
-
-
-
-
-
-
-  closeModal() {
-    this.showModal = false;
-  }
-  bulkPrint() {
-    this.showModal = true;
-  }
-  printStudentData() {
-    const printContent = this.getPrintContent();
-    this.printPdfService.printContent(printContent);
-  }
-  private getPrintContent(): string {
-    let printHtml = '<html>';
-    printHtml += '<head>';
-    printHtml += '<style>';
-    printHtml += 'body { margin: 0; padding: 0; }'; // Set body styles and hide horizontal overflow
-    printHtml += 'div { margin: 0; padding: 0;}';
-    printHtml += '.custom-container {font-family: Arial, sans-serif;overflow: auto;}';
-    printHtml += '.table-container {background-color: #fff;border: none;}';
-    printHtml += '.school-name {display: flex; align-items: center; justify-content: center; text-align: center; }';
-    printHtml += '.address{margin-top: -65px;}';
-    printHtml += '.address p{margin-top: -5px !important;}';
-    printHtml += '.logo { height: 100px; }';
-    printHtml += '.school-name h3 { color: #2e2d6a !important; font-size: 20px !important; margin-left: 15px;margin-top:-65px !important; margin-bottom: 0 !important; }';
-    printHtml += '.info-table {width:100%;color: #2e2d6a !important;border: none;font-size: 1em;letter-spacing: .25px;margin-top: 5vh;margin-bottom: 5vh;display: inline-table;}';
-    printHtml += '.table-container .info-table th, .table-container .info-table td{color: #2e2d6a !important;text-align:center}';
-    printHtml += '.title-lable {max-height: 45px;text-align: center;margin-bottom: 15px;border:1px solid #2e2d6a;border-radius: 5px;margin-top: 25px;}';
-    printHtml += '.title-lable p {color: #2e2d6a !important;font-size: 16px;font-weight: bold;letter-spacing: 1px;}';
-    printHtml += '.codes .school-code  {margin-right:65%;}';
-    // printHtml += '.codes .school-aff p {margin-right:65%;}';
-    printHtml += '.custom-table {width: 100%;color: #2e2d6a !important;border-collapse:collapse;font-size: 1em;letter-spacing: .25px;margin-bottom: 20px;display: inline-table;border-radius:5px}';
-    printHtml += '.custom-table th{height:38px;text-align: center;border:1px solid #2e2d6a;}';
-    printHtml += '.custom-table tr{height:38px;}';
-    printHtml += '.custom-table td {text-align: center;border:1px solid #2e2d6a;}';
-    printHtml += '.text-bold { font-weight: bold;}';
-    printHtml += 'p {color: #2e2d6a !important;font-size:12px;}'
-    printHtml += 'h4 {color: #2e2d6a !important;}'
-
-    printHtml += '@media print {';
-    printHtml += '  body::after {';
-    printHtml += '    content: "GUNA PUBLIC HIGHER SECONDARY SCHOOL";'; // Change "Watermark" to your desired text or image
-    printHtml += '    position: fixed;';
-    printHtml += '    top: 45%;';
-    printHtml += '    left:10%;';
-    // printHtml += '    transform: translate(-50%, -50%);';
-    printHtml += '    font-size: 20px;';
-    printHtml += '    font-weight: bold;';
-    printHtml += '    font-family: Arial, sans-serif;';
-    printHtml += '    color: rgba(0, 0, 0, 0.1);';
-    printHtml += '    pointer-events: none;';
-    printHtml += '  }';
-    printHtml += '}';
-    // Add your additional styles here
-    printHtml += '</style>';
-    printHtml += '</head>';
-    printHtml += '<body>';
-
-    this.students.forEach((student, index) => {
-      const studentElement = document.getElementById(`student-${student.id}`);
-      if (studentElement) {
-        printHtml += studentElement.outerHTML;
-
-        // Add a page break after each student except the last one
-        if (index < this.students.length - 1) {
-          printHtml += '<div style="page-break-after: always;"></div>';
-        }
-      }
-    });
-
-    printHtml += '</body></html>';
-
-    return printHtml;
   }
 }

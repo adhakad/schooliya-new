@@ -133,15 +133,15 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     printHtml += '.table-container {width: 100%;height: 100%; background-color: #fff;border: 2px solid #9e9e9e; box-sizing: border-box;}';
     printHtml += '.logo { height: 75px;margin-top:5px;margin-left:5px;}';
     printHtml += '.school-name {display: flex; align-items: center; justify-content: center; text-align: center; }';
-    printHtml += '.school-name h3 { color: #252525 !important; font-size: 18px !important;font-weight: bolder;margin-top:-115px !important; margin-bottom: 0 !important; }';
+    printHtml += '.school-name h3 { color: #252525 !important; font-size: 18px !important;font-weight: bolder;margin-top:-125px !important; margin-bottom: 0 !important; }';
 
-    printHtml += '.address{margin-top: -42px;}';
-    printHtml += '.address p{font-size:10px;margin-top: -8px !important;}';
-    printHtml += '.title-lable {text-align: center;margin-bottom: 15px;}';
+    printHtml += '.address{margin-top: -45px;}';
+    printHtml += '.address p{font-size:11px;margin-top: -6px !important;}';
+    printHtml += '.title-lable {text-align: center;margin-top:-6px;}';
     printHtml += '.title-lable p {color: #252525 !important;font-size: 15px;font-weight: bolder;letter-spacing: .5px;}';
 
-    printHtml += '.info-table {width:100%;color: #252525 !important;border: none;font-size: 11px;margin-top: 1.5vh;margin-bottom: 2vh;display: inline-table;}';
-    printHtml += '.table-container .info-table th, .table-container .info-table td{color: #252525 !important;text-align:left;padding-left:15px;padding-top:5px;}';
+    printHtml += '.info-table {width:100%;color: #252525 !important;border: none;font-size: 11px;margin-top: -5px;padding-top:10px;padding-bottom:11px;display: inline-table;}';
+    printHtml += '.table-container .info-table th, .table-container .info-table td{color: #252525 !important;height: 18px;text-align:left;padding-left:15px;}';
     printHtml += '.custom-table {width: 100%;color: #252525 !important;border-collapse:collapse;margin-bottom: 20px;display: inline-table;border-radius:5px}';
     printHtml += '.custom-table th{height: 30px;text-align: center;border:1px solid #9e9e9e;line-height:15px;font-size: 10px;}';
     printHtml += '.custom-table tr{height: 30px;}';
@@ -197,13 +197,13 @@ export class AdminStudentAdmitCardComponent implements OnInit {
     printHtml += '.school-name {display: flex; align-items: center; justify-content: center; text-align: center; }';
     printHtml += '.school-name h3 { color: #252525 !important; font-size: 18px !important;font-weight: bolder;margin-top:-110px !important; margin-bottom: 0 !important; }';
 
-    printHtml += '.address{margin-top: -43px;}';
-    printHtml += '.address p{font-size:10px;margin-top: -10px !important;}';
-    printHtml += '.title-lable {text-align: center;margin-top: -19px;margin-bottom: 0;}';
+    printHtml += '.address{margin-top: -41px;}';
+    printHtml += '.address p{font-size:10px;margin-top: -9px !important;}';
+    printHtml += '.title-lable {text-align: center;margin-top: -15px;margin-bottom: 0;}';
     printHtml += '.title-lable p {color: #252525 !important;font-size: 14px;font-weight: bold;letter-spacing: .5px;}';
 
-    printHtml += '.info-table {width:100%;color: #252525 !important;border: none;font-size: 11px;margin-top: 0px;margin-bottom: 2px;display: inline-table;}';
-    printHtml += '.table-container .info-table th, .table-container .info-table td{color: #252525 !important;text-align:left;padding-left:15px;padding-top:5px;}';
+    printHtml += '.info-table {width:100%;color: #252525 !important;border: none;font-size: 11px;margin-top: -7px;margin-bottom: 2px;padding-top:8px;padding-bottom:5px;display: inline-table;}';
+    printHtml += '.table-container .info-table th, .table-container .info-table td{color: #252525 !important;height: 16px;text-align:left;padding-left:15px;}';
     printHtml += '.custom-table {width: 100%;color: #252525 !important;border-collapse:collapse;margin-bottom: 20px;display: inline-table;border-radius:5px}';
     printHtml += '.custom-table th{height: 25px;text-align: center;border:1px solid #9e9e9e;line-height:15px;font-size: 10px;}';
     printHtml += '.custom-table tr{height: 25px;}';
@@ -298,6 +298,7 @@ export class AdminStudentAdmitCardComponent implements OnInit {
               examType: admitCard.examType,
               status: admitCard.status || "",
               name: studentInfo.name,
+              dob:studentInfo.dob,
               fatherName: studentInfo.fatherName,
               motherName: studentInfo.motherName,
               rollNumber: studentInfo.rollNumber,

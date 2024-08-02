@@ -4,7 +4,8 @@
 
 .banner {
    min-height: 75vh;
-   background-image: linear-gradient(-225deg, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(123, 36, 186) 73%, rgb(28, 4, 57) 98%);
+   /* background-image: linear-gradient(-225deg, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(123, 36, 186) 73%, rgb(28, 4, 57) 98%); */
+   background: linear-gradient(-225deg, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(123, 36, 186) 73%, rgb(28, 4, 57) 98%);
 }
 
 .banner h3 {
@@ -227,7 +228,8 @@
 
 .pricing-section {
    min-height: 550px;
-   background-image: radial-gradient(rgb(203, 195, 255) .5px, rgb(181, 170, 255) .5px);
+   /* background-image: radial-gradient(rgb(203, 195, 255) .5px, rgb(181, 170, 255) .5px); */
+   background-color: #fff;
    padding-bottom: 75px !important;
 
 }
@@ -248,7 +250,8 @@
 
 .pricing-card {
    text-align: center;
-   background-color: rgb(250, 249, 255);
+   /* background-color: rgb(250, 249, 255); */
+   background-color: #fff;
    width: 100%;
    height: 62vh;
    margin-bottom: 30px;
@@ -262,17 +265,14 @@
    padding-right: 20px;
 }
 
-.pricing-card {
+/* .pricing-card {
    background-color: #f0eeff;
    width: 100%;
    height: auto;
    padding: 30px;
    border-radius: 5px;
    border: 1px solid #fff;
-   /* box-shadow: 0 0 1px -10px #e4d4ff,
-      0 0 0 0 #e4d4ff,
-      0 0 20px 0 #ede3ff; */
-}
+} */
 
 .pricing-card h2 {
    color: #382066;
@@ -338,7 +338,7 @@
 
 }
 
-.pricing-feature h3 {
+/* .pricing-feature h3 {
    font-size: 18px;
    font-weight: 700;
    text-align: left;
@@ -357,7 +357,7 @@
    font-weight: 600;
    text-align: left;
    margin-top: 20px;
-}
+} */
 
 .service-section {
    min-height: 550px;
@@ -445,6 +445,16 @@
       margin-top: 5vh;
       margin-left: 10%;
    }
+   .banner .submit-button{
+      height: 52px;
+      background-color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      box-shadow: none !important;
+      margin-top: 20px;
+      text-align: center;
+      border-radius: 8px;
+   }
    
    .pricing-card-container {
       padding-left: 20px;
@@ -452,15 +462,14 @@
    }
 
    .pricing-card {
-      background-color: #f0eeff;
       width: 100%;
       height: auto;
-      padding: 30px;
-      border-radius: 5px;
-      border: 1px solid #fff;
-      /* box-shadow: 0 0 1px -10px #e4d4ff,
-         0 0 0 0 #e4d4ff,
-         0 0 20px 0 #ede3ff; */
+      padding: 60px 30px 30px 30px;
+      border-radius: 20px;
+      border: 1px solid #d0d0ef;
+   }
+   .border{
+      border: 2px solid #8C52FF !important;
    }
 
    .pricing-card h2 {
@@ -479,7 +488,6 @@
    .pricing-card p {
       color: #382066;
       text-align: center;
-      text-align: center;
       font-family: 'Segoe UI', Verdana;
       font-size: 15px;
       font-weight: 400;
@@ -489,13 +497,14 @@
       color: #382066;
       text-align: center;
       font-family: 'Segoe UI', Verdana;
-      font-size: 30px;
+      font-size: 35px;
       font-weight: 700;
       letter-spacing: .75px;
    }
 
    .pricing-button {
-      height: 50px;
+      height: 52px;
+      width: 100%;
       background: #8C52FF;
       font-size: 16px;
       font-weight: 500;
@@ -505,15 +514,28 @@
       padding-left: 85px;
       padding-right: 85px;
       text-align: center;
+      border-radius: 8px;
    }
-
-   .pricing-button.mat-button-disabled:not([class*=mat-elevation-z]) {
-      /* background: #e7e6f897;
-      color: #8C52FF9a; */
+   .pricing-button-light {
+      height: 52px;
+      width: 100%;
+      background-color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      color: #8C52FF;
+      box-shadow: none !important;
+      margin-top: 20px;
+      padding-left: 85px;
+      padding-right: 85px;
+      text-align: center;
+      border:2px solid #8C52FF;
+      border-radius: 8px;
+   }
+   /* .pricing-button.mat-button-disabled:not([class*=mat-elevation-z]) {
       background: #ebebff;
       color: #4e4caacd;
       cursor: not-allowed;
-   }
+   } */
 
    .pricing-card .pricing-amount p {
       margin-top: 15px;
@@ -522,30 +544,37 @@
    }
 
    .mat-divider {
-      background-color: #e1d2ff;
-      height: 1.5px;
+      background-color: #ddddf8;
+      height: 1px;
 
    }
 
+   .pricing-feature{
+      padding-top: 20px;
+   }
    .pricing-feature h3 {
       font-size: 18px;
       font-weight: 700;
       text-align: left;
       margin-top: 20px;
    }
+   .pricing-feature .done {
+      color: #43d47d;
+      font-size: 20px;
+      margin-right: 15px;
+   }
 
    .pricing-feature p {
       font-size: .85rem;
       font-weight: 700;
       text-align: left;
-      margin-top: 20px;
    }
 
    .pricing-feature span {
       font-size: .85rem;
       font-weight: 600;
       text-align: left;
-      margin-top: 20px;
+      /* margin-top: 20px; */
    }
 
    .customer-section {
