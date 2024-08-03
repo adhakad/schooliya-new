@@ -4,7 +4,7 @@
 
 .banner {
    min-height: 100vh;
-   background: linear-gradient(-225deg, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(123, 36, 186) 95%, rgb(123, 36, 186) 100%);
+   background: linear-gradient(-225deg, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(123, 36, 186) 95%, rgb(123, 36, 186) 98%);
 }
 
 .banner h3 {
@@ -24,9 +24,9 @@
 
 .banner h2 {
    color: #fff;
-   font-size: 42px;
+   font-size: 40px;
    font-family: 'Segoe UI', Verdana;
-   font-weight: 700;
+   font-weight: 600;
    letter-spacing: 1px;
    margin-top: 25px;
    line-height: 50px;
@@ -228,7 +228,6 @@
 
 .pricing-section {
    min-height: 550px;
-   /* background-image: radial-gradient(rgb(203, 195, 255) .5px, rgb(181, 170, 255) .5px); */
    background-color: #fff;
    padding-bottom: 75px !important;
 
@@ -242,10 +241,11 @@
 
 .pricing-section .title h2 {
    font-family: 'Segoe UI', Verdana;
-   font-size: 32px;
-   font-weight: 700;
+   font-size: 40px;
+   font-weight: 600;
    color: #382066;
    letter-spacing: .5px;
+   line-height: 40px;
 }
 
 .pricing-card {
@@ -371,13 +371,20 @@
 }
 
 .service-section .title h2 {
-   font-family: 'Segoe UI', Verdana;
-   font-size: 30px;
-   font-weight: 500;
    color: #382066;
+   font-family: 'Segoe UI', Verdana;
+   font-size: 40px;
+   font-weight: 600;
+   line-height: 40px;
    letter-spacing: .5px;
 }
-
+.service-section .img-section p {
+   color: #fff;
+   font-family: 'Segoe UI', Verdana;
+   font-size: 20px;
+   font-weight: 400;
+   line-height: 20px;
+}
 .service-card {
    background-color: transparent;
    width: 100%;
@@ -395,14 +402,9 @@
 
 .service-section .img-section {
    background-color: #a476ff;
-   padding: 80px;
+   /* padding: 80px; */
    /* margin: 0px 5px 50px 5px;
    border-radius: 20px; */
-}
-
-.service-card-container {
-   /* padding-left: 40px;
-   padding-right: 40px; */
 }
 
 .service-card {
@@ -660,22 +662,22 @@
    }
 
    .service-section {
-      background: rgb(236, 232, 255);
+      background: #fff;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
    }
 
-   .service-card-container {
-      /* padding-left: 40px;
-      padding-right: 40px; */
-   }
 
    .service-section .img-section {
-      height: 400px;
+      height: 500px;
       background: rgb(27, 3, 48);
-      background: linear-gradient(-225deg, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(123, 36, 186) 95%, rgb(123, 36, 186) 100%);
-      clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
-      margin-top: 50px;
+      background: linear-gradient(315deg, rgb(27, 3, 48) 15%, rgb(27, 3, 48) 15%, rgb(123, 36, 186) 73%, rgb(123, 36, 186) 100%);
+      clip-path: polygon(0 0, 100% 0, 92% 100%, 0% 100%);
+      margin-top: 20px;
    }
-
+   .service-section .img-section p {
+      color: #fff;font-family: 'Segoe UI', Verdana;font-size: 20px;font-weight: 400;line-height: 20px;
+   }
    .service-card {
       background: linear-gradient(to right, #c5beff, #e3dfff, #e3dfff);
       width: 100%;
