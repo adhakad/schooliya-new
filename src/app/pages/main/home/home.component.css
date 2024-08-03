@@ -3,7 +3,7 @@
 }
 
 .banner {
-   min-height: 100vh;
+   min-height: 90vh;
    background: linear-gradient(-225deg, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(139, 49, 204) 95%, rgb(137, 45, 203) 98%);
 }
 
@@ -13,7 +13,6 @@
    font-weight: 400;
    letter-spacing: .5px;
    color: #fff;
-   margin-top: 25px;
 }
 
 .banner h3 span {
@@ -224,7 +223,25 @@
 
 }
 
+.why-choose-us-section {
+   min-height: auto;
+   background-color: #fff;
+   padding-top: 100px !important;
+}
+.why-choose-us-section .title {
+   text-align: center;
+   padding-top: 75px;
+   padding-bottom: 60px;
+}
 
+/* .why-choose-us-section .title h2 {
+   font-family: 'Segoe UI', Verdana;
+   font-size: 40px;
+   font-weight: 600;
+   color: #382066;
+   letter-spacing: .5px;
+   line-height: 40px;
+} */
 
 .pricing-section {
    min-height: 550px;
@@ -513,7 +530,7 @@
    .pricing-button {
       height: 52px;
       width: 100%;
-      background: #9934ff;
+      background: #9231f2;
       font-size: 16px;
       font-weight: 500;
       color: #FFF;
@@ -531,7 +548,7 @@
       background-color: #fff;
       font-size: 16px;
       font-weight: 500;
-      color: #9934ff;
+      color: #9231f2;
       box-shadow: none !important;
       margin-top: 20px;
       padding-left: 85px;
@@ -689,7 +706,7 @@
    }
 
    .service-card .mat-icon{
-      color: #9934ff;
+      color: #9231f2;
    }
    .service-card h3 {
       color: #000;
