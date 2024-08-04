@@ -443,8 +443,7 @@
 .service-section .img-section {
    height: 50px;
    background: rgb(27, 3, 48);
-   background: linear-gradient(45deg, rgb(61, 12, 103) 20%, rgb(139, 49, 204) 95%, rgb(137, 45, 203) 98%);
-   /* clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); */
+   background: linear-gradient(45deg, rgb(77, 20, 126) 20%, rgb(139, 49, 204) 95%, rgb(147, 53, 214) 98%);
    border-radius: 0 25px 25px 0;
    margin-top: 20px;
    padding-top: 10px;
