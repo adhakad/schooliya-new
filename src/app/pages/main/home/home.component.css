@@ -7,8 +7,12 @@
    background: linear-gradient(-225deg, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(139, 49, 204) 95%, rgb(137, 45, 203) 98%);
 }
 
+.banner .banner-content {
+   padding-top: 75px;
+}
+
 .banner h3 {
-   font-size: 28px;
+   font-size: 26px;
    font-family: 'Segoe UI', Verdana;
    font-weight: 400;
    letter-spacing: .5px;
@@ -23,34 +27,35 @@
 
 .banner h2 {
    color: #fff;
-   font-size: 40px;
+   font-size: 35px;
    font-family: 'Segoe UI', Verdana;
    font-weight: 600;
    letter-spacing: 1px;
-   margin-top: 25px;
-   line-height: 50px;
+   margin-top: 10px;
+   line-height: 35px;
 }
 
 .banner p {
-   font-size: 20px;
+   font-size: 18px;
    font-family: 'Segoe UI', Verdana;
    font-weight: 400;
    color: rgb(30, 16, 56);
    color: #fff;
-   margin-top: 25px;
-   line-height: 30px;
+   margin-top: 10px;
+   line-height: 25px;
 }
 
 .banner .submit-button {
-   width: 150px;
+   height: 50px;
+   width: 75%;
    background-color: #fff;
-   color: #4A2B89;
-   box-shadow: 0 0 1px -10px #8C52FF,
-      0 0 0 0,
-      0 0 5px 0 #8c52ff3c !important;
-   border-radius: 20px;
-   padding: 5px 5px 5px 5px;
+   color: #382066;
+   font-size: 16px;
+   font-weight: 500;
+   box-shadow: none !important;
    margin-top: 25px;
+   text-align: center;
+   border-radius: 8px;
 }
 
 .banner .img-section {
@@ -226,70 +231,89 @@
 .why-choose-us-section {
    min-height: auto;
    background-color: #fff;
-   padding-top: 100px !important;
-}
-.why-choose-us-section .title {
-   text-align: center;
-   padding-top: 75px;
-   padding-bottom: 60px;
+   padding-top: 75px !important;
 }
 
-/* .why-choose-us-section .title h2 {
+.why-choose-us-section .title {
+   text-align: center;
+}
+
+.why-choose-us-section .title h3 {
+   color: #2f2c5e;
    font-family: 'Segoe UI', Verdana;
-   font-size: 40px;
+   font-size: 24px;
    font-weight: 600;
-   color: #382066;
-   letter-spacing: .5px;
-   line-height: 40px;
-} */
+   letter-spacing: .35px;
+}
+.why-choose-us-section .schooliya-chart{
+   height: 50px;
+   margin-top: 30px;
+}
+.why-choose-us-section .schooliya-chart img{
+   width: 110%;
+   margin-top: 10px;
+}
+.why-choose-us-section .others-chart .mat-icon{
+   color: #2f2c5e;font-size: 20px;margin-top: 8px;
+}
+.why-choose-us-section .others-chart{
+   height: 50px;
+}
+
+.why-choose-us-section .schooliya{
+   background-color:#9231f2;width: 100%;height: 40px;border-radius: 8px;
+}
+.why-choose-us-section .others{
+   background-color:rgba(183, 183, 198, 0.708);width: 100%;height: 40px;border-radius: 8px;
+}
+.why-choose-us-section .schooliya-chart p{
+   color: #2f2c5e;
+   font-size: 12px;
+   margin-top: 10px;
+}
+.why-choose-us-section .others-chart p{
+   color: #2f2c5e;
+   font-size: 12px;
+   margin-top: 8px;
+}
 
 .pricing-section {
    min-height: 550px;
    background-color: #fff;
-   padding-bottom: 75px !important;
+   padding-bottom: 0 !important;
 
 }
-
-.pricing-section .title {
-   text-align: center;
-   padding-top: 75px;
-   padding-bottom: 60px;
-}
-
-.pricing-section .title h2 {
-   font-family: 'Segoe UI', Verdana;
-   font-size: 40px;
-   font-weight: 600;
-   color: #382066;
-   letter-spacing: .5px;
-   line-height: 40px;
-}
-
-.pricing-card {
-   text-align: center;
-   /* background-color: rgb(250, 249, 255); */
-   background-color: #fff;
-   width: 100%;
-   height: 62vh;
-   margin-bottom: 30px;
-   border-radius: 25px;
-}
-
-
-
 .pricing-card-container {
    padding-left: 20px;
    padding-right: 20px;
 }
+.pricing-section .title {
+   text-align: center;
+   padding-top: 50px;
+   padding-bottom: 40px;
+}
 
-/* .pricing-card {
-   background-color: #f0eeff;
+.pricing-section .title h2 {
+   font-family: 'Segoe UI', Verdana;
+   font-size: 24px;
+   font-weight: 600;
+   color: #382066;
+   letter-spacing: .35px;
+   line-height: 40px;
+}
+
+.pricing-card {
    width: 100%;
    height: auto;
-   padding: 30px;
-   border-radius: 5px;
-   border: 1px solid #fff;
-} */
+   padding: 60px 30px 30px 30px;
+   border-radius: 20px;
+   border: 1px solid #d0d0ef;
+   margin-bottom: 30px;
+}
+
+.border {
+   border: 2px solid #9a34fff9 !important;
+}
 
 .pricing-card h2 {
    color: #382066;
@@ -307,7 +331,6 @@
 .pricing-card p {
    color: #382066;
    text-align: center;
-   text-align: center;
    font-family: 'Segoe UI', Verdana;
    font-size: 15px;
    font-weight: 400;
@@ -317,14 +340,15 @@
    color: #382066;
    text-align: center;
    font-family: 'Segoe UI', Verdana;
-   font-size: 30px;
+   font-size: 35px;
    font-weight: 700;
    letter-spacing: .75px;
 }
 
 .pricing-button {
-   height: 50px;
-   background: #8C52FF;
+   height: 52px;
+   width: 100%;
+   background: #9231f2;
    font-size: 16px;
    font-weight: 500;
    color: #FFF;
@@ -333,14 +357,23 @@
    padding-left: 85px;
    padding-right: 85px;
    text-align: center;
+   border-radius: 8px;
 }
 
-.pricing-button.mat-button-disabled:not([class*=mat-elevation-z]) {
-   /* background: #e7e6f897;
-   color: #8C52FF9a; */
-   background: #ebebff;
-   color: #4e4caacd;
-   cursor: not-allowed;
+.pricing-button-light {
+   height: 52px;
+   width: 100%;
+   background-color: #fff;
+   font-size: 16px;
+   font-weight: 500;
+   color: #9231f2;
+   box-shadow: none !important;
+   margin-top: 20px;
+   padding-left: 85px;
+   padding-right: 85px;
+   text-align: center;
+   border: 2px solid #9a34fff9;
+   border-radius: 8px;
 }
 
 .pricing-card .pricing-amount p {
@@ -350,107 +383,162 @@
 }
 
 .mat-divider {
-   background-color: #e1d2ff;
-   height: 1.5px;
+   background-color: #ddddf8;
+   height: 1px;
 
 }
 
-/* .pricing-feature h3 {
+.pricing-feature {
+   padding-top: 20px;
+}
+
+.pricing-feature h3 {
    font-size: 18px;
    font-weight: 700;
    text-align: left;
    margin-top: 20px;
 }
 
+.pricing-feature .done {
+   color: #43d47d;
+   font-size: 20px;
+   margin-right: 15px;
+}
+
 .pricing-feature p {
    font-size: .85rem;
    font-weight: 700;
    text-align: left;
-   margin-top: 20px;
 }
 
 .pricing-feature span {
    font-size: .85rem;
    font-weight: 600;
    text-align: left;
-   margin-top: 20px;
-} */
+   /* margin-top: 20px; */
+}
+
 
 .service-section {
-   min-height: 550px;
-   padding-bottom: 30px;
+   background: #fff;
+   padding-left: 0 !important;
+   padding-right: 0 !important;
 }
 
 .service-section .title {
    text-align: center;
+   padding-top: 50px;
    padding-bottom: 40px;
 }
 
 .service-section .title h2 {
-   color: #382066;
    font-family: 'Segoe UI', Verdana;
-   font-size: 40px;
+   font-size: 24px;
    font-weight: 600;
+   color: #382066;
+   letter-spacing: .35px;
    line-height: 40px;
-   letter-spacing: .5px;
-   margin-bottom: 50px;
-}
-.service-section .img-section p {
-   color: #fff;
-   font-family: 'Segoe UI', Verdana;
-   font-size: 20px;
-   font-weight: 400;
-   line-height: 20px;
-}
-.service-card {
-   background-color: transparent;
-   width: 100%;
-   height: 62vh;
-   margin-bottom: 30px;
-   border-radius: 25px;
-   border: 1px solid #fff;
-
-}
-
-
-.service-section {
-   background: rgb(236, 232, 255);
 }
 
 .service-section .img-section {
-   background-color: #a476ff;
-   /* padding: 80px; */
-   /* margin: 0px 5px 50px 5px;
-   border-radius: 20px; */
+   height: 50px;
+   background: rgb(27, 3, 48);
+   background: linear-gradient(45deg, rgb(61, 12, 103) 20%, rgb(139, 49, 204) 95%, rgb(137, 45, 203) 98%);
+   /* clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%); */
+   border-radius: 0 25px 25px 0;
+   margin-top: 20px;
+   padding-top: 10px;
 }
 
+.service-section .img-section h3{
+   color: #fff;font-size: 20px;font-weight: 500;margin-left: 10px;
+}
+.service-section .img-section p {
+   display: none;
+}
+
+.service-section .img-section img{
+   display: none;
+}
+.service-section .service-card-container{
+   margin-top: 75px;padding-right: 0px;
+}
 .service-card {
-   background: linear-gradient(to right, #c5beff, #e3dfff, #e3dfff);
+   background: #fff;
    width: 100%;
-   height: 15vh;
-   text-align: center;
+   height: auto;
+   text-align: left;
    margin-bottom: 30px;
    border-radius: 20px;
    border: 1px solid #fff;
 }
 
+.service-card .mat-icon {
+   color: #9231f2;
+}
+
 .service-card h3 {
-   color: #7239dd;
+   color: #000;
    font-size: 16px;
    font-weight: 500;
+   margin-left: 20px;
 }
 
 .service-card p {
-   color: #7239dd;
-   font-size: 12px;
+   color: #000;
+   font-size: 16px;
    font-weight: 400;
-   margin-top: -10px !important;
+   margin-top: 5px !important;
 }
+
 
 
 
 
 @media (min-width: 992px) {
+   .banner {
+      min-height: 90vh;
+   }
+
+   .banner .banner-content {
+      padding-top: 100px;
+   }
+
+   .banner h3 {
+      font-size: 28px;
+      font-family: 'Segoe UI', Verdana;
+      font-weight: 400;
+      letter-spacing: .5px;
+      color: #fff;
+   }
+
+   .banner h3 span {
+      background: linear-gradient(to right, #8C52FF, #fff, #fff);
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+   }
+
+   .banner h2 {
+      color: #fff;
+      font-size: 40px;
+      font-family: 'Segoe UI', Verdana;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-top: 25px;
+      line-height: 50px;
+   }
+
+   .banner p {
+      font-size: 20px;
+      font-family: 'Segoe UI', Verdana;
+      font-weight: 400;
+      color: rgb(30, 16, 56);
+      color: #fff;
+      margin-top: 25px;
+      line-height: 30px;
+   }
+
+
    .banner .img-section {
       padding: 100px 0 0 120px;
    }
@@ -471,6 +559,7 @@
 
    .banner .submit-button {
       height: 52px;
+      width: 50%;
       background-color: #fff;
       font-size: 16px;
       font-weight: 500;
@@ -479,7 +568,74 @@
       text-align: center;
       border-radius: 8px;
    }
+   .why-choose-us-section .title{
+      text-align: left;
+   }
+   .why-choose-us-section .title h3 {
+      color: #2f2c5e;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: .35px;
+   }
+   .why-choose-us-section .schooliya-chart{
+      height: 45px;
+      margin-top: 0;
+   }
+   .why-choose-us-section .schooliya-chart img{
+      width: 100%;
+      margin-top: 0px;
+   }
+   .why-choose-us-section .others-chart{
+      height: 45px;margin-top: 15px;
+   }
+   
+   .why-choose-us-section .schooliya{
+      background-color:#9231f2;width: 100%;height: 40px;border-radius: 8px;
+   }
+   .why-choose-us-section .others{
+      background-color:rgba(183, 183, 198, 0.708);width: 100%;height: 40px;border-radius: 8px;
+   }
+   .why-choose-us-section .schooliya-chart p{
+      color: #2f2c5e;
+      font-size: 16px;
+      margin-top: 5px;
+   }
+   .why-choose-us-section .others-chart p{
+      color: #2f2c5e;
+      font-size: 16px;
+      margin-top: 5px;
+   }
 
+   
+
+
+
+
+
+
+   .pricing-section {
+      background-color: #fff;
+      min-height: 550px;
+      padding-left: 100px;
+      padding-right: 100px;
+      padding-bottom: 75px !important;
+   
+   }
+   .pricing-section .title {
+      text-align: center;
+      padding-top: 75px;
+      padding-bottom: 60px;
+   }
+   
+   .pricing-section .title h2 {
+      font-family: 'Segoe UI', Verdana;
+      font-size: 40px;
+      font-weight: 600;
+      color: #382066;
+      letter-spacing: .5px;
+      line-height: 40px;
+   }
+   
    .pricing-card-container {
       padding-left: 20px;
       padding-right: 20px;
@@ -509,7 +665,14 @@
    .pricing-card .pricing-title {
       min-height: 110px;
    }
-
+   .pricing-section .title h2 {
+      font-family: 'Segoe UI', Verdana;
+      font-size: 40px;
+      font-weight: 600;
+      color: #382066;
+      letter-spacing: .5px;
+      line-height: 40px;
+   }
    .pricing-card p {
       color: #382066;
       text-align: center;
@@ -557,12 +720,6 @@
       border: 2px solid #9a34fff9;
       border-radius: 8px;
    }
-
-   /* .pricing-button.mat-button-disabled:not([class*=mat-elevation-z]) {
-      background: #ebebff;
-      color: #4e4caacd;
-      cursor: not-allowed;
-   } */
 
    .pricing-card .pricing-amount p {
       margin-top: 15px;
@@ -681,19 +838,45 @@
       background: #fff;
       padding-left: 0 !important;
       padding-right: 0 !important;
+      padding-bottom: 75px;
    }
-
+   .service-section .title {
+      text-align: center;
+      padding-top: 20px;
+      padding-bottom: 50px;
+   }
+   
+   .service-section .title h2 {
+      font-family: 'Segoe UI', Verdana;
+      font-size: 40px;
+      font-weight: 600;
+      color: #382066;
+      letter-spacing: .5px;
+      line-height: 40px;
+   }
 
    .service-section .img-section {
       height: 500px;
       background: rgb(27, 3, 48);
       background: linear-gradient(45deg, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(27, 3, 48) 20%, rgb(139, 49, 204) 95%, rgb(137, 45, 203) 98%);
-      /* background: linear-gradient(315deg, rgb(59, 11, 100) 10%, rgb(59, 13, 99) 10%, rgb(139, 49, 204) 95%, rgb(137, 45, 203) 100%); */
       clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+      border-radius: 0;
       margin-top: 20px;
+      padding-top: 0px;
+   }
+
+   .service-section .img-section h3{
+    color: #fff;font-size: 30px;font-weight: 500;line-height: 100px;margin-left: 50px;
    }
    .service-section .img-section p {
-      color: #fff;font-family: 'Segoe UI', Verdana;font-size: 20px;font-weight: 400;line-height: 20px;
+      display: block;color: #fff;font-family: 'Segoe UI', Verdana;font-size: 16px;font-weight: 400;line-height: 20px;margin-left: 50px;margin-top: -30px;
+   }
+
+   .service-section .img-section img{
+      display: block;width: 70%;height: 70%;margin-left: 50px;margin-top: 50px;
+   }
+   .service-section .service-card-container{
+      margin-top: 75px;padding-right: 50px;
    }
    .service-card {
       background: #fff;
@@ -705,9 +888,10 @@
       border: 1px solid #fff;
    }
 
-   .service-card .mat-icon{
+   .service-card .mat-icon {
       color: #9231f2;
    }
+
    .service-card h3 {
       color: #000;
       font-size: 16px;

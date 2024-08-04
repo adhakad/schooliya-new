@@ -78,7 +78,8 @@ export class PaymentComponent implements OnInit {
     this.plansService.getSinglePlans(id).subscribe((res: any) => {
       if (res) {
         let price = parseInt(res.price);
-        this.taxes = price * 18 / 100;
+        // this.taxes = price * 18 / 100;
+        this.taxes = 0;
         this.totalAmount = price + this.taxes;
         this.singlePlanInfo = res;
       }
