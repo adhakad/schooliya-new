@@ -580,11 +580,11 @@
    }
    .why-choose-us-section .schooliya-chart{
       height: 45px;
-      margin-top: 0;
+      margin-top: 25px;
    }
    .why-choose-us-section .schooliya-chart img{
       width: 100%;
-      margin-top: 0px;
+      margin-top: 0;
    }
    .why-choose-us-section .others-chart{
       height: 45px;margin-top: 15px;
@@ -599,12 +599,12 @@
    .why-choose-us-section .schooliya-chart p{
       color: #2f2c5e;
       font-size: 16px;
-      margin-top: 5px;
+      margin-top: 8px;
    }
    .why-choose-us-section .others-chart p{
       color: #2f2c5e;
       font-size: 16px;
-      margin-top: 5px;
+      margin-top: 8px;
    }
 
    

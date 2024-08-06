@@ -13,7 +13,7 @@ export class FooterComponent implements OnInit {
   schoolInfo:any;
   facebook!:string;
   linkedin!:string;
-  instagram!:string;
+  instagram:string='https://www.instagram.com/schooliya_official';
   youtube!:string;
   softwareCompanyLink:string='https://schooliya.in';
   adminId!:any;
@@ -39,7 +39,7 @@ export class FooterComponent implements OnInit {
         this.schoolInfo = res;
         this.facebook = res.facebookLink;
         this.linkedin = res.linkedinLink;
-        this.instagram = res.instagramLink;
+        this.instagram = 'https://www.instagram.com/schooliya_official';
         this.youtube = res.youtubeLink;
         
       }

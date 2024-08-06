@@ -37,6 +37,12 @@
 .policy-container .content-container .heading-container p{
     margin-left: 5px;margin-bottom: 25px;
 }
+.policy-container .content-container .heading-container p span{
+    color: #454545;
+    font-weight: 500;
+    margin-right: 5px;
+    letter-spacing: .5px;
+}
 
 @media (min-width: 992px) {
     .banner {

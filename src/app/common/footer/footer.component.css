@@ -16,7 +16,11 @@
    font-size: 20px;
    letter-spacing: .5px;
 }
-
+.footer-card .footer-item img{
+   width: 85%;
+   display: block;
+   margin-bottom: 50px;
+}
 .footer-card .footer-item p {
    color: #e0e0ffe2;
    font-size: 16px;
@@ -71,7 +75,10 @@
       font-size: 20px;
       letter-spacing: .5px;
    }
-
+   .footer-card .footer-item img{
+      width: 85%;
+      margin-bottom: 45px;
+   }
    .footer-card p {
       font-size: 16px;
       letter-spacing: .5px;
