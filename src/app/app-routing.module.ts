@@ -6,13 +6,14 @@ import { TeacherAuthGuard } from './guards/teacher-auth.guard';
 const routes: Routes = [
   { path: '', redirectTo: '/', pathMatch: 'full' },
   { path: '/', loadChildren: () => import('src/app/pages/main/home/home.module').then((module) => module.HomeModule) },
+  { path: 'about', loadChildren: () => import('src/app/pages/main/about/about.module').then((module) => module.AboutModule) },
+  { path: 'pricing', loadChildren: () => import('src/app/pages/main/pricing/pricing.module').then((module) => module.PricingModule) },
+  { path: 'features', loadChildren: () => import('src/app/pages/main/features/features.module').then((module) => module.FeaturesModule) },
+  { path: 'admin/payment/:id', loadChildren: () => import('src/app/pages/main/payment/payment.module').then((module) => module.PaymentModule) },
+  { path: 'contact', loadChildren: () => import('src/app/pages/main/contact/contact.module').then((module) => module.ContactModule) },
   { path: 'terms-and-conditions', loadChildren: () => import('src/app/pages/main/terms-conditions/terms-conditions.module').then((module) => module.TermsConditionsModule) },
   { path: 'privacy-policy', loadChildren: () => import('src/app/pages/main/privacy-policy/privacy-policy.module').then((module) => module.PrivacyPolicyModule) },
   { path: 'refund-cancellation-policy', loadChildren: () => import('src/app/pages/main/refund-cancellation-policy/refund-cancellation-policy.module').then((module) => module.RefundCancellationPolicyModule) },
-  { path: 'about', loadChildren: () => import('src/app/pages/main/about/about.module').then((module) => module.AboutModule) },
-  { path: 'contact', loadChildren: () => import('src/app/pages/main/contact/contact.module').then((module) => module.ContactModule) },
-  { path: 'admin/payment/:id', loadChildren: () => import('src/app/pages/main/payment/payment.module').then((module) => module.PaymentModule) },
-
   // Admin Routing Section
 
   { path: 'admin/signup', loadChildren: () => import('src/app/pages/auth/admin-auth/admin-signup/admin-signup.module').then((module) => module.AdminSignupModule) },

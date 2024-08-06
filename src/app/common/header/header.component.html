@@ -16,33 +16,17 @@
     <button #button mat-button routerLink="/about">
       <span class="menu-item" style="font-family:'Segoe UI',Verdana">About</span>
     </button>
-    <button #button mat-button>
+    <button #button mat-button routerLink="/pricing">
       <span class="menu-item" style="font-family:'Segoe UI',Verdana">Pricing</span>
     </button>
-    <button #button mat-button>
-      <span class="menu-item" style="font-family:'Segoe UI',Verdana">Feature's</span>
+    <button #button mat-button routerLink="/features">
+      <span class="menu-item" style="font-family:'Segoe UI',Verdana">Features</span>
     </button>
     <button #button mat-button style="font-family:'Segoe UI',Verdana" [matMenuTriggerFor]="accountMenu">
       <span class="menu-item">Account</span><mat-icon>keyboard_arrow_down</mat-icon>
     </button>
-    <!-- <button (click)="softwareCompany(softwareCompanyLink)" class="submit-button" style="border-radius: 25px;padding-left: 25px;padding-right: 25px;background-color:transparent;color: #8C52FF;border: 1px solid #8C52FF;" mat-button>
-      Demo
-    </button> -->
   </div>
 </mat-toolbar>
-
-
-<mat-menu #aboutMenu="matMenu" class="desktop-menu">
-  <!-- <button mat-menu-item>
-    <mat-icon>account_box</mat-icon>
-    <span>School Information</span>
-  </button> -->
-  <button mat-menu-item routerLink="/about">
-    <mat-icon>emoji_nature</mat-icon>
-    <mat-icon>apartment</mat-icon>
-    <span>About</span>
-  </button>
-</mat-menu>
 
 <mat-menu #accountMenu="matMenu" class="desktop-menu">
   <button mat-menu-item *ngIf="!isAdminAuthenticated && !isTeacherAuthenticated"
@@ -76,6 +60,14 @@
     <button mat-menu-item routerLink="/about">
       <mat-icon>apartment</mat-icon>
       <span>About</span>
+    </button>
+    <button mat-menu-item routerLink="/pricing">
+      <mat-icon>currency_rupee</mat-icon>
+      <span>Pricing</span>
+    </button>
+    <button mat-menu-item routerLink="/features">
+      <mat-icon>apps</mat-icon>
+      <span>Features</span>
     </button>
     <button mat-menu-item *ngIf="!isAdminAuthenticated && !isTeacherAuthenticated"
       routerLink="/admin/login">
