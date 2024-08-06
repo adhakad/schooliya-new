@@ -67,13 +67,17 @@ const AdminModel = mongoose.model('admin-users', {
         required: true,
         trim: true,
         unique: true
-    }
+    },
     // status: {
     //     type: String,
     //     trim: true,
     //     required: true,
     //     enum: ['Active', 'Inactive']
     // }
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = AdminModel;

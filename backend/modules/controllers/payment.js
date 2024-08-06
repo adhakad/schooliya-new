@@ -3,6 +3,8 @@ const { KEY_ID, KEY_SECRET } = process.env;
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const { DateTime } = require('luxon');
+const fs = require('fs');
+const path = require('path');
 const nodemailer = require('nodemailer');
 const Payment = require('../models/payment');
 const tokenService = require('../services/admin-token');
@@ -42,7 +44,7 @@ let CreatePayment = async (req, res) => {
       currency,
     });
     await payment.save();
-    res.status(200).json({ order });
+    res.status(200).json({ order ,payment});
   } catch (error) {
     res.status(500).json({ errorMsg: 'Payment creation failed !' });
   }
@@ -82,7 +84,7 @@ let ValidatePayment = async (req, res) => {
 }
 async function sendEmail(email) {
   const mailOptions = {
-    from: { name: 'Schooliya', address: 'dhakaddeepak9340700360@gmail.com' },
+    from: { name: 'Schooliya'},
     to: email,
     subject: 'Schooliya Account Confirmation: Payment Received',
     html: `<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">

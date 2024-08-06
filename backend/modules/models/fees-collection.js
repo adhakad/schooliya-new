@@ -79,7 +79,11 @@ const FeesCollectionModel = mongoose.model('fees-collection', {
   createdBy: {
     type: [String],
     default: []
-  }
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+},
 });
 
 module.exports = FeesCollectionModel;

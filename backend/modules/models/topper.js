@@ -27,6 +27,10 @@ const TopperModel = mongoose.model('topper', {
         required: true,
         trim: true,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = TopperModel;

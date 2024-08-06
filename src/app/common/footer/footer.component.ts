@@ -8,7 +8,6 @@ import { AdminAuthService } from 'src/app/services/auth/admin-auth.service';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
-  public schoolName = environment.SCHOOL_NAME;
   currentYear: any;
   schoolInfo:any;
   facebook!:string;

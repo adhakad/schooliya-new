@@ -9,7 +9,6 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./header-nav.component.css']
 })
 export class HeaderNavComponent implements OnInit {
-  public schoolName = environment.SCHOOL_NAME;
   nav:boolean = false;
 
   token: string = '';

@@ -20,7 +20,11 @@ const MarksheetTemplateModel = mongoose.model('marksheet-template', {
         type: String,
         required: true,
         trim: true,
-    }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = MarksheetTemplateModel;

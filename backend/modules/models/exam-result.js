@@ -22,6 +22,10 @@ const ExamResultModel = mongoose.model('exam-result', {
     trim: true,
   },
   resultDetail:{},
+  createdAt: {
+    type: Date,
+    default: Date.now,
+},
 });
 
 module.exports = ExamResultModel;

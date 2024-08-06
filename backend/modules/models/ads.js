@@ -12,6 +12,10 @@ const AdsModel = mongoose.model('ads', {
         required: true,
         trim:true
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = AdsModel;

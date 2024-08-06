@@ -12,6 +12,10 @@ const PlansModel = mongoose.model('plan', {
         required: true,
         trim: true,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = PlansModel;

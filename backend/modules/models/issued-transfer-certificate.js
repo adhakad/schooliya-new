@@ -152,5 +152,9 @@ const IssuedTransferCertificateModel = mongoose.model('issued-transfer-certifica
         required: true,
         trim: true
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 module.exports = IssuedTransferCertificateModel;

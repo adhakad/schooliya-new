@@ -22,6 +22,10 @@ const TestimonialModel = mongoose.model('testimonial', {
         required: true,
         trim: true,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = TestimonialModel;

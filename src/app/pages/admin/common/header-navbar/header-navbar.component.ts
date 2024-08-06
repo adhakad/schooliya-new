@@ -11,7 +11,6 @@ import { environment } from 'src/environments/environment';
   
 })
 export class HeaderNavbarComponent implements OnInit {
-  public schoolName = environment.SCHOOL_NAME;
   nav:boolean = false;
 
   token: string = '';

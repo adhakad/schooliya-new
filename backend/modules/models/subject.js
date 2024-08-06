@@ -12,6 +12,10 @@ const SubjectModel = mongoose.model('subject', {
         required: true,
         trim: true,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = SubjectModel;

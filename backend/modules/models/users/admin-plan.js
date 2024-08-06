@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const paymentSchema = new Schema({
+const adminPlanSchema = new Schema({
   orderId: {
     type: String,
     required: true,
@@ -12,6 +12,11 @@ const paymentSchema = new Schema({
     type: String,
     required: true,
     trim: true
+  },
+  activePlan:{
+    type:String,
+    required:true,
+    trim:true
   },
   amount: {
     type: Number,
@@ -23,15 +28,21 @@ const paymentSchema = new Schema({
     required: true,
     trim: true
   },
-  status: {
-    type: String,
+  studentLimit:{
+    type: Number,
+    required: true,
+    trim: true
+  },
+  paymentStatus: {
+    type: Boolean,
     trim: true,
-    default: 'pending',
+    default: false,
   },
   createdAt: {
     type: Date,
     default: Date.now,
-},
+    expires: 60 * 5,
+  },
 });
 
-module.exports = mongoose.model('Payment', paymentSchema);
+module.exports = mongoose.model('Payment', adminPlanSchema);

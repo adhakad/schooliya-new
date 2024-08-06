@@ -7,6 +7,10 @@ const ClassModel = mongoose.model('class', {
         required: true,
         trim: true,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = ClassModel;

@@ -7,6 +7,10 @@ const MarksheetTemplateStructureModel = mongoose.model('marksheet-template-struc
         trim: true
     },
     examStructure: {},
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
     
 });
 

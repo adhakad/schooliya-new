@@ -31,7 +31,11 @@ const AdmitCardStructureModel = mongoose.model('admit-card-structure', {
     trim: true,
     enum: [true, false],
     default: false,
-  }
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = AdmitCardStructureModel;

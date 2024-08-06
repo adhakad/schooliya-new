@@ -163,5 +163,9 @@ const StudentModel = mongoose.model('student', {
         required: true,
         trim: true,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 module.exports = StudentModel;

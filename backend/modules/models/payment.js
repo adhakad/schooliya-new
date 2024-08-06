@@ -33,6 +33,10 @@ const paymentSchema = new Schema({
     trim: true,
     default: 'pending',
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+},
 });
 
 module.exports = mongoose.model('Payment', paymentSchema);

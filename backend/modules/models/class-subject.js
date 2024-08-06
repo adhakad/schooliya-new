@@ -18,6 +18,10 @@ const ClassSubjectModel = mongoose.model('class-subject', {
         trim: true,
     },
     subject: {},
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = ClassSubjectModel;

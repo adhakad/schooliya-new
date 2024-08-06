@@ -14,7 +14,6 @@ import { CookieService } from "ngx-cookie-service";
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  public schoolName = environment.SCHOOL_NAME;
   nav: boolean = false;
   panelOpenState: boolean = false
   softwareCompanyLink:string='https://schooliya.in';

@@ -93,7 +93,11 @@ const TeacherModel = mongoose.model('teacher', {
         trim: true,
         enum: ['Active', 'Inactive'],
         default: 'Inactive',
-    }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = TeacherModel;

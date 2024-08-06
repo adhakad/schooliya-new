@@ -35,6 +35,10 @@ const AdmitCardSchema = new Schema({
     enum: ['Active', 'Inactive'],
     default: 'Active'
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const AdmitCardModel = mongoose.model('admit-card', AdmitCardSchema);
