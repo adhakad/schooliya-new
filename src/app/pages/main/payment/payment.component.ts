@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, Renderer2, Directive, HostListener, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, Renderer2, Directive, HostListener, AfterViewInit,NgZone } from '@angular/core';
 declare var Razorpay: any;
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -18,9 +18,10 @@ export class PaymentComponent implements OnInit {
   otpForm: FormGroup;
   loader: Boolean = true;
   successMsg: String = '';
+  success:boolean=false;
   errorMsg: string = '';
   check: boolean = false;
-  paymentCompleted:Boolean=false;
+  paymentCompleted: Boolean = false;
   classInfo: any;
   adminInfo: any;
   getOTP: Boolean = true;
@@ -31,7 +32,8 @@ export class PaymentComponent implements OnInit {
   singlePlanInfo: any;
   taxes: any;
   totalAmount: any;
-  constructor(private fb: FormBuilder, private router: Router, private el: ElementRef, private renderer: Renderer2, public activatedRoute: ActivatedRoute, private paymentService: PaymentService, public plansService: PlansService, public adminAuthService: AdminAuthService) {
+  step:number=1;
+  constructor(private fb: FormBuilder, private router: Router,private zone: NgZone, private el: ElementRef, private renderer: Renderer2, public activatedRoute: ActivatedRoute, private paymentService: PaymentService, public plansService: PlansService, public adminAuthService: AdminAuthService) {
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.minLength(6)]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
@@ -74,6 +76,7 @@ export class PaymentComponent implements OnInit {
     };
     this.renderer.appendChild(this.el.nativeElement, script);
   }
+
   getSinglePlans(id: any) {
     this.plansService.getSinglePlans(id).subscribe((res: any) => {
       if (res) {
@@ -164,29 +167,30 @@ export class PaymentComponent implements OnInit {
       signature: razorpaySignature,
       email: this.adminInfo.email,
       id: this.adminInfo._id,
-    }
-    this.paymentService.validatePayment(paymentData).subscribe((validationResponse: any) => {
-      if (validationResponse) {
-        this.paymentCompleted = true;
-        this.adminAuthService.deleteAllCookies();
-        this.successMsg = validationResponse.message;
-        this.getOTP = false;
-        this.varifyOTP = false;
-        this.verified = false;
-        this.successMsg = '';
-        this.errorMsg = '';
-        this.adminAuthService.deleteAllCookies();
-        const accessToken = validationResponse.accessToken;
-        const refreshToken = validationResponse.refreshToken;
-        this.adminAuthService.storeAccessToken(accessToken);
-        this.adminAuthService.storeRefreshToken(refreshToken);
-        this.router.navigate(["/admin/dashboard"], { replaceUrl: true });
-        this.router.navigate(["/admin/dashboard"], { replaceUrl: true });
+      activePlan: this.singlePlanInfo.plans,
+      amount: this.totalAmount,
+      currency: 'INR',
+      studentLimit: 300,
 
-      }
-    },
+    }
+    this.paymentService.validatePayment(paymentData).subscribe(
+      (validationResponse: any) => {
+        if (validationResponse) {
+          this.zone.run(() => {
+            this.step = 2;
+            this.paymentCompleted = true;
+            this.getOTP = false;
+            this.varifyOTP = false;
+            this.verified = false;
+            this.errorMsg = '';
+            this.successMsg = validationResponse.successMsg;
+          });
+        }
+      },
       (validationError: any) => {
-        this.errorMsg = 'Payment validation failed. Please contact support.';
+        this.zone.run(() => {
+          this.errorMsg = 'Payment validation failed. Please contact support.';
+        });
       }
     );
   }

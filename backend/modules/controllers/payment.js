@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const Payment = require('../models/payment');
+const AdminPlan = require('../models/users/admin-plan');
 const tokenService = require('../services/admin-token');
 const key_id = KEY_ID;
 const key_secret = KEY_SECRET;
@@ -44,47 +45,52 @@ let CreatePayment = async (req, res) => {
       currency,
     });
     await payment.save();
-    res.status(200).json({ order ,payment});
+    res.status(200).json({ order });
   } catch (error) {
     res.status(500).json({ errorMsg: 'Payment creation failed !' });
   }
 };
 
 let ValidatePayment = async (req, res) => {
+  const { payment_id: paymentId, order_id: orderId, signature, email, id, activePlan, amount, currency,studentLimit} = req.body;
+  const adminInfo = { id, email, activePlan, amount, currency};
+  const adminPlanInfo = { paymentId, orderId, adminId: id, email, activePlan, amount, currency,studentLimit, paymentStatus: true };
+  const secretKey = 'TVIz565DG7GB1kzF4Q8uVayK';
+  const body = `${orderId}|${paymentId}`;
   try {
-    const { payment_id: paymentId, order_id: orderId, signature, email, id } = req.body;
-    const adminInfo = { id, email };
-    const secretKey = 'TVIz565DG7GB1kzF4Q8uVayK';
-    const body = `${orderId}|${paymentId}`;
     const expectedSignature = crypto.createHmac("sha256", secretKey).update(body).digest("hex");
-
     if (expectedSignature !== signature) {
-      throw new Error('Invalid signature');
+      return res.status(400).json({ errorMsg: 'Invalid signature' });
     }
-
-    const updatedPayment = await Payment.findOneAndUpdate(
-      { orderId },
-      { status: 'success' },
-      { new: true }
-    );
-
-    if (!updatedPayment) {
-      return res.status(400).json({ errorMsg: 'Failed to update payment status !' });
+    const session = await Payment.startSession();
+    session.startTransaction();
+    const [updatedPayment, createAdminPlan] = await Promise.all([
+      Payment.findOneAndUpdate(
+        { orderId },
+        { status: 'success' },
+        { new: true, session }
+      ),
+      AdminPlan.create([adminPlanInfo], { session })
+    ]);
+    if (!updatedPayment || !createAdminPlan) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(400).json({ errorMsg: 'Failed to update payment status or create admin plan!' });
     }
+    await session.commitTransaction();
+    session.endSession();
     sendEmail(email);
-    const payload = { id, email };
-    const accessToken = await tokenService.getAccessToken(payload);
-    const refreshToken = await tokenService.getRefreshToken(payload);
 
-    return res.status(200).json({ success: true, adminInfo, accessToken, refreshToken, successMsg: 'Payment successfully validated.' });
+    return res.status(200).json({ success: true, adminInfo,  successMsg: 'Payment successfully Received.' });
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     return res.status(500).json({ errorMsg: 'Error validating payment!' });
   }
-
 }
 async function sendEmail(email) {
   const mailOptions = {
-    from: { name: 'Schooliya'},
+    from: { name: 'Schooliya' },
     to: email,
     subject: 'Schooliya Account Confirmation: Payment Received',
     html: `<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
