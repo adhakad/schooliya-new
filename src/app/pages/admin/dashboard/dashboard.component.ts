@@ -18,7 +18,6 @@ import { TopperService } from 'src/app/services/topper.service';
 })
 export class DashboardComponent implements OnInit {
   cookieValue: any;
-
   adsCountInfo: any;
   bannerCountInfo: any;
   classSubjectCountInfo: any;
@@ -31,7 +30,7 @@ export class DashboardComponent implements OnInit {
   testimonialCountInfo: any;
   topperCountInfo: any;
   loader: Boolean = true;
-  constructor(private adminAuthService: AdminAuthService, private adsService: AdsService, private bannerService: BannerService, private classSubjectService: ClassSubjectService, private classService: ClassService,private studentService: StudentService, private subjectService: SubjectService, private teacherService: TeacherService, private testimonialService: TestimonialService, private topperService: TopperService) { }
+  constructor(private adminAuthService: AdminAuthService, private adsService: AdsService, private bannerService: BannerService, private classSubjectService: ClassSubjectService, private classService: ClassService, private studentService: StudentService, private subjectService: SubjectService, private teacherService: TeacherService, private testimonialService: TestimonialService, private topperService: TopperService) { }
 
   ngOnInit(): void {
     this.adsCount();
@@ -43,6 +42,9 @@ export class DashboardComponent implements OnInit {
     this.teacherCount();
     this.testimonialCount();
     this.topperCount();
+    setTimeout(() => {
+      this.loader = false;
+    }, 1000)
   }
 
 
@@ -89,9 +91,6 @@ export class DashboardComponent implements OnInit {
   topperCount() {
     this.topperService.getTopperCount().subscribe((res: any) => {
       this.topperCountInfo = res.countTopper;
-      setTimeout(() => {
-        this.loader = false;
-      }, 1000)
     })
   }
 

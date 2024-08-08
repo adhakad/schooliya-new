@@ -1,7 +1,7 @@
 <app-header></app-header>
 <div style="background:rgb(243, 241, 250);padding-top: 10vh;">
     <!-- rgb(233, 233, 239) -->
-    <div class="container-fluid" style="padding-bottom: 20vh;" *ngIf="paymentCompleted==false && step==1">
+    <div class="container-fluid" style="padding-bottom: 20vh;" *ngIf="paymentCompleted==false">
         <div class="row">
             <div class="col-lg-10 offset-lg-1" *ngIf="!successMsg">
                 <div class="row">
@@ -11,7 +11,7 @@
                     </div>
                     <div class="col-lg-7">
                         <div class="cards">
-                            <ng-container *ngIf="getOTP && !varifyOTP && !verified && !success">
+                            <ng-container *ngIf="getOTP && !varifyOTP && !verified">
                                 <form [formGroup]="signupForm" (ngSubmit)="signup()">
                                     <div class="row" style="padding-bottom: 15px;">
                                         <div class="col-12 card-detail-title">
@@ -176,18 +176,17 @@
                                         <div class="col-12 col-lg-3 offset-lg-9">
                                             <button type="submit" mat-raised-button class="submit-button"
                                                 [disabled]="!signupForm.valid"
-                                                style="width: 100% !important;font-size: 16px;margin-top: 10px;letter-spacing: .5px;">Get
-                                                OTP <mat-icon>arrow_right_alt</mat-icon></button>
+                                                style="width: 100% !important;font-size: 16px;margin-top: 10px;letter-spacing: .5px;">Next<mat-icon>arrow_right_alt</mat-icon></button>
                                         </div>
                                     </div>
                                 </form>
                             </ng-container>
 
-                            <ng-container *ngIf="varifyOTP && !getOTP && !verified && !success">
+                            <ng-container *ngIf="varifyOTP && !getOTP && !verified">
                                 <div class="row" style="padding-bottom: 20px;">
                                     <div class="col-12 " style="max-width: auto !important;">
                                         <div class="col-12 card-title">
-                                            <h2 style="color: #382066;">Varification
+                                            <h2 style="color: #382066;">Verification
                                             </h2>
                                             <p>Enter the code sent to your email</p>
                                             <p><span>{{email}}</span></p>
@@ -343,7 +342,7 @@
 
 
 
-            <div class="col-lg-10 offset-lg-1" *ngIf="successMsg">
+            <div class="col-lg-10 offset-lg-1" *ngIf="successMsg && !paymentStatus">
                 <div class="row">
                     <div class="col-12 col-lg-6 offset-lg-3">
                         <div class="row">
@@ -460,24 +459,6 @@
 
         </div>
     </div>
-
-
-
-
-    <div class="container-fluid" style="padding-bottom: 20vh;" *ngIf="step==2">
-        <div class="row">
-            <div class="col-lg-10 offset-lg-1" *ngIf="successMsg">
-                <div class="row">
-                    <div class="col-lg-7">
-                        <div class="cards">
-                            <p class="success">{{successMsg}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
 
 </div>

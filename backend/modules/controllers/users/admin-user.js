@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const speakeasy = require('speakeasy');
 const tokenService = require('../../services/admin-token');
 const AdminUserModel = require('../../models/users/admin-user');
+const AdminPlanModel = require('../../models/users/admin-plan');
 const OTPModel = require('../../models/otp');
 
 const transporter = nodemailer.createTransport({
@@ -30,6 +31,10 @@ let LoginAdmin = async (req, res, next) => {
         if (!passwordMatch) {
             return res.status(404).json({ errorMsg: 'Username or password invalid !' });
         }
+        if (admin.verified == false) {
+            return res.status(404).json({ verified: false, errorMsg: 'Your email address is not verified. Please verify your email using the OTP sent to you.' });
+        }
+
         // if (admin.status == "Inactive") {
         //     return res.status(400).json({ errorMsg: 'Application access permissions denied, please contact app development company !' });
         // }
@@ -67,8 +72,31 @@ let SignupAdmin = async (req, res, next) => {
     try {
         const existingUser = await AdminUserModel.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ errorMsg: "Email already exists!" });
+            if (!existingUser.verified) {
+                await OTPModel.deleteMany({ email });
+                const token = speakeasy.totp({
+                    secret: secret.base32,
+                    encoding: 'base32'
+                });
+                await OTPModel.create({ email, secret: secret.base32 });
+                sendEmail(email, token);
+                return res.status(400).json({ verified: false,paymentStatus: false,email});
+            }
+            if (existingUser.verified) {
+                let adminId = existingUser._id;
+                const existingUserPlan = await AdminPlanModel.findOne({ _id: adminId });
+                if (!existingUserPlan) {
+                    console.log("a")
+                    return res.status(400).json({ verified: true, paymentStatus: false,email, adminInfo: existingUser});
+                }
+                if (existingUserPlan) {
+                    console.log("c")
+                    return res.status(400).json({ verified: true, paymentStatus: existingUserPlan.paymentStatus,adminInfo: existingUser,email, errorMsg: `Your ${existingUserPlan.activePlan} plan is already active, enjoy your services.` });
+                }
+            }
+
         }
+        console.log("c")
         let schoolId = 0;
         let lastIssuedSchoolId = await AdminUserModel.findOne({}).sort({ _id: -1 });
         if (!lastIssuedSchoolId) {
@@ -106,7 +134,6 @@ let SignupAdmin = async (req, res, next) => {
     } catch (error) {
         return res.status(500).json({ errorMsg: 'Internal Server Error!' });
     }
-
 }
 
 let ForgotPassword = async (req, res, next) => {

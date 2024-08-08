@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnInit, Renderer2, Directive, HostListener, AfterViewInit,NgZone } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit, Renderer2, Directive, HostListener, AfterViewInit, NgZone } from '@angular/core';
 declare var Razorpay: any;
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -18,7 +18,7 @@ export class PaymentComponent implements OnInit {
   otpForm: FormGroup;
   loader: Boolean = true;
   successMsg: String = '';
-  success:boolean=false;
+  paymentStatus: boolean = false;
   errorMsg: string = '';
   check: boolean = false;
   paymentCompleted: Boolean = false;
@@ -32,8 +32,8 @@ export class PaymentComponent implements OnInit {
   singlePlanInfo: any;
   taxes: any;
   totalAmount: any;
-  step:number=1;
-  constructor(private fb: FormBuilder, private router: Router,private zone: NgZone, private el: ElementRef, private renderer: Renderer2, public activatedRoute: ActivatedRoute, private paymentService: PaymentService, public plansService: PlansService, public adminAuthService: AdminAuthService) {
+  step: number = 1;
+  constructor(private fb: FormBuilder, private router: Router, private zone: NgZone, private el: ElementRef, private renderer: Renderer2, public activatedRoute: ActivatedRoute, private paymentService: PaymentService, public plansService: PlansService, public adminAuthService: AdminAuthService) {
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.minLength(6)]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]],
@@ -97,7 +97,34 @@ export class PaymentComponent implements OnInit {
         this.varifyOTP = true;
       }
     }, err => {
-      this.errorMsg = err.error.errorMsg;
+      if (err.status == 400 && err.error.verified == false && err.error.paymentStatus == false) {
+        this.errorMsg = '';
+        this.email = err.error.email;
+        this.getOTP = false;
+        this.varifyOTP = true;
+        console.log("a")
+      }
+      if (err.status == 400 && err.error.verified == true && err.error.paymentStatus == false) {
+        this.errorMsg = '';
+        this.getOTP = false;
+        this.varifyOTP = false;
+        this.verified = err.error.verified;
+        this.successMsg = 'You are already verified';
+        this.adminInfo = err.error.adminInfo;
+        console.log(err.error)
+        console.log("b")
+      }
+      if (err.status == 400 && err.error.verified == true && err.error.paymentStatus == true) {
+        this.getOTP = true;
+        this.varifyOTP = false;
+        this.verified = false;
+        this.successMsg = '';
+        this.errorMsg = err.error.errorMsg;
+        console.log("c")
+      }
+      if (err.status == 500) {
+        this.errorMsg = err.error.errorMsg;
+      }
     })
   }
 
@@ -177,6 +204,8 @@ export class PaymentComponent implements OnInit {
       (validationResponse: any) => {
         if (validationResponse) {
           this.zone.run(() => {
+            this.loader = true;
+            this.adminAuthService.deleteAllCookies();
             this.step = 2;
             this.paymentCompleted = true;
             this.getOTP = false;
@@ -184,6 +213,12 @@ export class PaymentComponent implements OnInit {
             this.verified = false;
             this.errorMsg = '';
             this.successMsg = validationResponse.successMsg;
+            this.adminAuthService.deleteAllCookies();
+            const accessToken = validationResponse.accessToken;
+            const refreshToken = validationResponse.refreshToken;
+            this.adminAuthService.storeAccessToken(accessToken);
+            this.adminAuthService.storeRefreshToken(refreshToken);
+            this.router.navigate(["/admin/dashboard"], { replaceUrl: true });
           });
         }
       },

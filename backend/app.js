@@ -10,6 +10,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
 const path = require('path');
+require('./cron-job');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

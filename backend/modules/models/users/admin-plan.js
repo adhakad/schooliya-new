@@ -1,38 +1,37 @@
+// models/AdminPlan.js
 'use strict';
 const mongoose = require('mongoose');
 
 const AdminPlanModel = mongoose.model('admin-plan', {
-  orderId:{
-    type: String,
-    required: true,
-    trim: true
-  },
-  paymentId: {
-    type: String,
-    required: true,
-    trim: true
-  },
   adminId: {
     type: String,
     required: true,
     trim: true
   },
-  activePlan:{
-    type:String,
-    required:true,
-    trim:true
+
+  activePlan: {
+    type: String,
+    required: true,
+    trim: true
   },
   amount: {
     type: Number,
     required: true,
     trim: true
   },
-  currency: {
-    type: String,
-    required: true,
-    trim: true
+  planModulesName: {
+    type: [String],
+    default: []
   },
-  studentLimit:{
+  planModulesStatus: {
+    type: [String],
+    default: []
+  },
+  planModulesStatus: {
+    type: [Boolean],
+    default: []
+  },
+  studentLimit: {
     type: Number,
     required: true,
     trim: true
@@ -40,12 +39,23 @@ const AdminPlanModel = mongoose.model('admin-plan', {
   paymentStatus: {
     type: Boolean,
     trim: true,
-    default: false,
+    default: false
+  },
+  expiryStatus: {
+    type: Boolean,
+    trim: true,
+  },
+  expirationDate: {
+    type: Date,
+    required: true
   },
   createdAt: {
     type: Date,
-    default: Date.now,
-    expires: 60 * 5,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
   },
 });
 

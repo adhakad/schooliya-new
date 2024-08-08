@@ -8,6 +8,10 @@ const paymentSchema = new Schema({
     required: true,
     trim: true
   },
+  paymentId: {
+    type: String,
+    trim: true
+  },
   adminId: {
     type: String,
     required: true,

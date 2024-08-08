@@ -52,45 +52,77 @@ let CreatePayment = async (req, res) => {
 };
 
 let ValidatePayment = async (req, res) => {
-  const { payment_id: paymentId, order_id: orderId, signature, email, id, activePlan, amount, currency,studentLimit} = req.body;
-  const adminInfo = { id, email, activePlan, amount, currency};
-  const adminPlanInfo = { paymentId, orderId, adminId: id, email, activePlan, amount, currency,studentLimit, paymentStatus: true };
+  const { payment_id: paymentId, order_id: orderId, signature, email, id, activePlan, amount, currency, studentLimit } = req.body;
+  const adminInfo = { id, email, activePlan, amount, currency };
+  const paymentInfo = { paymentId, orderId, adminId: id, activePlan, amount, currency, status: 'success' };
   const secretKey = 'TVIz565DG7GB1kzF4Q8uVayK';
   const body = `${orderId}|${paymentId}`;
+  
   try {
     const expectedSignature = crypto.createHmac("sha256", secretKey).update(body).digest("hex");
     if (expectedSignature !== signature) {
-      return res.status(400).json({ errorMsg: 'Invalid signature' });
+      return res.status(400).json({ errorMsg: 'अवैध सिग्नेचर' });
     }
-    const session = await Payment.startSession();
-    session.startTransaction();
-    const [updatedPayment, createAdminPlan] = await Promise.all([
-      Payment.findOneAndUpdate(
-        { orderId },
-        { status: 'success' },
-        { new: true, session }
-      ),
-      AdminPlan.create([adminPlanInfo], { session })
-    ]);
-    if (!updatedPayment || !createAdminPlan) {
-      await session.abortTransaction();
-      session.endSession();
-      return res.status(400).json({ errorMsg: 'Failed to update payment status or create admin plan!' });
-    }
-    await session.commitTransaction();
-    session.endSession();
-    sendEmail(email);
+    
+    const newPayment = await Payment.create(paymentInfo);
 
-    return res.status(200).json({ success: true, adminInfo,  successMsg: 'Payment successfully Received.' });
+    let expirationDate;
+    const currentTime = new Date();
+    const thirtyOneDaysInMillis =  60 * 1000; //31 * 24 * 60 * 60 * 1000;
+
+    const existingAdminPlan = await AdminPlan.findOne({ adminId: id });
+    if (existingAdminPlan) {
+      const currentExpirationDate = new Date(existingAdminPlan.expirationDate);
+      const oneMonthBeforeExpiration = new Date(currentExpirationDate.getTime() - thirtyOneDaysInMillis);
+      
+      if (currentTime >= oneMonthBeforeExpiration) {
+        expirationDate = new Date(Date.now() + 2  * 60 * 1000);
+      } else {
+        const remainingTime = currentExpirationDate - currentTime;
+        expirationDate = new Date(Date.now() + 2  * 60 * 1000 + remainingTime);
+      }
+    } else {
+      expirationDate = new Date(Date.now() + 2  * 60 * 1000);
+    }
+
+    const updatedAdminPlan = await AdminPlan.findOneAndUpdate(
+      { adminId: id },
+      {
+        $set: {
+          paymentId,
+          orderId,
+          email,
+          activePlan,
+          amount,
+          currency,
+          studentLimit,
+          paymentStatus: true,
+          expirationDate,
+          expiryStatus: false
+        }
+      },
+      { upsert: true, new: true }
+    );
+
+    if (!updatedAdminPlan) {
+      return res.status(400).json({ errorMsg: 'योजना को अपडेट या बनाते समय विफल!' });
+    }
+
+    sendEmail(email);
+    const payload = { id, email };
+    const accessToken = await tokenService.getAccessToken(payload);
+    const refreshToken = await tokenService.getRefreshToken(payload);
+
+    return res.status(200).json({ success: true,accessToken, refreshToken, adminInfo, successMsg: 'भुगतान सफलतापूर्वक प्राप्त हुआ।' });
   } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
-    return res.status(500).json({ errorMsg: 'Error validating payment!' });
+    return res.status(500).json({ errorMsg: 'भुगतान की वैधता की जांच में त्रुटि!' });
   }
-}
+};
+
+
 async function sendEmail(email) {
   const mailOptions = {
-    from: { name: 'Schooliya' },
+    from: { name: 'Schooliya',address:'dhakaddeepak9340700360@gmail.com'},
     to: email,
     subject: 'Schooliya Account Confirmation: Payment Received',
     html: `<div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
