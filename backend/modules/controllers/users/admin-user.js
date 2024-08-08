@@ -80,23 +80,23 @@ let SignupAdmin = async (req, res, next) => {
                 });
                 await OTPModel.create({ email, secret: secret.base32 });
                 sendEmail(email, token);
-                return res.status(400).json({ verified: false,paymentStatus: false,email});
+                return res.status(400).json({ verified: false,paymentMode: true,email});
             }
             if (existingUser.verified) {
                 let adminId = existingUser._id;
-                const existingUserPlan = await AdminPlanModel.findOne({ _id: adminId });
+                const existingUserPlan = await AdminPlanModel.findOne({adminId: adminId });
                 if (!existingUserPlan) {
-                    console.log("a")
-                    return res.status(400).json({ verified: true, paymentStatus: false,email, adminInfo: existingUser});
+                    return res.status(400).json({ verified: true, paymentMode: true,email, adminInfo: existingUser});
                 }
                 if (existingUserPlan) {
-                    console.log("c")
-                    return res.status(400).json({ verified: true, paymentStatus: existingUserPlan.paymentStatus,adminInfo: existingUser,email, errorMsg: `Your ${existingUserPlan.activePlan} plan is already active, enjoy your services.` });
+                    if(existingUserPlan.expiryStatus==true){
+                        return res.status(400).json({ verified: true, paymentMode: true,email, adminInfo: existingUser});
+                    }
+                    return res.status(400).json({verified: true, paymentMode: false, errorMsg: `Your ${existingUserPlan.activePlan} plan is already active, enjoy your services.` });
                 }
             }
 
         }
-        console.log("c")
         let schoolId = 0;
         let lastIssuedSchoolId = await AdminUserModel.findOne({}).sort({ _id: -1 });
         if (!lastIssuedSchoolId) {
@@ -209,49 +209,13 @@ let VerifyOTP = async (req, res, next) => {
             return res.status(200).json({ successMsg: "Congratulations! Your email has been successfully verified. You can now proceed with your payment.", verified: true, adminInfo: user });
         }
     } catch (err) {
-        console.error(err);
         return res.status(500).json({ errorMsg: "Internal server error" });
     }
 }
 
-// let VarifyForgotAdmin = async (req, res, next) => {
-//     const { productKey } = req.body;
-//     const varifiedAdminInfo = {
-//         productKey: productKey
-//     }
-//     try {
-//         let countAdmin = await AdminUserModel.count();
-//         if (countAdmin === 1) {
-//             let checkAdmin = await AdminUserModel.findOne({ status: 'Active' });
-//             if (!checkAdmin) {
-//                 return res.status(404).json({ errorMsg: "Application access permissions denied, please contact app development company !" });
-//             }
-//             const checkProductKey = await SchoolKeyModel.findOne({ status: 'Active' });
-//             if (!checkProductKey) {
-//                 return res.status(400).json({ errorMsg: "Application access permissions denied, please contact app development company !" });
-//             }
-//             const isProductKey = checkProductKey.productKey;
-//             const productKeyMatch = await bcrypt.compare(productKey, isProductKey);
-//             if (!productKeyMatch) {
-//                 return res.status(404).json({ errorMsg: 'Product key is invalid !' });
-//             }
-//             if (productKeyMatch) {
-//                 return res.status(200).json({ varifiedAdminInfo: varifiedAdminInfo });
-//             }
-//         }
-//         return res.status(404).json({ errorMsg: "Application access permissions denied, please contact app development company !" });
-//     } catch (error) {
-//         return res.status(500).json('Internal Server Error !');
-//     }
-// }
-
 let ResetPassword = async (req, res, next) => {
     const { email, password } = req.body;
     try {
-        // let checkAdmin = await AdminUserModel.findOne({ status: 'Active' });
-        // if (!checkAdmin) {
-        //     return res.status(404).json({ errorMsg: "Application access permissions denied, please contact app development company !" });
-        // }
         const user = await AdminUserModel.findOne({ email: email });
         if (!user) {
             return res.status(404).json({ errorMsg: "Email does not exist!" });
@@ -259,8 +223,6 @@ let ResetPassword = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const resetAdminUserInfo = {
             password: hashedPassword,
-            // status: 'Active',
-
         }
         const objectId = user._id;
         const updateAdminUser = await AdminUserModel.findByIdAndUpdate(objectId, { $set: resetAdminUserInfo }, { new: true });

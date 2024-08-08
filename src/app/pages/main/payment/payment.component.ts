@@ -18,7 +18,7 @@ export class PaymentComponent implements OnInit {
   otpForm: FormGroup;
   loader: Boolean = true;
   successMsg: String = '';
-  paymentStatus: boolean = false;
+  paymentMode: boolean = false;
   errorMsg: string = '';
   check: boolean = false;
   paymentCompleted: Boolean = false;
@@ -97,30 +97,22 @@ export class PaymentComponent implements OnInit {
         this.varifyOTP = true;
       }
     }, err => {
-      if (err.status == 400 && err.error.verified == false && err.error.paymentStatus == false) {
+      if (err.status == 400 && err.error.verified == false && err.error.paymentMode == true) {
         this.errorMsg = '';
         this.email = err.error.email;
         this.getOTP = false;
         this.varifyOTP = true;
-        console.log("a")
       }
-      if (err.status == 400 && err.error.verified == true && err.error.paymentStatus == false) {
+      if (err.status == 400 && err.error.verified == true && err.error.paymentMode == true) {
         this.errorMsg = '';
         this.getOTP = false;
         this.varifyOTP = false;
         this.verified = err.error.verified;
         this.successMsg = 'You are already verified';
         this.adminInfo = err.error.adminInfo;
-        console.log(err.error)
-        console.log("b")
       }
-      if (err.status == 400 && err.error.verified == true && err.error.paymentStatus == true) {
-        this.getOTP = true;
-        this.varifyOTP = false;
-        this.verified = false;
-        this.successMsg = '';
+      if (err.status == 400 && err.error.verified == true && err.error.paymentMode == false) {
         this.errorMsg = err.error.errorMsg;
-        console.log("c")
       }
       if (err.status == 500) {
         this.errorMsg = err.error.errorMsg;

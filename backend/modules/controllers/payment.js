@@ -61,14 +61,14 @@ let ValidatePayment = async (req, res) => {
   try {
     const expectedSignature = crypto.createHmac("sha256", secretKey).update(body).digest("hex");
     if (expectedSignature !== signature) {
-      return res.status(400).json({ errorMsg: 'अवैध सिग्नेचर' });
+      return res.status(400).json({ errorMsg: 'Invailid signature!' });
     }
     
     const newPayment = await Payment.create(paymentInfo);
 
     let expirationDate;
     const currentTime = new Date();
-    const thirtyOneDaysInMillis =  60 * 1000; //31 * 24 * 60 * 60 * 1000;
+    const thirtyOneDaysInMillis =   31 * 24 * 60 * 60 * 1000;
 
     const existingAdminPlan = await AdminPlan.findOne({ adminId: id });
     if (existingAdminPlan) {
@@ -76,13 +76,13 @@ let ValidatePayment = async (req, res) => {
       const oneMonthBeforeExpiration = new Date(currentExpirationDate.getTime() - thirtyOneDaysInMillis);
       
       if (currentTime >= oneMonthBeforeExpiration) {
-        expirationDate = new Date(Date.now() + 2  * 60 * 1000);
+        expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
       } else {
         const remainingTime = currentExpirationDate - currentTime;
-        expirationDate = new Date(Date.now() + 2  * 60 * 1000 + remainingTime);
+        expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000 + remainingTime);
       }
     } else {
-      expirationDate = new Date(Date.now() + 2  * 60 * 1000);
+      expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
     }
 
     const updatedAdminPlan = await AdminPlan.findOneAndUpdate(
@@ -105,7 +105,7 @@ let ValidatePayment = async (req, res) => {
     );
 
     if (!updatedAdminPlan) {
-      return res.status(400).json({ errorMsg: 'योजना को अपडेट या बनाते समय विफल!' });
+      return res.status(400).json({ errorMsg: 'Failed to create or update admin plan!' });
     }
 
     sendEmail(email);
@@ -113,9 +113,9 @@ let ValidatePayment = async (req, res) => {
     const accessToken = await tokenService.getAccessToken(payload);
     const refreshToken = await tokenService.getRefreshToken(payload);
 
-    return res.status(200).json({ success: true,accessToken, refreshToken, adminInfo, successMsg: 'भुगतान सफलतापूर्वक प्राप्त हुआ।' });
+    return res.status(200).json({ success: true,accessToken, refreshToken, adminInfo, successMsg: 'Payment successfully Received.' });
   } catch (error) {
-    return res.status(500).json({ errorMsg: 'भुगतान की वैधता की जांच में त्रुटि!' });
+    return res.status(500).json({ errorMsg: 'Error validating payment!' });
   }
 };
 
