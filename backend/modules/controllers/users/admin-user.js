@@ -6,6 +6,7 @@ const speakeasy = require('speakeasy');
 const tokenService = require('../../services/admin-token');
 const AdminUserModel = require('../../models/users/admin-user');
 const AdminPlanModel = require('../../models/users/admin-plan');
+const PaymentModel = require('../../models/payment');
 const OTPModel = require('../../models/otp');
 
 const transporter = nodemailer.createTransport({
@@ -27,18 +28,22 @@ let LoginAdmin = async (req, res, next) => {
         if (!admin) {
             return res.status(404).json({ errorMsg: 'Username or password invalid !' });
         }
-        const passwordMatch = await bcrypt.compare(password, admin.password);
-        if (!passwordMatch) {
-            return res.status(404).json({ errorMsg: 'Username or password invalid !' });
+        if (!admin.verified) {
+            return res.status(400).json({ errorMsg: `Your plan purchase process is incomplete. Please complete the purchase process to enjoy Schooliya's services.` });
         }
-        if (admin.verified == false) {
-            return res.status(404).json({ verified: false, errorMsg: 'Your email address is not verified. Please verify your email using the OTP sent to you.' });
+        let adminId = admin._id;
+        let adminPlan = await AdminPlanModel.findOne({ adminId: adminId });
+        if (!adminPlan) {
+            return res.status(404).json({ errorMsg: `Your plan purchase process is incomplete. Please complete the purchase process to enjoy Schooliya's services.` });
         }
 
-        // if (admin.status == "Inactive") {
-        //     return res.status(400).json({ errorMsg: 'Application access permissions denied, please contact app development company !' });
-        // }
-        // if (admin.status == "Active") {
+        if (adminPlan.expiryStatus === true) {
+            return res.status(400).json({ errorMsg: `Your ${adminPlan.activePlan} plan has expired. Please purchase your plan to continue enjoying Schooliya's services.` });
+        }
+        const passwordMatch = await bcrypt.compare(password, admin.password);
+        if (!passwordMatch) {
+            return res.status(400).json({ errorMsg: 'Username or password invalid !' });
+        }
         const payload = { id: admin._id, email: admin.email };
         const accessToken = await tokenService.getAccessToken(payload);
         const refreshToken = await tokenService.getRefreshToken(payload);
@@ -80,19 +85,19 @@ let SignupAdmin = async (req, res, next) => {
                 });
                 await OTPModel.create({ email, secret: secret.base32 });
                 sendEmail(email, token);
-                return res.status(400).json({ verified: false,paymentMode: true,email});
+                return res.status(400).json({ verified: false, paymentMode: true, email });
             }
             if (existingUser.verified) {
                 let adminId = existingUser._id;
-                const existingUserPlan = await AdminPlanModel.findOne({adminId: adminId });
+                const existingUserPlan = await AdminPlanModel.findOne({ adminId: adminId });
                 if (!existingUserPlan) {
-                    return res.status(400).json({ verified: true, paymentMode: true,email, adminInfo: existingUser});
+                    return res.status(400).json({ verified: true, paymentMode: true, email, adminInfo: existingUser });
                 }
                 if (existingUserPlan) {
-                    if(existingUserPlan.expiryStatus==true){
-                        return res.status(400).json({ verified: true, paymentMode: true,email, adminInfo: existingUser});
+                    if (existingUserPlan.expiryStatus == true) {
+                        return res.status(400).json({ verified: true, paymentMode: true, email, adminInfo: existingUser });
                     }
-                    return res.status(400).json({verified: true, paymentMode: false, errorMsg: `Your ${existingUserPlan.activePlan} plan is already active, enjoy your services.` });
+                    return res.status(400).json({ verified: true, paymentMode: false, errorMsg: `Your ${existingUserPlan.activePlan} plan is already active, enjoy your services.` });
                 }
             }
 
@@ -144,9 +149,16 @@ let ForgotPassword = async (req, res, next) => {
         if (!admin) {
             return res.status(404).json({ errorMsg: 'Email address not found !' });
         }
-        const verified = admin.verified;
-        if (verified == false) {
-            return res.status(400).json({ errorMsg: 'Acoount is not verified, please verify your email address!' });
+        if (!admin.verified) {
+            return res.status(400).json({ errorMsg: `Your plan purchase process is incomplete. Please complete the purchase process to enjoy Schooliya's services.` });
+        }
+        let adminId = admin._id;
+        let adminPlan = await AdminPlanModel.findOne({ adminId: adminId });
+        if (!adminPlan) {
+            return res.status(404).json({ errorMsg: `Your plan purchase process is incomplete. Please complete the purchase process to enjoy Schooliya's services.` });
+        }
+        if (adminPlan.expiryStatus === true) {
+            return res.status(400).json({ errorMsg: `Your ${adminPlan.activePlan} plan has expired. Please purchase your plan to continue enjoying Schooliya's services.` });
         }
         const createdOTP = await OTPModel.create({ email, secret: secret.base32 });
         const token = speakeasy.totp({

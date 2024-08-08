@@ -68,7 +68,7 @@ let ValidatePayment = async (req, res) => {
 
     let expirationDate;
     const currentTime = new Date();
-    const thirtyOneDaysInMillis =   31 * 24 * 60 * 60 * 1000;
+    const thirtyOneDaysInMillis =    9* 60 * 1000; //31 * 24 * 60 * 60 * 1000;
 
     const existingAdminPlan = await AdminPlan.findOne({ adminId: id });
     if (existingAdminPlan) {
@@ -76,13 +76,13 @@ let ValidatePayment = async (req, res) => {
       const oneMonthBeforeExpiration = new Date(currentExpirationDate.getTime() - thirtyOneDaysInMillis);
       
       if (currentTime >= oneMonthBeforeExpiration) {
-        expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+        expirationDate = new Date(Date.now() + 10 * 60 * 1000); //365 * 24 * 60 * 60 * 1000
       } else {
         const remainingTime = currentExpirationDate - currentTime;
-        expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000 + remainingTime);
+        expirationDate = new Date(Date.now() + 10 * 60 * 1000 + remainingTime);
       }
     } else {
-      expirationDate = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+      expirationDate = new Date(Date.now() + 10 * 60 * 1000);
     }
 
     const updatedAdminPlan = await AdminPlan.findOneAndUpdate(
