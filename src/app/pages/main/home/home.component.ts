@@ -2,6 +2,7 @@
 import { Component, Inject, OnInit, PLATFORM_ID, AfterViewInit, ElementRef } from '@angular/core';
 declare var jQuery: any;
 import { isPlatformBrowser } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { Banner } from 'src/app/modal/banner.model';
 import { Teacher } from 'src/app/modal/teacher.model';
 import { Ads } from 'src/app/modal/ads.model';
@@ -37,9 +38,23 @@ export class HomeComponent implements OnInit, AfterViewInit {
   loadTitle = false;
   loader: Boolean = true;
   schoolInfo: any;
-
   adminId!: any;
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private el: ElementRef, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private printPdfService: PrintPdfService, private plansService: PlansService, private bannerService: BannerService, private topperService: TopperService, private testimonialService: TestimonialService, private adsService: AdsService) { }
+  youtubeVideoUrls: string[] = [
+    "https://www.youtube.com/watch?v=rjw4ZOPxxpo",
+  ];
+  thumbnailUrls: SafeUrl[] = [];
+  youtubeVideoSafeUrls: SafeResourceUrl[] = [];
+  constructor(@Inject(PLATFORM_ID) private platformId: Object,private sanitizer: DomSanitizer, private el: ElementRef, private adminAuthService: AdminAuthService, private schoolService: SchoolService, private printPdfService: PrintPdfService, private plansService: PlansService, private bannerService: BannerService, private topperService: TopperService, private testimonialService: TestimonialService, private adsService: AdsService) {
+    this.youtubeVideoUrls.forEach(url => {
+      const videoId = this.getVideoIdFromUrl(url);
+      const videoUrl = `https://www.youtube.com/embed/${videoId}?rel=0`;
+      const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
+
+      // Sanitize URLs
+      this.youtubeVideoSafeUrls.push(this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl));
+      this.thumbnailUrls.push(this.sanitizer.bypassSecurityTrustUrl(thumbnailUrl));
+    });
+   }
 
   async ngOnInit() {
     let getAdmin = this.adminAuthService.getLoggedInAdminInfo();
@@ -50,7 +65,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.getTestimonial();
     this.getTopper();
   }
-
+  getVideoIdFromUrl(url: string): string | null {
+    const videoIdMatch = url.match(/(?:\?|&)v=([^\?&]+)/);
+    if (videoIdMatch) {
+      return videoIdMatch[1];
+    }
+    return null;
+  }
+  redirectUser(videoUrl: string) {
+    window.location.href = videoUrl;
+  }
   
   ngAfterViewInit() {
     if (this.isBrowser) {
