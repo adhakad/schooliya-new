@@ -166,7 +166,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
           this.loader = false;
         }, 500)
-      }, 2000);
+      }, 1000);
 
     }
   }

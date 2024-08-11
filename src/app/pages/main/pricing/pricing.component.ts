@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PlansService } from 'src/app/services/plans.service';
 
 @Component({
   selector: 'app-pricing',
@@ -6,10 +7,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pricing.component.css']
 })
 export class PricingComponent implements OnInit {
-
-  constructor() { }
+  plansInfo: any[] = [];
+  constructor(private plansService: PlansService,) { }
 
   ngOnInit(): void {
+    this.getPlans();
+  }
+  getPlans() {
+    this.plansService.getPlansList().subscribe((res: any[]) => {
+      if (res) {
+        this.plansInfo = res;
+      }
+    })
   }
 
 }
