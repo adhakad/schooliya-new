@@ -4,8 +4,8 @@
 .banner {
     position: relative;
     min-height: 26vh;
-    padding-top: 80px;
     background: url('../../../../assets/background-images/baground-image-2.jpg') no-repeat center center/cover;
+    padding-top: 11vh;
 }
 
 .banner::before {
@@ -25,7 +25,7 @@
     z-index: 1;
 }
 .banner h2{
-    color: #f5f0fd;font-size: 25px;font-weight: 600;text-align: center;letter-spacing: 1px;line-height: 25px;
+    color: #f5f0fd;font-size: 25px;font-weight: 500;text-align: center;letter-spacing: 1px;line-height: 25px;
 }
 .policy-container{
     margin-top:3vh;margin-bottom: 5vh;
@@ -66,9 +66,9 @@
 @media (min-width: 992px) {
     .banner {
         position: relative;
-        min-height: 50vh;
-        padding-top: 125px;
+        min-height: 60vh;
         background: url('../../../../assets/background-images/baground-image-2.jpg') no-repeat center center/cover;
+        padding-top: 23vh;
     }
     
     .banner::before {
@@ -88,7 +88,7 @@
         z-index: 1;
     }
     .banner h2{
-        color: #f5f0fd;font-size: 35px;font-weight: 600;text-align: center;letter-spacing: 1px;line-height: 45px;
+        color: #f5f0fd;font-size: 35px;font-weight: 500;text-align: center;letter-spacing: 1px;line-height: 45px;
     }
     .policy-container{
         margin-top:5vh;margin-bottom: 5vh;

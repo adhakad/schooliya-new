@@ -19,6 +19,7 @@ export class HeaderNavbarComponent implements OnInit {
   constructor(private adminAuthService: AdminAuthService) {}
 
   ngOnInit(): void {
+    this.nav = false;
     this.adminAuthService.autoAuthAdmin();
     this.isAdminAuthenticated = this.adminAuthService.getIsAuth();
     this.authListenerSubs = this.adminAuthService
@@ -28,12 +29,15 @@ export class HeaderNavbarComponent implements OnInit {
       });
   }
   
-  hamburgerMenu(val:boolean){
-    if(val==true){
-      this.nav = true;
-    }else if(val==false){
-      this.nav = false;
-    }
+  // hamburgerMenu(val:boolean){
+  //   if(val==false){
+  //     this.nav = true;
+  //   }else if(val==true){
+  //     this.nav = false;
+  //   }
+  // }
+  hamburgerMenu(isNavOpen: boolean): void {
+    this.nav = !isNavOpen; // This toggles the value of nav based on the current state
   }
 
   onLogout(user: string) {

@@ -207,7 +207,6 @@ iframe {
 }
 
 .pricing-card {
-   /* background: linear-gradient(315deg, rgb(238, 230, 255), rgb(254, 253, 255), rgb(254, 253, 255), rgb(254, 253, 255)); */
    background-color: #fff;
    width: 100%;
    height: auto;
@@ -418,7 +417,6 @@ iframe {
 .video-container {
    position: relative;
    width: 100%;
-   /* Full width */
    min-height: 225px;
    max-height: 225px;
    overflow: hidden;
@@ -434,87 +432,13 @@ iframe {
    width: 100%;
    height: 100%;
    border: 0;
-   /* Remove iframe border */
 }
 
 .thumbnail-image {
    width: 100%;
    height: auto;
    cursor: pointer;
-   /* Show cursor as pointer when hovering over thumbnail */
 }
-
-
-
-/* .customer-section {
-   background: linear-gradient(to right, rgb(203, 193, 255), rgb(234, 230, 255));
-   padding-top: 55px;
-   padding-bottom: 55px;
-}
-
-.customer-section h3 {
-   font-family: 'Segoe UI', Verdana;
-   color: #382066;
-   font-size: 28px;
-   font-weight: 400;
-   letter-spacing: .5px;
-   text-align: center;
-   margin-top: 20px;
-}
-
-.customer-section h2 {
-   font-family: 'Segoe UI', Verdana;
-   font-size: 32px;
-   font-weight: 700;
-   color: #382066;
-   letter-spacing: .5px;
-   text-align: center;
-   margin-top: 20px;
-}
-
-.customer-section p {
-   font-family: 'Segoe UI', Verdana;
-   color: #77779f;
-   font-size: 16px;
-   font-weight: 500;
-   letter-spacing: .5px;
-   text-align: center;
-   margin-top: 20px;
-   margin-bottom: 50px;
-}
-
-.customer-section .container-fluid {
-   padding-left: 0 !important;
-   padding-right: 0 !important;
-}
-
-.topper-card {
-   width: 115px;
-   height: 115px;
-   background-color: #f0eeff;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   text-align: center;
-   border: 1px solid #fcfcfc;
-   border-radius: 50%;
-}
-
-.topper-card img {
-   width: 50% !important;
-   height: 50% !important;
-   text-align: center;
-   align-items: center;
-}
-
-.topper-card h3 {
-   color: #382066;
-   font-size: 16px;
-   font-weight: 500;
-   margin-top: 20px;
-
-} */
 
 
 @media (min-width: 992px) {
@@ -606,7 +530,6 @@ iframe {
       margin-bottom: 10px;
       margin-top: 10vh;
       margin-left: 5%;
-      /* margin-left: 25px; */
       border: 2px solid #e9deff;
       border-radius: 15px;
 
@@ -694,13 +617,6 @@ iframe {
       margin-left: 5px;
    }
 
-
-
-
-
-
-
-
    .pricing-section {
       background-color: #fff;
       min-height: 48vh;
@@ -722,7 +638,6 @@ iframe {
    }
 
    .pricing-card {
-      /* background: linear-gradient(315deg, rgb(238, 230, 255), rgb(254, 253, 255), rgb(254, 253, 255), rgb(254, 253, 255)); */
       background-color: #fff;
       width: 100%;
       height: auto;
@@ -949,78 +864,5 @@ iframe {
       font-weight: 400;
       margin-top: .1vh !important;
    }
-
-
-
-   /* .customer-section {
-      background: linear-gradient(to right, rgb(203, 193, 255), rgb(234, 230, 255));
-      padding-top: 55px;
-      padding-bottom: 55px;
-   }
-
-   .customer-section h3 {
-      font-family: 'Segoe UI', Verdana;
-      color: #382066;
-      font-size: 28px;
-      font-weight: 400;
-      letter-spacing: .5px;
-      text-align: center;
-      margin-top: 20px;
-   }
-
-   .customer-section h2 {
-      font-family: 'Segoe UI', Verdana;
-      font-size: 32px;
-      font-weight: 700;
-      color: #382066;
-      letter-spacing: .5px;
-      text-align: center;
-      margin-top: 20px;
-   }
-
-   .customer-section p {
-      font-family: 'Segoe UI', Verdana;
-      color: #77779f;
-      font-size: 16px;
-      font-weight: 500;
-      letter-spacing: .5px;
-      text-align: center;
-      margin-top: 20px;
-      margin-bottom: 50px;
-   }
-
-   .customer-section .container-fluid {
-      padding-left: 25px !important;
-      padding-right: 25px !important;
-   }
-
-   .topper-card {
-      width: 150px;
-      height: 150px;
-      background-color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      border: 1px solid #fff;
-      border-radius: 50%;
-   }
-
-   .topper-card img {
-      width: 50% !important;
-      height: 50% !important;
-      text-align: center;
-      align-items: center;
-   }
-
-   .topper-card h3 {
-      color: #382066;
-      font-size: 16px;
-      font-weight: 500;
-      margin-top: 20px;
-
-   } */
-
 
 }

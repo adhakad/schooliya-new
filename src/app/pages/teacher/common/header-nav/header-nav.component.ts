@@ -27,12 +27,8 @@ export class HeaderNavComponent implements OnInit {
       });
   }
 
-  hamburgerMenu(val:boolean){
-    if(val==true){
-      this.nav = true;
-    }else if(val==false){
-      this.nav = false;
-    }
+  hamburgerMenu(isNavOpen: boolean): void {
+    this.nav = !isNavOpen;
   }
   onLogout(user: string) {
     if (user === 'teacher') {

@@ -33,8 +33,7 @@ Header section
   padding-right: 10px;
 }
 .header .logo img {
-  height: 42px;
-  /* margin-top: -8px; */
+  height: 38px;
   margin-left: 0px;
 }
 
@@ -63,27 +62,28 @@ Header section
   background-color: #fff;
   width: 100%;
   height: auto;
-  position: absolute;
+  position: fixed;
   display: block;
   left: 0;
-  top: 0;
-  padding-bottom: 10vh;
+  top: 10vh;
+  padding-top: 2.5vh;
+  padding-bottom: 2.5vh;
   z-index: 1000;
 }
 
 .hamburger-menu button {
-  font-size: large;
-  color: #525098eb !important;
+  font-size: medium;
+  color: #4A2B89 !important;
 }
 
 .hamburger-menu .mat-icon {
-  font-size: medium;
+  font-size: 18px;
   margin-top: 5px;
-  color: #525098eb !important;
+  color: #9231f2 !important;
 }
 
 .hamburger-menu .close-icon {
-  color: #525098eb !important;
+  color: #68678beb !important;
   font-size: 28px;
   margin-top: 3.5vh;
   margin-left: 88%;

@@ -40,7 +40,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   schoolInfo: any;
   adminId!: any;
   youtubeVideoUrls: string[] = [
-    "https://www.youtube.com/watch?v=rjw4ZOPxxpo",
+    // "https://www.youtube.com/watch?v=rjw4ZOPxxpo",
+    "https://www.youtube.com/watch?v=fljE-ZHPkaI",
   ];
   thumbnailUrls: SafeUrl[] = [];
   youtubeVideoSafeUrls: SafeResourceUrl[] = [];
@@ -60,10 +61,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     let getAdmin = this.adminAuthService.getLoggedInAdminInfo();
     this.adminId = getAdmin?.id;
     this.getPlans();
-    this.getBanner();
-    this.getAds()
-    this.getTestimonial();
-    this.getTopper();
+    // this.getBanner();
+    // this.getAds()
+    // this.getTestimonial();
+    // this.getTopper();
   }
   getVideoIdFromUrl(url: string): string | null {
     const videoIdMatch = url.match(/(?:\?|&)v=([^\?&]+)/);

@@ -49,12 +49,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.isTeacherAuthenticated = isTeacherAuthenticated;
       });
   }
-  hamburgerMenu(val: boolean) {
-    if (val == true) {
-      this.nav = true;
-    } else if (val == false) {
-      this.nav = false;
-    }
+  hamburgerMenu(isNavOpen: boolean): void {
+    this.nav = !isNavOpen;
   }
   softwareCompany(link:string){
     const sanitizedLink = encodeURI(link);

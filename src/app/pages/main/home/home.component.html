@@ -3,10 +3,10 @@
     <div class="banner">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12 col-lg-7">
+                <div class="col-12 col-md-7 col-lg-7">
                     <div class="row banner-content">
                         <h3>
-                            <span>School Online ERP Software Start Only &#8377;
+                            <span>School Online Software Start Only &#8377;
                                 {{plansInfo[0]?.price}}</span>
                         </h3>
                         <h2>Simplify School Management with Our User-Friendly Online Solution</h2>
@@ -20,9 +20,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-lg-5 img-section">
+                <div class="col-12 col-md-5 col-lg-5 img-section">
                     <div class="row img-section-row">
-                        <div class="col-12 col-lg-12" *ngFor="let videoUrl of youtubeVideoSafeUrls; let i = index">
+                        <div class="col-12 col-md-12 col-lg-12" *ngFor="let videoUrl of youtubeVideoSafeUrls; let i = index">
                             <div class="video-container" (click)="redirectUser(youtubeVideoUrls[i])">
                                 <img [src]="thumbnailUrls[i]" alt="Thumbnail Image" class="thumbnail-image">
                                 <iframe [src]="videoUrl" frameborder="0" allowfullscreen></iframe>
@@ -39,14 +39,14 @@
 
     <div class="container why-choose-us-section">
         <div class="row">
-            <div class="col-12 col-lg-5 title">
+            <div class="col-12 col-md-5 col-lg-5 title">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-12 col-md-12 col-lg-12">
                         <h3>Why Choose Us ?</h3>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-lg-10">
+                    <div class="col-12 col-md-10 col-lg-10">
                         <p style="color: #2f2c5e;">Choose our online school management software for its unbeatable value
                             and efficiency. It offers all the essential features at a lower price than other options in
                             the market. With our software, you get powerful tools that make managing your school easier
@@ -55,31 +55,31 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-7">
+            <div class="col-12 col-md-7 col-lg-7">
                 <div class="row schooliya-chart">
-                    <div class="col-3 col-lg-3"><img src="../../../../assets/logo.png" alt="">
+                    <div class="col-3 col-md-3 col-lg-3"><img src="../../../../assets/logo.png" alt="">
                     </div>
-                    <div class="col-3 col-lg-2">
+                    <div class="col-3 col-md-2 col-lg-2">
                         <div class="schooliya">
                         </div>
                     </div>
-                    <div class="col-4 col-lg-2">
+                    <div class="col-4 col-md-2 col-lg-2">
                         <p>&#8377;{{plansInfo[0]?.price}} / Year</p>
                     </div>
                 </div>
                 <div class="row others-chart">
-                    <div class="col-3 col-lg-3">
+                    <div class="col-3 col-md-3 col-lg-3">
                         <div class="row">
                             <div class="col-12">
                                 <p><span>Other Software</span></p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 col-lg-7">
+                    <div class="col-6 col-md-7 col-lg-7">
                         <div class="others">
                         </div>
                     </div>
-                    <div class="col-3 col-lg-2" style="padding-left: 0 !important;">
+                    <div class="col-3 col-md-2 col-lg-2" style="padding-left: 0 !important;">
                         <p>&#8377;12000 / Year</p>
                     </div>
                 </div>
@@ -91,12 +91,12 @@
     <div class="container-fluid" style="padding: 0 !important;">
         <div class="container-fluid pricing-section">
             <div class="row">
-                <div class="col-12 col-lg-12 offset-lg-0">
+                <div class="col-12 col-md-12 offset-md-0 col-lg-12 offset-lg-0">
                     <div class="row title">
                         <h2>Pick Your Perfect Plan</h2>
                     </div>
                     <div class="row">
-                        <div class="col-12 col-lg-4 pricing-card-container">
+                        <div class="col-12 col-md-4 col-lg-4 pricing-card-container">
                             <div class="pricing-card">
                                 <div class="pricing-title">
                                     <h2>{{plansInfo[0]?.plans}}</h2>
@@ -158,7 +158,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-lg-4 pricing-card-container">
+                        <div class="col-12 col-md-4 col-lg-4 pricing-card-container">
                             <div class="pricing-card border">
                                 <div class="pricing-title">
                                     <h2>{{plansInfo[1]?.plans}}</h2>
@@ -220,7 +220,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-lg-4 pricing-card-container">
+                        <div class="col-12 col-md-4 col-lg-4 pricing-card-container">
                             <div class="pricing-card">
                                 <div class="pricing-title">
                                     <h2>{{plansInfo[2]?.plans}}</h2>
@@ -288,7 +288,7 @@
     </div>
     <div class="container-fluid service-section">
         <div class="row">
-            <div class="col-12 col-lg-12 offset-lg-0">
+            <div class="col-12 col-md-12 offset-md-0 col-lg-12 offset-lg-0">
                 <div class="row">
                     <div class="col-12">
                         <div class="title">
@@ -297,11 +297,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-8 col-lg-4">
+                    <div class="col-8 col-md-4 col-lg-4">
                         <div class="row">
-                            <div class="col-12 col-lg-11">
+                            <div class="col-12 col-md-11 col-lg-11">
                                 <div class="img-section">
-                                    <div class="col-12 col-lg-11">
+                                    <div class="col-12 col-md-11 col-lg-11">
                                         <h3>
                                             All Usable Modules</h3>
                                         <p>
@@ -313,50 +313,50 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-8 service-card-container">
+                    <div class="col-12 col-md-8 col-lg-8 service-card-container">
                         <div class="row">
-                            <div class="col-11 col-lg-4 offset-lg-0">
+                            <div class="col-11 col-md-4 offset-md-0 col-lg-4 offset-lg-0">
                                 <div class="service-card">
                                     <div class="row">
-                                        <div class="col-1 col-lg-1"><mat-icon>person_add</mat-icon>
+                                        <div class="col-1 col-md-1 col-lg-1"><mat-icon>person_add</mat-icon>
                                         </div>
-                                        <div class="col-11 col-lg-11">
+                                        <div class="col-11 col-md-11 col-lg-11">
                                             <h3>Student Management</h3>
                                         </div>
                                     </div>
                                     <p>Streamline student management with our simple and effective modules</p>
                                 </div>
                             </div>
-                            <div class="col-11 col-lg-4 offset-lg-0">
+                            <div class="col-11 col-md-4 offset-md-0 col-lg-4 offset-lg-0">
                                 <div class="service-card">
                                     <div class="row">
-                                        <div class="col-1 col-lg-1"><mat-icon>dialpad</mat-icon>
+                                        <div class="col-1 col-md-1 col-lg-1"><mat-icon>dialpad</mat-icon>
                                         </div>
-                                        <div class="col-11 col-lg-11">
+                                        <div class="col-11 col-md-11 col-lg-11">
                                             <h3>Admission Management</h3>
                                         </div>
                                     </div>
                                     <p>Simplify your admissions with our intuitive and efficient tools</p>
                                 </div>
                             </div>
-                            <div class="col-11 col-lg-4 offset-lg-0">
+                            <div class="col-11 col-md-4 offset-md-0 col-lg-4 offset-lg-0">
                                 <div class="service-card">
                                     <div class="row">
-                                        <div class="col-1 col-lg-1"><mat-icon>currency_rupee</mat-icon>
+                                        <div class="col-1 col-md-1 col-lg-1"><mat-icon>currency_rupee</mat-icon>
                                         </div>
-                                        <div class="col-11 col-lg-11">
+                                        <div class="col-11 col-md-11 col-lg-11">
                                             <h3>Fees Management</h3>
                                         </div>
                                     </div>
                                     <p>Easily manage and track fees with our user-friendly modules</p>
                                 </div>
                             </div>
-                            <div class="col-11 col-lg-4 offset-lg-0">
+                            <div class="col-11 col-md-4 offset-md-0 col-lg-4 offset-lg-0">
                                 <div class="service-card">
                                     <div class="row">
-                                        <div class="col-1 col-lg-1"><mat-icon>assignment</mat-icon>
+                                        <div class="col-1 col-md-1 col-lg-1"><mat-icon>assignment</mat-icon>
                                         </div>
-                                        <div class="col-11 col-lg-11">
+                                        <div class="col-11 col-md-11 col-lg-11">
                                             <h3>Admit Card Management</h3>
                                         </div>
                                     </div>
@@ -364,12 +364,12 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-11 col-lg-4 offset-lg-0">
+                            <div class="col-11 col-md-4 offset-md-0 col-lg-4 offset-lg-0">
                                 <div class="service-card">
                                     <div class="row">
-                                        <div class="col-1 col-lg-1"><mat-icon>content_paste_search</mat-icon>
+                                        <div class="col-1 col-md-1 col-lg-1"><mat-icon>content_paste_search</mat-icon>
                                         </div>
-                                        <div class="col-11 col-lg-11">
+                                        <div class="col-11 col-md-11 col-lg-11">
                                             <h3>Marksheet Management</h3>
                                         </div>
                                     </div>
@@ -377,12 +377,12 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-11 col-lg-4 offset-lg-0">
+                            <div class="col-11 col-md-4 offset-md-0 col-lg-4 offset-lg-0">
                                 <div class="service-card">
                                     <div class="row">
-                                        <div class="col-1 col-lg-1"><mat-icon>workspace_premium</mat-icon>
+                                        <div class="col-1 col-md-1 col-lg-1"><mat-icon>workspace_premium</mat-icon>
                                         </div>
-                                        <div class="col-11 col-lg-11">
+                                        <div class="col-11 col-md-11 col-lg-11">
                                             <h3>T C Management</h3>
                                         </div>
                                     </div>
@@ -390,12 +390,12 @@
                                         our simplify modules</p>
                                 </div>
                             </div>
-                            <div class="col-11 col-lg-4 offset-lg-0">
+                            <div class="col-11 col-md-4 offset-md-0 col-lg-4 offset-lg-0">
                                 <div class="service-card">
                                     <div class="row">
-                                        <div class="col-1 col-lg-1"><mat-icon>note_add</mat-icon>
+                                        <div class="col-1 col-md-1 col-lg-1"><mat-icon>note_add</mat-icon>
                                         </div>
-                                        <div class="col-11 col-lg-11">
+                                        <div class="col-11 col-md-11 col-lg-11">
                                             <h3>Subject Management</h3>
                                         </div>
                                     </div>
@@ -403,24 +403,24 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-11 col-lg-4 offset-lg-0">
+                            <div class="col-11 col-md-4 offset-md-0 col-lg-4 offset-lg-0">
                                 <div class="service-card">
                                     <div class="row">
-                                        <div class="col-1 col-lg-1"><mat-icon>menu_book</mat-icon>
+                                        <div class="col-1 col-md-1 col-lg-1"><mat-icon>menu_book</mat-icon>
                                         </div>
-                                        <div class="col-11 col-lg-11">
+                                        <div class="col-11 col-md-11 col-lg-11">
                                             <h3>Class Subject Management</h3>
                                         </div>
                                     </div>
                                     <p>Organize class subject groups with ease using our straight-forward tools</p>
                                 </div>
                             </div>
-                            <div class="col-11 col-lg-4 offset-lg-0">
+                            <div class="col-11 col-md-4 offset-md-0 col-lg-4 offset-lg-0">
                                 <div class="service-card">
                                     <div class="row">
-                                        <div class="col-1 col-lg-1"><mat-icon>manage_accounts</mat-icon>
+                                        <div class="col-1 col-md-1 col-lg-1"><mat-icon>manage_accounts</mat-icon>
                                         </div>
-                                        <div class="col-11 col-lg-11">
+                                        <div class="col-11 col-md-11 col-lg-11">
                                             <h3>Saff Access Management</h3>
                                         </div>
                                     </div>
@@ -434,44 +434,6 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- <div class="container-fluid customer-section">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="owl-carousel topper-carousel">
-
-                        <div class="topper-card" matRipple>
-                            <img src="../../../../assets/zoschool-logo.png" alt="">
-                        </div>
-
-                        <div class="topper-card" matRipple>
-                            <img src="../../../../assets/dngurukul-logo.png" alt="">
-                        </div>
-                        <div class="topper-card" matRipple>
-                            <img src="../../../../assets/school.png" alt="">
-                        </div>
-                        <div class="topper-card" matRipple>
-                            <img src="../../../../assets/school.png" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
     <app-footer></app-footer>
 </div>
 
