@@ -441,6 +441,57 @@ iframe {
 }
 
 
+
+
+/* @media (max-width: 575.98px) and (orientation: landscape) {
+   .col-12 {
+     background-color: #c3e6cb;
+     color: #155724;           
+     padding: 1rem;
+   }
+ }
+ 
+ @media (min-width: 576px) {
+   .col-sm-12 {
+     background-color: #d4edda;
+     color: #155724;          
+     padding: 1.5rem;
+   }
+ }
+ 
+ @media (min-width: 768px) and (orientation: landscape) {
+   .col-md-12 {
+     background-color: #bee5eb;
+     color: #0c5460;           
+     padding: 2rem;
+   }
+ }
+ 
+ @media (min-width: 992px) {
+   .col-lg-12 {
+     background-color: #fff3cd;
+     color: #856404;           
+     padding: 2.5rem;
+   }
+ }
+ 
+ @media (min-width: 1200px) {
+   .col-xl-12 {
+     background-color: #fefefe;
+     color: #383d41;
+     padding: 3rem;
+   }
+ }
+ 
+ @media (min-width: 1400px) {
+   .col-xxl-12 {
+     background-color: #e2e3e5;
+     color: #41464b;
+     padding: 3.5rem;
+   }
+ } */
+
+
 @media (min-width: 992px) {
    .banner {
       position: relative;

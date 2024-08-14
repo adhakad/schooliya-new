@@ -191,7 +191,7 @@ let CreateStudent = async (req, res, next) => {
             return res.status(404).json(`Please group subjects according to class and stream !`);
         }
         if (aadharNumber !== null && aadharNumber !== undefined) {
-            const checkAadharNumber = await StudentModel.findOne({aadharNumber: aadharNumber });
+            const checkAadharNumber = await StudentModel.findOne({ aadharNumber: aadharNumber });
             if (checkAadharNumber) {
                 return res.status(400).json(`Aadhar card number already exist !`);
             }
@@ -199,14 +199,14 @@ let CreateStudent = async (req, res, next) => {
         }
 
         if (samagraId !== null && samagraId !== undefined) {
-            const checkSamagraId = await StudentModel.findOne({samagraId: samagraId });
+            const checkSamagraId = await StudentModel.findOne({ samagraId: samagraId });
             if (checkSamagraId) {
                 return res.status(400).json(`Samagra id already exist !`);
             }
             studentData.samagraId = samagraId;
         }
         if (udiseNumber !== null && udiseNumber !== undefined) {
-            const checkUdiseNumber = await StudentModel.findOne({udiseNumber: udiseNumber });
+            const checkUdiseNumber = await StudentModel.findOne({ udiseNumber: udiseNumber });
             if (checkUdiseNumber) {
                 return res.status(400).json(`UDISE Number already exist !`);
             }
@@ -245,7 +245,7 @@ let CreateStudent = async (req, res, next) => {
             dueFees: dueFees,
         }
         if (admissionType == 'New') {
-            studentFeesData.admissionFeesReceiptNo = receiptNo;  
+            studentFeesData.admissionFeesReceiptNo = receiptNo;
             studentFeesData.admissionFeesPaymentDate = istDateTimeString;
         }
         let createStudent = await StudentModel.create(studentData);
@@ -335,7 +335,7 @@ let CreateBulkStudentRecord = async (req, res, next) => {
         "12th": 12,
     };
     bulkStudentRecord.forEach((student) => {
-        student.class = parseInt(classMappings[student.class] || "Unknown");
+        // student.class = parseInt(classMappings[student.class] || "Unknown");
         student.admissionClass = parseInt(classMappings[student.admissionClass] || "Unknown");
     });
     let studentData = [];
@@ -344,17 +344,16 @@ let CreateBulkStudentRecord = async (req, res, next) => {
             session: student.session,
             medium: student.medium,
             adminId: adminId,
-            stream: stream,
             name: student.name,
             rollNumber: student.rollNumber,
             discountAmountInFees: student.discountAmountInFees,
             udiseNumber: student.udiseNumber,
             aadharNumber: student.aadharNumber,
             samagraId: student.samagraId,
-            admissionType: student.admissionType,
-            stream: student.stream,
             admissionNo: student.admissionNo,
-            class: student.class,
+            admissionType: student.admissionType,
+            stream: stream,
+            class: className,
             admissionClass: student.admissionClass,
             dob: student.dob,
             doa: student.doa,
@@ -383,28 +382,37 @@ let CreateBulkStudentRecord = async (req, res, next) => {
             return res.status(400).json('File too large, Please make sure that file records to less then or equals to 100 !');
         }
         const otherClassAdmissionNo = [];
-        for (const student of studentData) {
-            if (student.class !== className) {
-                const { admissionNo } = student;
-                if (admissionNo) {
-                    otherClassAdmissionNo.push(admissionNo);
-                }
-                continue;
-            }
-        }
-        if (otherClassAdmissionNo.length > 0) {
-            const spreadAdmissionNo = otherClassAdmissionNo.join(', ');
-            return res.status(400).json(`Admission number(s) ${spreadAdmissionNo} student(s) class is invailid !`);
-        }
-        const existRecords = await StudentModel.find({}).lean();
+        // for (const student of studentData) {
+        //     if (student.class !== className) {
+        //         const { admissionNo } = student;
+        //         if (admissionNo) {
+        //             otherClassAdmissionNo.push(admissionNo);
+        //         }
+        //         continue;
+        //     }
+        // }
+        // if (otherClassAdmissionNo.length > 0) {
+        //     const spreadAdmissionNo = otherClassAdmissionNo.join(', ');
+        //     return res.status(400).json(`Admission number(s) ${spreadAdmissionNo} student(s) class is invailid !`);
+        // }
+        const existRecords = await StudentModel.find({ adminId: adminId, class: className, stream: stream }).lean();
         const duplicateAadharNumber = [];
         const duplicateSamagraId = [];
         const duplicateAdmissionNo = [];
         for (const student of studentData) {
-            const { admissionNo, aadharNumber, samagraId, } = student;
-            const aadharNumberExists = existRecords.some(record => record.aadharNumber == aadharNumber);
-            const samagraIdExists = existRecords.some(record => record.samagraId == samagraId);
-            const admissionNoExists = existRecords.some(record => record.admissionNo == admissionNo);
+            const { admissionNo, aadharNumber, samagraId } = student;
+            let aadharNumberExists;
+            if (aadharNumber !== null && aadharNumber !== undefined) {
+                aadharNumberExists = existRecords.some(record => record.aadharNumber == aadharNumber);
+            }
+            let samagraIdExists;
+            if (samagraId !== null && samagraId !== undefined) {
+                samagraIdExists = existRecords.some(record => record.samagraId == samagraId);
+            }
+            let admissionNoExists;
+            if (admissionNo !== null && admissionNo !== undefined) {
+                admissionNoExists = existRecords.some(record => record.admissionNo == admissionNo);
+            }
 
             if (aadharNumberExists) {
                 duplicateAadharNumber.push(aadharNumber);
@@ -430,14 +438,70 @@ let CreateBulkStudentRecord = async (req, res, next) => {
         }
 
         const existingRecords = await StudentModel.find({ adminId: adminId, class: className }).lean();
+        const unFillRows = [];
         const duplicateRollNumber = [];
+        let index = 3;
         for (const student of studentData) {
-            // Check duplicate students exist from dadabase
-            const { rollNumber } = student;
+            const {
+                medium,
+                name,
+                fatherName,
+                motherName,
+                fatherQualification,
+                motherQualification,
+                parentsOccupation,
+                parentsAnnualIncome,
+                rollNumber,
+                admissionNo,
+                discountAmountInFees,
+                admissionType,
+                admissionClass,
+                dob,
+                doa,
+                gender,
+                category,
+                religion,
+                nationality,
+                address
+            } = student;
+            if (
+                medium !== null && medium !== undefined &&
+                name !== null && name !== undefined &&
+                fatherName !== null && fatherName !== undefined &&
+                motherName !== null && motherName !== undefined &&
+                fatherQualification !== null && fatherQualification !== undefined &&
+                motherQualification !== null && motherQualification !== undefined &&
+                parentsOccupation !== null && parentsOccupation !== undefined &&
+                parentsAnnualIncome !== null && parentsAnnualIncome !== undefined &&
+                rollNumber !== null && rollNumber !== undefined &&
+                admissionNo !== null && admissionNo !== undefined &&
+                discountAmountInFees !== null && discountAmountInFees !== undefined &&
+                admissionType !== null && admissionType !== undefined &&
+                admissionClass !== null && admissionClass !== undefined &&
+                dob !== null && dob !== undefined &&
+                doa !== null && doa !== undefined &&
+                gender !== null && gender !== undefined &&
+                category !== null && category !== undefined &&
+                religion !== null && religion !== undefined &&
+                nationality !== null && nationality !== undefined &&
+                address !== null && address !== undefined
+            ) {
+
+                // At least one field is filled
+            } else {
+                unFillRows.push(index);
+            }
+
             const rollNumberExists = existingRecords.some(record => record.rollNumber == rollNumber);
             if (rollNumberExists) {
                 duplicateRollNumber.push(rollNumber);
             }
+            index++;
+        }
+        if (unFillRows.length > 0) {
+            const spreadIndex = unFillRows.join(', ');
+            return res.status(400).json(`
+                Row(s) ${spreadIndex} are missing required information. Please fill in all mandatory fields before continuing !`);
         }
         if (duplicateRollNumber.length > 0) {
             const spreadRollNumber = duplicateRollNumber.join(', ');
@@ -460,7 +524,7 @@ let CreateBulkStudentRecord = async (req, res, next) => {
             let feesObject = {
                 adminId: adminId,
                 studentId: student._id,
-                class: student.class,
+                class: className,
                 stream: stream,
                 admissionFeesPayable: false,
                 admissionFees: 0,
@@ -478,7 +542,6 @@ let CreateBulkStudentRecord = async (req, res, next) => {
 
             studentFeesData.push(feesObject);
         }
-
         if (createStudent && studentFeesData.length > 0) {
             const createStudentFeesData = await FeesCollectionModel.create(studentFeesData, { session });
 
@@ -488,13 +551,10 @@ let CreateBulkStudentRecord = async (req, res, next) => {
                 return res.status(200).json('Student created successfully.');
             }
         }
-
-        // If anything goes wrong, roll back the transaction
         await session.abortTransaction();
         session.endSession();
         return res.status(500).json('Error creating student and fees data.');
     } catch (error) {
-        // Handle any errors that occurred during the transaction
         await session.abortTransaction();
         session.endSession();
         return res.status(500).json('Internal Server Error!');

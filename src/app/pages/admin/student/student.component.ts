@@ -582,8 +582,6 @@ export class StudentComponent implements OnInit {
       'fatherName',
       'motherName',
       'rollNumber',
-      'class',
-      'stream',
       'discountAmountInFees',
       'aadharNumber',
       'samagraId',
