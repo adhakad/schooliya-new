@@ -16,7 +16,6 @@ const IssuedTransferCertificateModel = mongoose.model('issued-transfer-certifica
         type: Number,
         required: true,
         trim: true,
-        unique: true
     },
     name: {
         type: String,
@@ -42,13 +41,11 @@ const IssuedTransferCertificateModel = mongoose.model('issued-transfer-certifica
         type: Number,
         required: true,
         trim: true,
-        unique: true,
     },
     rollNumber: {
         type: Number,
         required: true,
         trim: true,
-        unique: true,
     },
     dob: {
         type: String,
@@ -88,11 +85,6 @@ const IssuedTransferCertificateModel = mongoose.model('issued-transfer-certifica
         type: Number,
         trim: true,
     },
-    contact: {
-        type: Number,
-        required: true,
-        trim: true
-    },
     address: {
         type: String,
         required: true,
@@ -112,21 +104,6 @@ const IssuedTransferCertificateModel = mongoose.model('issued-transfer-certifica
         required: true,
         trim: true
     },
-    fatherOccupation: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    fatherContact: {
-        type: Number,
-        required: true,
-        trim: true
-    },
-    fatherAnnualIncome: {
-        type: String,
-        required: true,
-        trim: true
-    },
     motherName: {
         type: String,
         required: true,
@@ -137,17 +114,16 @@ const IssuedTransferCertificateModel = mongoose.model('issued-transfer-certifica
         required: true,
         trim: true
     },
-    motherOccupation: {
+    parentsOccupation: {
         type: String,
         required: true,
         trim: true
     },
-    motherContact: {
+    parentsContact: {
         type: Number,
-        required: true,
         trim: true
     },
-    motherAnnualIncome: {
+    parentsAnnualIncome: {
         type: String,
         required: true,
         trim: true

@@ -779,7 +779,7 @@
                             <div class="col-12 col-lg-6">
                               <mat-form-field appearance="outline">
                                 <mat-label>Roll Number</mat-label>
-                                <input matInput type="number" formControlName="rollNumber">
+                                <input matInput type="number" formControlName="rollNumber" min="0">
                                 <mat-hint
                                   *ngIf="!studentClassPromoteForm.get('rollNumber')?.valid && studentClassPromoteForm.get('rollNumber')?.touched"
                                   class="form-text text-danger">Roll number is required</mat-hint>
@@ -810,6 +810,20 @@
                                 <mat-error
                                   *ngIf="studentClassPromoteForm.get('stream')?.hasError('pattern') && studentClassPromoteForm.get('stream')?.touched">
                                   Please enter a valid Stream (only letters are allowed)
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Fees Discount Amount (&#8377;)</mat-label>
+                                <input matInput type="number" formControlName="discountAmountInFees" min="0">
+                                <mat-error
+                                  *ngIf="studentForm.get('discountAmountInFees')?.hasError('required') && studentForm.get('discountAmountInFees')?.touched">
+                                  Fees discount amount is required
+                                </mat-error>
+                                <mat-error
+                                  *ngIf="studentForm.get('discountAmountInFees')?.hasError('pattern') && studentForm.get('discountAmountInFees')?.touched">
+                                  Please enter a valid fees discount amount (numeric characters only)
                                 </mat-error>
                               </mat-form-field>
                             </div>

@@ -98,7 +98,8 @@ export class IssuedTransferCertificateComponent implements OnInit {
       let params: any = {
         filters: {},
         page: $event.page,
-        limit: $event.limit ? $event.limit : this.recordLimit
+        limit: $event.limit ? $event.limit : this.recordLimit,
+        adminId:this.adminId
       };
       this.recordLimit = params.limit;
       if (this.filters.searchText) {

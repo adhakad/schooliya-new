@@ -8,6 +8,9 @@ let GetSingleClassFeesStructure = async (req, res, next) => {
     let adminId = req.params.id;
     let className = req.params.class;
     let stream = req.params.stream;
+    if (stream === "stream") {
+        stream = "N/A";
+    }
     try {
         const singleFeesStr = await FeesStructureModel.findOne({adminId:adminId, class: className,stream:stream });
         if(!singleFeesStr){

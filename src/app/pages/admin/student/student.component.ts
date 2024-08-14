@@ -89,8 +89,8 @@ export class StudentComponent implements OnInit {
       name: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
       dob: ['', Validators.required],
       doa: ['', Validators.required],
-      aadharNumber: ['', [ Validators.pattern('^\\d{12}$')]],
-      samagraId: ['', [ Validators.pattern('^\\d{9}$')]],
+      aadharNumber: ['', [Validators.pattern('^\\d{12}$')]],
+      samagraId: ['', [Validators.pattern('^\\d{9}$')]],
       udiseNumber: ['', [Validators.pattern('^\\d{11}$')]],
       bankAccountNo: ['', [Validators.minLength(9), Validators.maxLength(18), Validators.pattern('^[0-9]+$')]],
       bankIfscCode: ['', [Validators.minLength(11), Validators.maxLength(11)]],
@@ -117,16 +117,18 @@ export class StudentComponent implements OnInit {
 
     this.studentClassPromoteForm = this.fb.group({
       _id: ['', Validators.required],
-      adminId: [''],
-      class: [''],
       session: ['', Validators.required],
       admissionNo: ['', Validators.required],
+      adminId: [''],
+      class: [''],
+      stream: [''],
       rollNumber: ['', Validators.required],
-      stream: ['', Validators.required],
+      discountAmountInFees: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       createdBy: ['']
     })
 
     this.tcForm = this.fb.group({
+      adminId: [''],
       lastExamStatus: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
       reasonForLeaving: ['', [Validators.required, Validators.pattern('^[a-zA-Z\\s]+$')]],
       totalWorkingDays: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
@@ -285,7 +287,8 @@ export class StudentComponent implements OnInit {
     this.showClassPromoteModal = true;
     this.singleStudentInfo = student;
     this.studentClassPromoteForm.patchValue(student);
-    this.studentClassPromoteForm.get('stream')?.setValue(null);
+    this.studentClassPromoteForm.get('stream')?.setValue(this.stream);
+    this.studentClassPromoteForm.get('discountAmountInFees')?.setValue(null);
   }
   addStudentInfoViewModel(student: any) {
     this.showStudentInfoViewModal = true;
@@ -646,12 +649,12 @@ export class StudentComponent implements OnInit {
     if (this.studentClassPromoteForm.valid) {
       this.studentClassPromoteForm.value.adminId = this.adminId;
       this.studentClassPromoteForm.value.class = parseInt(this.className);
-      this.studentForm.value.createdBy = 'Admin';
+      this.studentClassPromoteForm.value.createdBy = 'Admin';
       this.studentService.studentClassPromote(this.studentClassPromoteForm.value).subscribe((res: any) => {
         if (res) {
           setTimeout(() => {
             this.successDone();
-          }, 2000)
+          }, 1000)
           this.promotedClass;
           this.promotedClass = res.className;
           this.successMsg = res.successMsg;
@@ -669,6 +672,7 @@ export class StudentComponent implements OnInit {
   getTC() {
     if (this.tcForm.valid && this.singleStudentInfo) {
       this.singleStudentInfo.isDate = this.isDate;
+      this.tcForm.value.adminId = this.adminId;
       if (!this.tcForm.value.anyOtherRemarks) {
         this.tcForm.value.anyOtherRemarks = 'Nil';
       }

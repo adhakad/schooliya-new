@@ -336,7 +336,7 @@ let CreateBulkStudentRecord = async (req, res, next) => {
     };
     bulkStudentRecord.forEach((student) => {
         // student.class = parseInt(classMappings[student.class] || "Unknown");
-        student.admissionClass = parseInt(classMappings[student.admissionClass] || "Unknown");
+        student.admissionClass = parseInt(classMappings[student.admissionClass]);
     });
     let studentData = [];
     for (const student of bulkStudentRecord) {
@@ -477,7 +477,7 @@ let CreateBulkStudentRecord = async (req, res, next) => {
                 admissionNo !== null && admissionNo !== undefined &&
                 discountAmountInFees !== null && discountAmountInFees !== undefined &&
                 admissionType !== null && admissionType !== undefined &&
-                admissionClass !== null && admissionClass !== undefined &&
+                admissionClass !== null && admissionClass !== undefined && !isNaN(admissionClass) && //this line generate error
                 dob !== null && dob !== undefined &&
                 doa !== null && doa !== undefined &&
                 gender !== null && gender !== undefined &&
@@ -578,7 +578,7 @@ let UpdateStudent = async (req, res, next) => {
 let StudentClassPromote = async (req, res, next) => {
     try {
         const studentId = req.params.id;
-        let { adminId, session, rollNumber, stream } = req.body;
+        let { adminId, session, rollNumber, stream,discountAmountInFees } = req.body;
         if (stream == "stream") {
             stream = "N/A";
         }
@@ -601,15 +601,14 @@ let StudentClassPromote = async (req, res, next) => {
         }
         if (className == cls && className === 202) {
             className = 1;
-        }
-        if (className == cls && className !== 202) {
+        }else{
             className = className + 1;
         }
-        const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className });
+        const checkFeesStr = await FeesStructureModel.findOne({ adminId: adminId, class: className,stream:stream });
         if (!checkFeesStr) {
             return res.status(404).json({ errorMsg: 'Please create fees structure for this class', className: className });
         }
-        const studentData = { rollNumber, class: className, stream, admissionType: 'Old' };
+        const studentData = { rollNumber, class: className, stream, admissionType: 'Old',discountAmountInFees:discountAmountInFees };
         const updateStudent = await StudentModel.findByIdAndUpdate(studentId, { $set: studentData }, { new: true });
         if (updateStudent) {
             await Promise.all([
@@ -617,16 +616,19 @@ let StudentClassPromote = async (req, res, next) => {
                 ExamResultModel.findOneAndDelete({ studentId: studentId }),
                 FeesCollectionModel.findOneAndDelete({ studentId: studentId }),
             ]);
-            const totalFees = checkFeesStr.totalFees;
+            let checkFeesStrTotalFees = checkFeesStr.totalFees
+            const totalFees = checkFeesStrTotalFees - discountAmountInFees;
             const studentFeesData = {
                 adminId: adminId,
                 studentId,
                 class: className,
+                stream:stream,
                 admissionFees: 0,
                 admissionFeesPayable: false,
                 totalFees: totalFees,
                 paidFees: 0,
                 dueFees: totalFees,
+                discountAmountInFees:discountAmountInFees,
             };
             let createStudentFeesData = await FeesCollectionModel.create(studentFeesData);
             if (createStudentFeesData) {

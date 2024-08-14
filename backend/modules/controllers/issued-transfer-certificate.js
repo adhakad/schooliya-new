@@ -12,7 +12,8 @@ let countIssuedTransferCertificate = async (req, res, next) => {
 
 let GetIssuedTransferCertificatePagination = async (req, res, next) => {
     let searchText = req.body.filters.searchText;
-    
+    let adminId = req.body.adminId;
+
     let searchObj = {};
     if (searchText) {
         searchObj = /^(?:\d*\.\d{1,2}|\d+)$/.test(searchText)
@@ -24,11 +25,11 @@ let GetIssuedTransferCertificatePagination = async (req, res, next) => {
     try {
         let limit = (req.body.limit) ? parseInt(req.body.limit) : 10;
         let page = req.body.page || 1;
-        const issuedTransferCertificateList = await IssuedTransferCertificateModel.find(searchObj).sort({ _id: -1 })
+        const issuedTransferCertificateList = await IssuedTransferCertificateModel.find({adminId:adminId}).find(searchObj).sort({ _id: -1 })
             .limit(limit * 1)
             .skip((page - 1) * limit)
             .exec();
-        const countIssuedTransferCertificate = await IssuedTransferCertificateModel.count();
+        const countIssuedTransferCertificate = await IssuedTransferCertificateModel.count({adminId:adminId});
         let issuedTransferCertificateData = { countIssuedTransferCertificate: 0 };
         issuedTransferCertificateData.issuedTransferCertificateList = issuedTransferCertificateList;
         issuedTransferCertificateData.countIssuedTransferCertificate = countIssuedTransferCertificate;
@@ -39,21 +40,21 @@ let GetIssuedTransferCertificatePagination = async (req, res, next) => {
 }
 
 let CreateIssuedTransferCertificate = async (req, res, next) => {
-    let {serialNo,name, rollNumber, aadharNumber, samagraId, session, stream, admissionNo, dob,doa, gender, category, religion, nationality, contact, address, fatherName, fatherQualification, fatherOccupation, fatherContact, fatherAnnualIncome, motherName, motherQualification, motherOccupation, motherContact, motherAnnualIncome } = req.body;
+    let { adminId, serialNo, name, rollNumber, aadharNumber, samagraId, session, stream, admissionNo, dob, doa, gender, category, religion, nationality, address, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification } = req.body;
     let id = req.body._id;
     let className = req.body.class;
-    
+
     if (stream === "stream") {
         stream = "N/A";
     }
 
     const studentData = {
-        serialNo:serialNo,name, rollNumber, aadharNumber, samagraId,class:className, session, stream, admissionNo, dob,doa, gender, category, religion, nationality, contact, address, fatherName, fatherQualification, fatherOccupation, fatherContact, fatherAnnualIncome, motherName, motherQualification, motherOccupation, motherContact, motherAnnualIncome
+        adminId, serialNo: serialNo, name, rollNumber, aadharNumber, samagraId, class: className, session, stream, admissionNo, dob, doa, gender, category, religion, nationality, address, fatherName, fatherQualification, parentsOccupation, parentsContact, parentsAnnualIncome, motherName, motherQualification
     }
     try {
         const deleteStudent = await StudentModel.findByIdAndRemove(id);
         if (deleteStudent) {
-            const [ deleteAdmitCard, deleteExamResult, deleteFeesCollection] = await Promise.all([
+            const [deleteAdmitCard, deleteExamResult, deleteFeesCollection] = await Promise.all([
                 AdmitCardModel.deleteOne({ studentId: id }),
                 ExamResultModel.deleteOne({ studentId: id }),
                 FeesCollectionModel.deleteOne({ studentId: id }),
@@ -77,12 +78,12 @@ let CreateIssuedTransferCertificate = async (req, res, next) => {
 let DeleteIssuedTransferCertificate = async (req, res, next) => {
     try {
         const id = req.params.id;
-        const lastIssuedTC = await IssuedTransferCertificateModel.findOne({}).sort({_id:-1});
+        const lastIssuedTC = await IssuedTransferCertificateModel.findOne({}).sort({ _id: -1 });
         const objectId = lastIssuedTC._id;
-        if(id==objectId){
+        if (id == objectId) {
             return res.status(400).json('Last issued transfer certificate detail delete not possible !');
         }
-        
+
         const issuedTransferCertificate = await IssuedTransferCertificateModel.findByIdAndRemove(id);
         return res.status(200).json('Issued transfer certificate detail delete successfully.');
     } catch (error) {
