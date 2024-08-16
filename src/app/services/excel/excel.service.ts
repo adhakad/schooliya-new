@@ -100,7 +100,7 @@ export class ExcelService {
     // Set the column width for all columns in the worksheet
     for (let i = 0; i < studentFieldLength; i++) {
       let index = i + 1;
-      worksheet.getColumn(index).width = 15;
+      worksheet.getColumn(index).width = 25;
     }
     worksheet.addRow([]);
     let footerRow = worksheet.addRow([
